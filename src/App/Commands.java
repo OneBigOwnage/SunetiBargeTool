@@ -1,0 +1,95 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package App;
+
+import java.io.File;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.TreeSet;
+
+/**
+ *
+ * @author niekv
+ */
+public class Commands {
+
+    public static File highestVersionFolder;
+    public static String bargeName;
+    public static String brokerName;
+    public static String ownerName;
+    public static String managerName;
+
+    static {
+        setHighestVersionFolder();
+    }
+
+    public static void startDatabase() {
+        if (DBDeamon.getInstance().isDatabaseRunning()) {
+            System.out.println("Database already running...");
+            return;
+        }
+
+        String pg_ctl = "\"C:\\vessel solution\\database\\postgres_db\\bin\\pg_ctl.exe\"";
+        String dir = "\"C:\\vessel solution\\database\\database\"";
+        String options = "\"-p 15000\"";
+        String log = "\"C:\\vessel solution\\database\\postgres_db\\postgres_log.txt\"";
+
+        String command = String.format("%s start -D %s -o %s -l %s", pg_ctl, dir, options, log);
+        CommandLineWrapper.executeCommand(command, CommandLineWrapper.DEFAULT_WORKING_DIR, null);
+    }
+
+    public static void stopDatabase() {
+        Database.getInstance().disconnect();
+        String pg_ctl = "\"C:\\vessel solution\\database\\postgres_db\\bin\\pg_ctl.exe\"";
+        String dir = "\"C:\\vessel solution\\database\\database\"";
+        String log = "\"C:\\vessel solution\\database\\postgres_db\\postgres_log.txt\"";
+
+        String command = String.format("%s stop -D %s -l %s", pg_ctl, dir, log);
+        CommandLineWrapper.executeCommand(command, CommandLineWrapper.DEFAULT_WORKING_DIR, "Database Succesfully Stopped!");
+    }
+
+    public static void open_pg_hba_conf() {
+        final String pg_hba_conf_filename = "C:\\vessel solution\\database\\database\\pg_hba.conf";
+        CommandLineWrapper.openFileWithNotepad(new File(pg_hba_conf_filename));
+    }
+
+    public static void open_vessel_solution_bat() {
+        final String vessel_solution_bat_filename = "C:\\vessel solution\\Vessel Solution.bat";
+        CommandLineWrapper.openFileWithNotepad(new File(vessel_solution_bat_filename));
+    }
+
+    public static void open_servoy_log() {
+        if (highestVersionFolder != null) {
+            final File servoy_log_filename = new File(highestVersionFolder.toString() + "\\servoy_log.txt");
+            CommandLineWrapper.openFileWithNotepad(servoy_log_filename);
+        }
+    }
+
+    public static File setHighestVersionFolder() {
+        File vsDir = new File("C:\\vessel solution\\");
+
+        Collection<File> allFiles = new TreeSet<>();
+        allFiles.addAll(Arrays.asList(vsDir.listFiles()));
+        Collection<File> versionFolders = new TreeSet<>();
+
+        for (File file : allFiles) {
+            // If file is a directory, and contains a "servoy_runtime.jar", then it is added versionFolders.
+            if (file.isDirectory()) {
+                List<String> tmpList = Arrays.asList(file.list());
+                if (tmpList.contains("servoy_runtime.jar")) {
+                    versionFolders.add(file);
+                }
+            }
+        }
+
+        Object[] versionFoldersArray = versionFolders.toArray();
+
+        return highestVersionFolder = new File(versionFoldersArray[versionFoldersArray.length - 1].toString());
+    }
+}
