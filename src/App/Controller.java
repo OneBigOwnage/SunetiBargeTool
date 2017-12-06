@@ -7,6 +7,7 @@ package App;
 
 import Models.BargeInfoModel;
 import Models.BaseModel;
+import Models.SQLModel;
 import UI.BargeInfoView;
 import UI.ConfigView;
 import UI.LogView;
@@ -107,13 +108,14 @@ public class Controller {
 
     private void initModels() {
         modelList.put("BargeInfoModel", new BargeInfoModel(this));
+        modelList.put("SQLModel", new SQLModel(this));
     }
 
     private void initViews() {
         viewList.put("BargeInfoView", new BargeInfoView(this, (BargeInfoModel) modelList.get("BargeInfoModel")));
         viewList.put("LogView", new LogView(this));
         viewList.put("LoginView", new LoginView(this));
-        viewList.put("SQLView", new SQLView(this));
+        viewList.put("SQLView", new SQLView(this, (SQLModel) modelList.get("SQLModel")));
         viewList.put("SideBar", new SideBar(this));
         viewList.put("ConfigView", new ConfigView(this));
     }

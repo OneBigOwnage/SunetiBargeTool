@@ -8,6 +8,7 @@ package UI;
 import App.Controller;
 import App.Database;
 import App.Query;
+import Models.SQLModel;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.KeyEvent;
@@ -27,15 +28,17 @@ import javax.swing.table.TableColumnModel;
 public class SQLView extends javax.swing.JPanel {
 
     protected Controller controller;
+    protected SQLModel model;
 
     /**
      * Creates new form SQLView
      *
      * @param controller
      */
-    public SQLView(Controller controller) {
+    public SQLView(Controller controller, SQLModel model) {
         initComponents();
         this.controller = controller;
+        this.model = model;
         fixTable();
     }
 
@@ -213,16 +216,31 @@ public class SQLView extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void execSQLLabelMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_execSQLLabelMousePressed
-        execQuery(false);
+        model.addQuery(this.SQLTextArea.getText());
+        execQuery(evt.isShiftDown());
     }//GEN-LAST:event_execSQLLabelMousePressed
 
     private void SQLTextAreaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_SQLTextAreaKeyPressed
         int keyCode = evt.getKeyCode();
-        boolean isCtrlDown = evt.getModifiers() == 2;
-        if (keyCode == KeyEvent.VK_F5
-                || (keyCode == KeyEvent.VK_R && isCtrlDown)
-                || (keyCode == KeyEvent.VK_ENTER && isCtrlDown)) {
-            execQuery(false);
+        boolean isCtrlDown = evt.isControlDown();
+        boolean isAltDown = evt.isAltDown();
+        boolean isShiftDown = evt.isShiftDown();
+
+        boolean isTriggerKeyDown = (keyCode == KeyEvent.VK_F5 || (keyCode == KeyEvent.VK_R && isCtrlDown) || (keyCode == KeyEvent.VK_ENTER && isCtrlDown));
+
+        // Check any of the hotkeys for query execution are triggered.
+        // These are: [F5], [ctrl] + [R], [ctrl] + [enter]
+        if (isTriggerKeyDown) {
+            model.addQuery(this.SQLTextArea.getText());
+            execQuery(isShiftDown);
+        }
+
+        // Check if any of the "prev/next query" keys are pressed.
+        // These are: [alt] + [left], [alt] + [right]
+        if (isAltDown && keyCode == KeyEvent.VK_LEFT) {
+            model.getPrevious(this.SQLTextArea.getText());
+        } else if (isAltDown && keyCode == KeyEvent.VK_RIGHT) {
+            model.getNext(this.SQLTextArea.getText());
         }
     }//GEN-LAST:event_SQLTextAreaKeyPressed
 
@@ -237,26 +255,26 @@ public class SQLView extends javax.swing.JPanel {
     }
 
     /**
-     * Method that resizes the table column widths. The method adjusts them
-     * to the contents of the cells. Also has a min and max width.
-     * 
-     * @param table 
+     * Method that resizes the table column widths. The method adjusts them to
+     * the contents of the cells. Also has a min and max width.
+     *
+     * @param table
      */
     private void fixTableCellWidth() {
         final TableColumnModel columnModel = outputTable.getColumnModel();
-        
+
         // For each column of outputTable:
         for (int column = 0; column < outputTable.getColumnCount(); column++) {
             // Set a minimum width for the columns.
             int width = 135; // Min width
-            
+
             // Check the width of each cell, and update 'width' if needed.
             for (int row = 0; row < outputTable.getRowCount(); row++) {
                 TableCellRenderer renderer = outputTable.getCellRenderer(row, column);
                 Component comp = outputTable.prepareRenderer(renderer, row, column);
                 width = Math.max(comp.getPreferredSize().width + 2, width);
             }
-            
+
             // Set the maximum width for the columns.
             if (width > 500) {
                 width = 500;

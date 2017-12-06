@@ -25,7 +25,6 @@ public class BargeInfoModel extends BaseModel {
      */
     public BargeInfoModel(Controller controller) {
         super(controller);
-
     }
 
     public Map<String, String> fetchData() {
