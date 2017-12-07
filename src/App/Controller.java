@@ -18,12 +18,10 @@ import UI.UILib;
 import UI.UserInterface;
 import java.awt.BorderLayout;
 import java.awt.Component;
-import java.awt.Container;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.function.BiConsumer;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
@@ -88,10 +86,10 @@ public class Controller {
         this.userInterface.clearPanel(BorderLayout.CENTER);
         this.userInterface.setPanel(viewList.get("LogView"), BorderLayout.CENTER);
     }
-    
+
     private void fixUserInterface() {
         List<Component> componentList = new ArrayList<>();
-        
+
         for (Map.Entry<String, JPanel> view : viewList.entrySet()) {
             componentList.addAll(UILib.getAllComponents(view.getValue()));
         }
@@ -99,7 +97,7 @@ public class Controller {
         for (Component component : componentList) {
             if (component instanceof JButton) {
                 UILib.UIButtonHelper((JButton) component);
-            } else if (component instanceof JPanel && ((JPanel)component).getBorder() instanceof TitledBorder) {
+            } else if (component instanceof JPanel && ((JPanel) component).getBorder() instanceof TitledBorder) {
                 UILib.UITitledBorderHelper((JPanel) component);
             }
         }
@@ -112,8 +110,8 @@ public class Controller {
     }
 
     private void initViews() {
-        viewList.put("BargeInfoView", new BargeInfoView(this, (BargeInfoModel) modelList.get("BargeInfoModel")));
         viewList.put("LogView", new LogView(this));
+        viewList.put("BargeInfoView", new BargeInfoView(this, (BargeInfoModel) modelList.get("BargeInfoModel")));
         viewList.put("LoginView", new LoginView(this));
         viewList.put("SQLView", new SQLView(this, (SQLModel) modelList.get("SQLModel")));
         viewList.put("SideBar", new SideBar(this));
@@ -121,7 +119,7 @@ public class Controller {
     }
 
     public void log(String text) {
-        ((LogView) viewList.get("logView")).appendToLog(text);
+        ((LogView) viewList.get("LogView")).appendToLog(text);
     }
 
 }

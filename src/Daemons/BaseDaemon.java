@@ -35,7 +35,7 @@ public abstract class BaseDaemon implements Runnable {
             try {
                 Thread.sleep(this.daemonSleepTime);
             } catch (InterruptedException ex) {
-                SunetiBargeTool.getController().log("Daemon thread was interrupted!" + ex);
+                SunetiBargeTool.log("Daemon thread was interrupted!" + ex);
             }
         }
     }

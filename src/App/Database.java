@@ -12,6 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import sunetibargetool.Config;
+import sunetibargetool.SunetiBargeTool;
 
 /**
  *
@@ -51,6 +52,7 @@ public class Database {
      */
     public boolean connect() {
         if (!DatabaseDaemon.isDatabaseRunning()) {
+            SunetiBargeTool.log("Could not connect to database, database not running!");
             return false;
         }
         boolean successful = false;
@@ -74,9 +76,9 @@ public class Database {
             connection = DriverManager.getConnection(connectionString, uName, pass);
             
             successful = true;
-            System.out.println("Connected succesfully");
+            SunetiBargeTool.log("Connected succesfully");
         } catch (ClassNotFoundException | SQLException ex ) {
-            System.out.println("Error trying to connect to the database: " + ex);
+            SunetiBargeTool.log("Error trying to connect to the database: " + ex);
         }
         return successful;
     }
@@ -88,7 +90,7 @@ public class Database {
                 connection.close();
             }
         } catch (SQLException ex) {
-            System.out.println("Error trying to disconnect from database: " + ex);
+            SunetiBargeTool.log("Error trying to disconnect from database: " + ex);
         }
     }
     
@@ -120,7 +122,7 @@ public class Database {
     public Object executeQuery(Query query) {
         try {
             if (!hasConnection()) {
-                System.out.println("Database is not running...");
+                SunetiBargeTool.log("Database is not running...");
                 return false;
             }
             
@@ -142,7 +144,7 @@ public class Database {
                 return affectedRows;
             }
         } catch (SQLException ex) {
-            System.out.println("SQLException occurred: " + ex);
+            SunetiBargeTool.log("SQLException occurred: " + ex);
             return ex.getMessage();
         }
     }

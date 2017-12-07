@@ -19,7 +19,7 @@ public class LogView extends javax.swing.JPanel {
 
     protected Controller controller;
     private final JTextArea logField;
-    private final DateFormat TIME_FORMAT = new SimpleDateFormat("HH:mm:ss::SSS");
+    private final DateFormat TIME_FORMAT = new SimpleDateFormat("HH:mm:ss");
     
     
     public LogView(Controller controller) {
@@ -89,7 +89,7 @@ public class LogView extends javax.swing.JPanel {
     public void appendToLog(String text) {
         System.out.println(text);
         String currentTime = this.TIME_FORMAT.format(new Date());
-        logField.append(String.format("[%s] - %s\n", currentTime, text));
+        logField.append(String.format("[ %s ] - %s\n", currentTime, text));
     }
     
 

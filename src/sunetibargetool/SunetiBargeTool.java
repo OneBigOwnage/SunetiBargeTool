@@ -11,7 +11,7 @@ import UI.UILib;
 
 /**
  *
- * @author Productie 831
+ * @author niekv
  */
 public class SunetiBargeTool {
 
@@ -27,8 +27,8 @@ public class SunetiBargeTool {
 
         // Create new Controller and send action 'showLoginView'.
         controller = new Controller();
-        controller.showLoginView();
-//        controller.afterLogin();
+//        controller.showLoginView();
+        controller.afterLogin();
 
         // Bootstrap all the daemons, via the DaemonManager.
         try {
@@ -38,8 +38,10 @@ public class SunetiBargeTool {
         }
     }
 
-    public static Controller getController() {
-        return controller;
+    public static void log(String text) {
+        if (controller != null) {
+            controller.log(text);
+        }
     }
 
 }

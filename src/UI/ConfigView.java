@@ -7,6 +7,7 @@ package UI;
 
 import App.Controller;
 import App.Commands;
+import App.Database;
 import Daemons.DaemonManager;
 import Daemons.DaemonManager.DaemonType;
 
@@ -267,7 +268,7 @@ public class ConfigView extends javax.swing.JPanel {
     }//GEN-LAST:event_btn_forceStopDbActionPerformed
 
     private void btn_connectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_connectActionPerformed
-        // TODO add your handling code here:
+        Database.getInstance().connect();
     }//GEN-LAST:event_btn_connectActionPerformed
 
     public void setDBStateLabel(boolean isRunning) {
