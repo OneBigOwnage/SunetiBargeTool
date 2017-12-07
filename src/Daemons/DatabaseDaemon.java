@@ -11,49 +11,34 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.TreeMap;
 import java.util.regex.Pattern;
 import org.apache.commons.exec.DefaultExecuteResultHandler;
-import sunetibargetool.Config;
 
 /**
  *
  * @author niekv
  */
-public class DatabaseDaemon implements Runnable {
+public class DatabaseDaemon extends BaseDaemon implements Runnable {
 
-    private static DatabaseDaemon instance = null;
-    
-    private List<DeamonSubscription> databaseDeamonList = new ArrayList<>();
-    private final int DAEMON_SLEEP_TIME;
-    
-    private DatabaseDaemon() {
-        this.DAEMON_SLEEP_TIME = Integer.parseInt(Config.get("daemon_sleep_time"));
+    public DatabaseDaemon(int sleepTime) {
+        super(sleepTime);
     }
-    
-    
-    
+
     @Override
     public void run() {
-        try {
-            while (true) {
-                dispatchDatabaseSubscriptions(isDatabaseRunning());
-                Thread.sleep(DAEMON_SLEEP_TIME);
+        while (true) {
+            this.dispatchDatabaseSubscriptions();
+            try {
+                Thread.sleep(this.daemonSleepTime);
+            } catch (InterruptedException ex) {
+                System.out.println("DatabaseDaemon thread interrupted: " + ex);
             }
-        } catch (InterruptedException ex) {
-            System.out.println("Thread was interrupted!");
         }
     }
 
-    /**
-     * Starts the instance of the DatabaseDaemon as a Daemon Service.
-     * 
-     */
-    public static void startDeamon() {
-        Thread t = new Thread(getInstance());
-        t.start();
+    @Override
+    public Boolean daemonAction() {
+        return isDatabaseRunning();
     }
 
     /**
@@ -61,7 +46,7 @@ public class DatabaseDaemon implements Runnable {
      *
      * @return {boolean}
      */
-    public boolean isDatabaseRunning() {
+    private boolean isDatabaseRunning() {
         // Construction of the command string.
         String pg_ctl = "\"C:\\vessel solution\\database\\postgres_db\\bin\\pg_ctl.exe\"";
         String dir = "\"C:\\vessel solution\\database\\database\"";
@@ -94,41 +79,17 @@ public class DatabaseDaemon implements Runnable {
         return Utils.regExMatch("(.*server is running.*)", outputStream.toString(), Pattern.DOTALL);
     }
 
-    /**
-     * Method to register callback methods around the application to be called every time the database state is checked.
-     * The method passed in must have one, and only one parameter: a boolean.
-     * Upon calling, this boolean will be true for Running and false for Not Running.
-     * 
-     * @param methodName The name of the method you want to subscribe.
-     * @param _class The class name that the method is to be found in.
-     */
-    public void registerDatabaseRunningCallback(String methodName, Object obj) {
-        try {
-            Method method = obj.getClass().getDeclaredMethod(methodName, boolean.class);
-            this.databaseDeamonList.add(new DeamonSubscription(obj, method));
-        } catch (NoSuchMethodException | SecurityException ex) {
-            System.out.println("Something went wrong trying to add a new subscription to DBDeamon! " + ex);
-        }
-    }
-   
-    private void dispatchDatabaseSubscriptions(boolean isRunning) {
-        try {
-            for (DeamonSubscription sub : databaseDeamonList) {
-                Method method = sub.getMethod();
-                Object obj = sub.getObject();
-                
-                method.invoke(obj, isRunning);
-            }
-        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
-            System.out.println("Something went wrong trying to execute ");
-        }
-    }
-    
-    public static DatabaseDaemon getInstance() {
-        if (instance == null) {
-            instance = new DatabaseDaemon();
-        }
-        return instance;
-    }
+    private void dispatchDatabaseSubscriptions() {
+        boolean isRunning = isDatabaseRunning();
 
+        for (DeamonSubscription sub : this.subscribtionList) {
+            Method method = sub.getMethod();
+            Object obj = sub.getObject();
+            try {
+                method.invoke(obj, isRunning);
+            } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
+                System.out.println("Something went wrong trying to execute databaseDaemon: " + ex);
+            }
+        }
+    }
 }

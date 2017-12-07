@@ -5,7 +5,7 @@
  */
 package sunetibargetool;
 
-import Daemons.DatabaseDaemon;
+import Daemons.DBDaemon;
 import App.Controller;
 import UI.UILib;
 
@@ -28,6 +28,6 @@ public class SunetiBargeTool {
         controller.afterLogin();
         
         // Start the database deamon, to check if the database is running.
-        DatabaseDaemon.startDeamon();
+        DBDaemon.startDeamon();
     }
 }

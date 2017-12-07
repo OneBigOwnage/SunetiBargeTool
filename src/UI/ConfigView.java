@@ -7,7 +7,10 @@ package UI;
 
 import App.Controller;
 import App.Commands;
-import Daemons.DatabaseDaemon;
+import Daemons.DaemonManager;
+import Daemons.DaemonManager.DaemonType;
+import Daemons.DBDaemon;
+import java.lang.reflect.Method;
 
 /**
  *
@@ -25,7 +28,8 @@ public class ConfigView extends javax.swing.JPanel {
     public ConfigView(Controller controller) {
         initComponents();
         this.controller = controller;
-        DatabaseDaemon.getInstance().registerDatabaseRunningCallback("setDBStateLabel", this);
+//        DatabaseDaemon.getInstance().registerDatabaseRunningCallback("setDBStateLabel", this);
+        DaemonManager.addSubscription(DaemonType.DATABASE, this, "setDBStateLabel");
     }
 
     /**

@@ -18,42 +18,24 @@ import java.util.List;
  */
 public class ConnectionDaemon extends BaseDaemon implements Runnable {
 
-    private final int DAEMON_SLEEP_TIME;
-    private final List<DeamonSubscription> subscriptionList;
-
     public ConnectionDaemon(int sleepTime) {
-        this.DAEMON_SLEEP_TIME = sleepTime;
-        this.subscriptionList = new ArrayList<>();
+        super(sleepTime);
     }
 
     @Override
-    public void run() {
-        try {
-            while (true) {
-                this.dispatchSubscriptions(this.hasConnection());
-                Thread.sleep(DAEMON_SLEEP_TIME);
-            }
-        } catch (InterruptedException ex) {
-            System.out.println("ConnectionDaemon-Thread was interrupted!");
-        }
+    public Boolean daemonAction() {
+        return hasConnection();
     }
-
-    public boolean hasConnection() {
+    
+    public static boolean hasConnection() {
         return Database.getInstance().hasConnection();
     }
 
-    public void subscribeMethod(String methodName, Object obj) {
+    private void dispatchSubscriptions() {
+        boolean isConnected = hasConnection();
+        
         try {
-            Method method = obj.getClass().getDeclaredMethod(methodName, boolean.class);
-            this.subscriptionList.add(new DeamonSubscription(obj, method));
-        } catch (NoSuchMethodException | SecurityException ex) {
-            System.out.println("Something went wrong trying to add a new subscription to ConnectionDaemon! " + ex);
-        }
-    }
-
-    private void dispatchSubscriptions(boolean isConnected) {
-        try {
-            for (DeamonSubscription sub : this.subscriptionList) {
+            for (DeamonSubscription sub : this.subscribtionList) {
                 Method method = sub.getMethod();
                 Object obj = sub.getObject();
 
@@ -63,5 +45,4 @@ public class ConnectionDaemon extends BaseDaemon implements Runnable {
             System.out.println("Something went wrong trying to execute a ConnectionDaemon-subscription: " + ex);
         }
     }
-
 }

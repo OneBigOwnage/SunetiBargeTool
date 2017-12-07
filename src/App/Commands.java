@@ -5,7 +5,7 @@
  */
 package App;
 
-import Daemons.DatabaseDaemon;
+import Daemons.DBDaemon;
 import java.io.File;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -31,7 +31,7 @@ public class Commands {
     }
 
     public static void startDatabase() {
-        if (DatabaseDaemon.getInstance().isDatabaseRunning()) {
+        if (DBDaemon.getInstance().isDatabaseRunning()) {
             System.out.println("Database already running...");
             return;
         }

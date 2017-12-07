@@ -5,7 +5,7 @@
  */
 package App;
 
-import Daemons.DatabaseDaemon;
+import Daemons.DBDaemon;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -50,7 +50,7 @@ public class Database {
      * @return boolean Returns true if, and only if, a connection has successfully been created.
      */
     public boolean connect() {
-        if (!DatabaseDaemon.getInstance().isDatabaseRunning()) {
+        if (!DBDaemon.getInstance().isDatabaseRunning()) {
             return false;
         }
         boolean successful = false;
@@ -93,7 +93,7 @@ public class Database {
     }
     
     public boolean hasConnection() {
-        if (!DatabaseDaemon.getInstance().isDatabaseRunning()) {
+        if (!DBDaemon.getInstance().isDatabaseRunning()) {
             return false;
         }
 

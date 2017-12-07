@@ -5,6 +5,7 @@
  */
 package App;
 
+import java.lang.reflect.Method;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -31,6 +32,19 @@ public abstract class Utils {
         Matcher matcher = regEx.matcher(text);
 
         return matcher.matches();
+    }
+    
+    public static Method getMethodByName(String methodName, Object object) {
+        Method method = null;
+        
+        for (Method m : object.getClass().getDeclaredMethods()) {
+            if (m.getName().equals(methodName)) {
+                method = m;
+                break;
+            }
+        }
+        
+        return method;
     }
     
 }
