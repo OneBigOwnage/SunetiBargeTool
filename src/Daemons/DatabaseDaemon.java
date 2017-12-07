@@ -24,29 +24,12 @@ public class DatabaseDaemon extends BaseDaemon implements Runnable {
         super(sleepTime);
     }
 
-    @Override
-    public void run() {
-        while (true) {
-            this.dispatchDatabaseSubscriptions();
-            try {
-                Thread.sleep(this.daemonSleepTime);
-            } catch (InterruptedException ex) {
-                System.out.println("DatabaseDaemon thread interrupted: " + ex);
-            }
-        }
-    }
-
-    @Override
-    public Boolean daemonAction() {
-        return isDatabaseRunning();
-    }
-
     /**
      * Method to check if database is currently running.
      *
      * @return {boolean}
      */
-    private boolean isDatabaseRunning() {
+    public static boolean isDatabaseRunning() {
         // Construction of the command string.
         String pg_ctl = "\"C:\\vessel solution\\database\\postgres_db\\bin\\pg_ctl.exe\"";
         String dir = "\"C:\\vessel solution\\database\\database\"";
@@ -79,7 +62,8 @@ public class DatabaseDaemon extends BaseDaemon implements Runnable {
         return Utils.regExMatch("(.*server is running.*)", outputStream.toString(), Pattern.DOTALL);
     }
 
-    private void dispatchDatabaseSubscriptions() {
+    @Override
+    public void dispatchSubscriptions() {
         boolean isRunning = isDatabaseRunning();
 
         for (DeamonSubscription sub : this.subscribtionList) {

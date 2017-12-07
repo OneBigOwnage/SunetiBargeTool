@@ -87,11 +87,10 @@ public class LogView extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     public void appendToLog(String text) {
+        System.out.println(text);
         String currentTime = this.TIME_FORMAT.format(new Date());
         logField.append(String.format("[%s] - %s\n", currentTime, text));
     }
-    
-    
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

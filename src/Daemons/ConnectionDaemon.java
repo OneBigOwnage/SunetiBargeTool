@@ -6,11 +6,8 @@
 package Daemons;
 
 import App.Database;
-import Daemons.DeamonSubscription;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  *
@@ -21,17 +18,16 @@ public class ConnectionDaemon extends BaseDaemon implements Runnable {
     public ConnectionDaemon(int sleepTime) {
         super(sleepTime);
     }
-
-    @Override
-    public Boolean daemonAction() {
-        return hasConnection();
-    }
     
     public static boolean hasConnection() {
         return Database.getInstance().hasConnection();
     }
 
-    private void dispatchSubscriptions() {
+    /**
+     *
+     */
+    @Override
+    public void dispatchSubscriptions() {
         boolean isConnected = hasConnection();
         
         try {

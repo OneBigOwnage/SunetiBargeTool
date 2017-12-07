@@ -5,6 +5,7 @@
  */
 package Daemons;
 
+import sunetibargetool.SunetiBargeTool;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +30,14 @@ public abstract class BaseDaemon implements Runnable {
      */
     @Override
     public void run() {
-        
+        while (true) {            
+            this.dispatchSubscriptions();
+            try {
+                Thread.sleep(this.daemonSleepTime);
+            } catch (InterruptedException ex) {
+                SunetiBargeTool.getController().log("Daemon thread was interrupted!" + ex);
+            }
+        }
     }
     
     /**
@@ -41,14 +49,5 @@ public abstract class BaseDaemon implements Runnable {
         this.subscribtionList.add(new DeamonSubscription(object, method));
     }
     
-    /**
-     * The specific daemon action.
-     * 
-     * @param <T>
-     * @return T 
-     */
-    public abstract <T extends Object> T daemonAction();
-    
-    
-    public abstract void 
+    public abstract void dispatchSubscriptions();
 }

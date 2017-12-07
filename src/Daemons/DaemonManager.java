@@ -5,6 +5,7 @@
  */
 package Daemons;
 
+import App.Utils;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
@@ -53,23 +54,12 @@ public class DaemonManager {
     }
 
     public static void addSubscription(DaemonType type, Object obj, String methodName) {
-        Method method = null;
-        try {
-            Method[] allClassMethods = obj.getClass().getDeclaredMethods();
-            for (Method m : allClassMethods) {
-                if (m.getName().equals(methodName)) {
-                    method = m;
-                }
-            }
-        } catch (Exception e) {
-        }
+        Method method = Utils.getMethodByName(methodName, obj);
+
         if (method != null) {
             daemonList.get(type).addSubscription(obj, method);
+        } else {
+            System.out.println("Method '" + methodName + "' does not exist for '" + obj.getClass().getName() + "'");
         }
-    }
-    
-    public static <T> T executeDaemonMethod(DaemonType type) {
-        BaseDaemon daemon = daemonList.get(type);
-        return daemon.daemonAction();
     }
 }

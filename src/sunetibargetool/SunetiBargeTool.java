@@ -5,8 +5,8 @@
  */
 package sunetibargetool;
 
-import Daemons.DBDaemon;
 import App.Controller;
+import Daemons.DaemonManager;
 import UI.UILib;
 
 /**
@@ -15,6 +15,8 @@ import UI.UILib;
  */
 public class SunetiBargeTool {
 
+    private static Controller controller;
+
     /**
      * @param args the command line arguments
      */
@@ -22,12 +24,22 @@ public class SunetiBargeTool {
         // Load the configuration file from the JAR.
         Config.load();
         UILib.fillMaps();
-        
+
         // Create new Controller and send action 'showLoginView'.
-        Controller controller = new Controller();
-        controller.afterLogin();
-        
-        // Start the database deamon, to check if the database is running.
-        DBDaemon.startDeamon();
+        controller = new Controller();
+        controller.showLoginView();
+//        controller.afterLogin();
+
+        // Bootstrap all the daemons, via the DaemonManager.
+        try {
+            Class.forName(DaemonManager.class.getName());
+        } catch (ClassNotFoundException ex) {
+            controller.log("Class '" + DaemonManager.class.getName() + "' not found! " + ex);
+        }
     }
+
+    public static Controller getController() {
+        return controller;
+    }
+
 }
