@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
  *
  * @author niekv
  */
-abstract class Utils {
+public abstract class Utils {
     
     /**
      * 

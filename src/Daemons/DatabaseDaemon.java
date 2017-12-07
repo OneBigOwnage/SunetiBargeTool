@@ -3,8 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package App;
+package Daemons;
 
+import App.CommandLineWrapper;
+import App.Utils;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
@@ -20,14 +22,14 @@ import sunetibargetool.Config;
  *
  * @author niekv
  */
-public class DBDeamon implements Runnable {
+public class DatabaseDaemon implements Runnable {
 
-    private static DBDeamon instance = null;
+    private static DatabaseDaemon instance = null;
     
     private List<DeamonSubscription> databaseDeamonList = new ArrayList<>();
     private final int DAEMON_SLEEP_TIME;
     
-    private DBDeamon() {
+    private DatabaseDaemon() {
         this.DAEMON_SLEEP_TIME = Integer.parseInt(Config.get("daemon_sleep_time"));
     }
     
@@ -46,7 +48,7 @@ public class DBDeamon implements Runnable {
     }
 
     /**
-     * Starts the instance of the DBDeamon as a Daemon Service.
+     * Starts the instance of the DatabaseDaemon as a Daemon Service.
      * 
      */
     public static void startDeamon() {
@@ -122,9 +124,9 @@ public class DBDeamon implements Runnable {
         }
     }
     
-    public static DBDeamon getInstance() {
+    public static DatabaseDaemon getInstance() {
         if (instance == null) {
-            instance = new DBDeamon();
+            instance = new DatabaseDaemon();
         }
         return instance;
     }
