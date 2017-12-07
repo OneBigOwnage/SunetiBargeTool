@@ -7,6 +7,8 @@ package UI;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.net.URL;
+import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -90,6 +92,12 @@ public class UserInterface extends javax.swing.JFrame {
     }
 
     private void initExtra() {
+        // Set the icon in top left corner & taskbar.
+        URL iconURL = getClass().getClassLoader().getResource("main_icon.png");
+        ImageIcon icon = new ImageIcon(iconURL);
+        setIconImage(icon.getImage());
+        
+        
         // Sets the layout to borderlayout, to easily place panels.
         setLayout(new BorderLayout());
 
