@@ -49,40 +49,25 @@ public class SideBar extends javax.swing.JPanel {
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/home_icon_ship.png"))); // NOI18N
         jLabel1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jLabel1.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
-            public void mouseDragged(java.awt.event.MouseEvent evt) {
-                jLabel1MouseClicked(evt);
-            }
-        });
         jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel1MouseClicked(evt);
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                bargeInfo(evt);
             }
         });
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/home_icon_config.png"))); // NOI18N
         jLabel2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jLabel2.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
-            public void mouseDragged(java.awt.event.MouseEvent evt) {
-                jLabel2MouseClicked(evt);
-            }
-        });
         jLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel2MouseClicked(evt);
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                config(evt);
             }
         });
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/home_icon_sql.png"))); // NOI18N
         jLabel3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jLabel3.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
-            public void mouseDragged(java.awt.event.MouseEvent evt) {
-                jLabel3MouseClicked(evt);
-            }
-        });
         jLabel3.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel3MouseClicked(evt);
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                SQL(evt);
             }
         });
 
@@ -153,17 +138,17 @@ public class SideBar extends javax.swing.JPanel {
     
     
     
-    private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
+    private void bargeInfo(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bargeInfo
         this.controller.showBargeInfoView();
-    }//GEN-LAST:event_jLabel1MouseClicked
+    }//GEN-LAST:event_bargeInfo
 
-    private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
+    private void config(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_config
         controller.showConfigView();
-    }//GEN-LAST:event_jLabel2MouseClicked
+    }//GEN-LAST:event_config
 
-    private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
+    private void SQL(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_SQL
         controller.showSQLView();
-    }//GEN-LAST:event_jLabel3MouseClicked
+    }//GEN-LAST:event_SQL
 
     private void btn_logMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_logMousePressed
         controller.showLogView();
