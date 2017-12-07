@@ -18,13 +18,14 @@ import java.util.ListIterator;
 public class SQLModel extends BaseModel {
 
     private final List<String> queryList;
-    private final ListIterator<String> iterator;
+    private ListIterator<String> iterator;
+    private String lastOperation;
     
     public SQLModel(Controller controller) {
         super(controller);
         this.controller = controller;
         this.queryList = new ArrayList<>();
-        this.iterator = this.queryList.listIterator();
+        this.updateIterator();
     }
 
     public void addQuery(String query) {
@@ -35,22 +36,37 @@ public class SQLModel extends BaseModel {
             // add it to the list.
         } else if (this.queryList.isEmpty() || !this.queryList.get(this.queryList.size() - 1).equals(query)) {
             this.queryList.add(query);
+            this.updateIterator();
         }
 
     }
 
-    public String getNext(String query) {
-        printList();
-        System.out.println("Next index: " + iterator.nextIndex());
-        return "";
+    public String getNext() {
+        String rString = null;
+        if (this.iterator.hasNext()) {
+            if (this.lastOperation.equals("BACKWARD")) {
+                this.iterator.next();
+            }
+            if (this.iterator.hasNext()) {
+                rString = this.iterator.next();
+            }
+        }
+        this.lastOperation = "FORWARD";
+        return rString;
     }
 
-    public String getPrevious(String query) {
-        printList();
-        if (iterator.previousIndex() != -1) {
-            iterator.next();
+    public String getPrevious() {
+        String rString = null;
+        if (this.iterator.hasPrevious()) {
+            if (this.lastOperation.equals("FORWARD")) {
+                this.iterator.previous();
+            }
+            if (this.iterator.hasPrevious()) {
+                rString = this.iterator.previous();
+            }
         }
-        return "";
+        this.lastOperation = "BACKWARD";
+        return rString;
     }
 
     public void printList() {
@@ -59,5 +75,13 @@ public class SQLModel extends BaseModel {
             System.out.println("- " + string);
         }
         System.out.println("---");
+    }
+    
+    public void updateIterator() {
+        this.iterator = this.queryList.listIterator();
+        while (this.iterator.nextIndex() != this.queryList.size()) {
+            this.iterator.next();
+        }
+        this.lastOperation = "FORWARD";
     }
 }

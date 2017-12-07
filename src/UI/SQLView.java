@@ -238,10 +238,16 @@ public class SQLView extends javax.swing.JPanel {
         // Check if any of the "prev/next query" keys are pressed.
         // These are: [alt] + [left], [alt] + [right]
         if (isAltDown && keyCode == KeyEvent.VK_LEFT) {
-            model.getPrevious(this.SQLTextArea.getText());
-        } else if (isAltDown && keyCode == KeyEvent.VK_RIGHT) {
-            model.getNext(this.SQLTextArea.getText());
-        }
+            String prevText = model.getPrevious();
+            if (prevText != null) {
+                this.SQLTextArea.setText(prevText);
+            }
+       } else if (isAltDown && keyCode == KeyEvent.VK_RIGHT) {
+           String nextText = model.getNext();
+            if (nextText != null) {
+                this.SQLTextArea.setText(nextText);
+            }
+       }
     }//GEN-LAST:event_SQLTextAreaKeyPressed
 
     private void fixTable() {
