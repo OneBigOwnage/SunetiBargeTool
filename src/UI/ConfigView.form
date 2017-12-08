@@ -73,8 +73,8 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="lbl_db_running" max="32767" attributes="0"/>
-                      <Component id="lbl_db_running1" alignment="0" max="32767" attributes="0"/>
-                      <Component id="lbl_db_running2" alignment="1" max="32767" attributes="0"/>
+                      <Component id="lbl_barge_tool_connection" alignment="0" max="32767" attributes="0"/>
+                      <Component id="lbl_vs_connection" alignment="1" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
@@ -103,13 +103,13 @@
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="btn_forceStopDb" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="lbl_db_running1" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="lbl_barge_tool_connection" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="btn_connect" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="lbl_db_running2" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="lbl_vs_connection" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace pref="11" max="32767" attributes="0"/>
               </Group>
@@ -185,7 +185,7 @@
             <Property name="text" type="java.lang.String" value="Barge Tool Connection :"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JLabel" name="lbl_db_running1">
+        <Component class="javax.swing.JLabel" name="lbl_barge_tool_connection">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Segoe UI" size="14" style="0"/>
@@ -196,7 +196,7 @@
             <Property name="text" type="java.lang.String" value="..."/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JLabel" name="lbl_db_running2">
+        <Component class="javax.swing.JLabel" name="lbl_vs_connection">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Segoe UI" size="14" style="0"/>

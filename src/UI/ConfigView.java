@@ -18,17 +18,16 @@ import Daemons.DaemonManager.DaemonType;
 public class ConfigView extends javax.swing.JPanel {
 
     protected Controller controller;
-    
-    
+
     /**
      * Creates new form ConfigView
+     *
      * @param controller
      */
     public ConfigView(Controller controller) {
         initComponents();
         this.controller = controller;
-//        DatabaseDaemon.getInstance().registerDatabaseRunningCallback("setDBStateLabel", this);
-        DaemonManager.addSubscription(DaemonType.DATABASE, this, "setDBStateLabel");
+        this.setDaemons();
     }
 
     /**
@@ -48,8 +47,8 @@ public class ConfigView extends javax.swing.JPanel {
         btn_forceStopDb = new javax.swing.JButton();
         btn_connect = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
-        lbl_db_running1 = new javax.swing.JLabel();
-        lbl_db_running2 = new javax.swing.JLabel();
+        lbl_barge_tool_connection = new javax.swing.JLabel();
+        lbl_vs_connection = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         btn_hbaConf = new javax.swing.JButton();
@@ -109,13 +108,13 @@ public class ConfigView extends javax.swing.JPanel {
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel2.setText("Barge Tool Connection :");
 
-        lbl_db_running1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        lbl_db_running1.setForeground(new java.awt.Color(255, 255, 255));
-        lbl_db_running1.setText("...");
+        lbl_barge_tool_connection.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lbl_barge_tool_connection.setForeground(new java.awt.Color(255, 255, 255));
+        lbl_barge_tool_connection.setText("...");
 
-        lbl_db_running2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        lbl_db_running2.setForeground(new java.awt.Color(255, 255, 255));
-        lbl_db_running2.setText("...");
+        lbl_vs_connection.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lbl_vs_connection.setForeground(new java.awt.Color(255, 255, 255));
+        lbl_vs_connection.setText("...");
 
         jLabel3.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
@@ -135,8 +134,8 @@ public class ConfigView extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lbl_db_running, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lbl_db_running1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lbl_db_running2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(lbl_barge_tool_connection, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lbl_vs_connection, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btn_connect, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -159,12 +158,12 @@ public class ConfigView extends javax.swing.JPanel {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btn_forceStopDb)
                     .addComponent(jLabel2)
-                    .addComponent(lbl_db_running1))
+                    .addComponent(lbl_barge_tool_connection))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btn_connect)
                     .addComponent(jLabel3)
-                    .addComponent(lbl_db_running2))
+                    .addComponent(lbl_vs_connection))
                 .addContainerGap(11, Short.MAX_VALUE))
         );
 
@@ -240,7 +239,7 @@ public class ConfigView extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_dbStartMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_dbStartMouseClicked
-        
+
     }//GEN-LAST:event_btn_dbStartMouseClicked
 
     private void btn_hbaConfMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_hbaConfMouseClicked
@@ -274,7 +273,15 @@ public class ConfigView extends javax.swing.JPanel {
     public void setDBStateLabel(boolean isRunning) {
         lbl_db_running.setText((isRunning) ? "Running" : "Not Running");
     }
-        
+
+    public void setBargeToolConnLabel(boolean isConnected) {
+        lbl_barge_tool_connection.setText((isConnected) ? "Connected" : "Not Connected!");
+    }
+
+    public void setVSConnLabel(boolean isConnected) {
+        lbl_vs_connection.setText((isConnected) ? "Connected" : "Not Connected!");
+    }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_connect;
@@ -289,10 +296,14 @@ public class ConfigView extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JLabel lbl_barge_tool_connection;
     private javax.swing.JLabel lbl_db_running;
-    private javax.swing.JLabel lbl_db_running1;
-    private javax.swing.JLabel lbl_db_running2;
+    private javax.swing.JLabel lbl_vs_connection;
     // End of variables declaration//GEN-END:variables
-    
-    
+
+    private void setDaemons() {
+        DaemonManager.addSubscription(DaemonType.DATABASE, this, "setDBStateLabel");
+        DaemonManager.addSubscription(DaemonType.BARGETOOL_CONNECTION, this, "setBargeToolConnLabel");
+        DaemonManager.addSubscription(DaemonType.VESSEL_SOLUTION_CONNECTION, this, "setVSConnLabel");
+    }
 }

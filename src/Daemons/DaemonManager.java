@@ -39,6 +39,7 @@ public class DaemonManager {
     static {
         daemonList = new HashMap<>();
         createDaemons();
+        startDaemons();
     }
 
     /**
@@ -47,10 +48,18 @@ public class DaemonManager {
      */
     private static void createDaemons() {
         // Get the sleeptime from the .properties file.
-        int daemonSleepTime = Integer.parseInt(Config.get("connection_daemon_sleep_time"));
-        
+        int daemonSleepTime = Integer.parseInt(Config.get("daemon_sleep_time"));
+
+        // Initialize all the daemons, and add them to the list.
         daemonList.put(DaemonType.BARGETOOL_CONNECTION, new ConnectionDaemon(daemonSleepTime));
         daemonList.put(DaemonType.DATABASE, new DatabaseDaemon(daemonSleepTime));
+        daemonList.put(DaemonType.VESSEL_SOLUTION_CONNECTION, new VSConnectionDaemon(daemonSleepTime));
+    }
+
+    private static void startDaemons() {
+        for (Map.Entry<DaemonType, BaseDaemon> daemon : daemonList.entrySet()) {
+            new Thread(daemon.getValue()).start();
+        }
     }
 
     public static void addSubscription(DaemonType type, Object obj, String methodName) {

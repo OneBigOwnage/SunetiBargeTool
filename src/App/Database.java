@@ -104,7 +104,11 @@ public class Database {
             if ((connection == null || !connection.isValid(0)) && autoReconnect) {
                 connect();
             }
-            return connection.isValid(0);
+            if (connection != null) {
+                return connection.isValid(0);
+            } else {
+                return false;
+            }
         } catch (SQLException ex) {
             return false;
         }

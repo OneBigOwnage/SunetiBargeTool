@@ -31,7 +31,7 @@ public class BargeInfoView extends javax.swing.JPanel {
         initComponents();
         this.controller = controller;
         this.model = model;
-        if (Boolean.parseBoolean(Config.get("autoload_data"))) {
+        if (Boolean.parseBoolean(Config.get("appstart_autoload_data"))) {
             loadData();
         }
     }
