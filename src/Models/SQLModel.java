@@ -6,7 +6,6 @@
 package Models;
 
 import App.Controller;
-import UI.SQLView;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
@@ -17,9 +16,11 @@ import java.util.ListIterator;
  */
 public class SQLModel extends BaseModel {
 
+    public enum iteratorDirection {FORWARD, BACKWARD};
+    
     private final List<String> queryList;
     private ListIterator<String> iterator;
-    private String lastOperation;
+    private iteratorDirection lastOperation;
     
     public SQLModel(Controller controller) {
         super(controller);
@@ -44,28 +45,28 @@ public class SQLModel extends BaseModel {
     public String getNext() {
         String rString = null;
         if (this.iterator.hasNext()) {
-            if (this.lastOperation.equals("BACKWARD")) {
+            if (this.lastOperation.equals(iteratorDirection.BACKWARD)) {
                 this.iterator.next();
             }
             if (this.iterator.hasNext()) {
                 rString = this.iterator.next();
             }
         }
-        this.lastOperation = "FORWARD";
+        this.lastOperation = iteratorDirection.FORWARD;
         return rString;
     }
 
     public String getPrevious() {
         String rString = null;
         if (this.iterator.hasPrevious()) {
-            if (this.lastOperation.equals("FORWARD")) {
+            if (this.lastOperation.equals(iteratorDirection.FORWARD)) {
                 this.iterator.previous();
             }
             if (this.iterator.hasPrevious()) {
                 rString = this.iterator.previous();
             }
         }
-        this.lastOperation = "BACKWARD";
+        this.lastOperation = iteratorDirection.BACKWARD;
         return rString;
     }
 
@@ -77,11 +78,11 @@ public class SQLModel extends BaseModel {
         System.out.println("---");
     }
     
-    public void updateIterator() {
+    public final void updateIterator() {
         this.iterator = this.queryList.listIterator();
         while (this.iterator.nextIndex() != this.queryList.size()) {
             this.iterator.next();
         }
-        this.lastOperation = "FORWARD";
+        this.lastOperation = iteratorDirection.FORWARD;
     }
 }
