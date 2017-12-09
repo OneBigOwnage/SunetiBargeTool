@@ -80,6 +80,6 @@ public class SunetiBargeTool {
     }
 
     public static void exitApp() {
-
+        System.exit(0);
     }
 }

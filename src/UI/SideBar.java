@@ -10,6 +10,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.Line2D;
+import sunetibargetool.SunetiBargeTool;
 
 /**
  *
@@ -73,6 +74,11 @@ public class SideBar extends javax.swing.JPanel {
 
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/home_icon_logout.png"))); // NOI18N
         jLabel4.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel4.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jLabel4MousePressed(evt);
+            }
+        });
 
         jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/home_icon_backup.png"))); // NOI18N
         jLabel5.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -153,6 +159,10 @@ public class SideBar extends javax.swing.JPanel {
     private void btn_logMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_logMousePressed
         controller.showLogView();
     }//GEN-LAST:event_btn_logMousePressed
+
+    private void jLabel4MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MousePressed
+        SunetiBargeTool.exitApp();
+    }//GEN-LAST:event_jLabel4MousePressed
     
     public void setBgColor(Color color) {
         setBackground(color);
