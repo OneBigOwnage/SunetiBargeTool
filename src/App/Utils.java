@@ -124,8 +124,12 @@ public abstract class Utils {
         };
 
         ExecuteResultHandler resultHandler = new ExecuteResultHandler() {
-            // When the process is done, set boolean to true so the
-            // while loop stops.
+            /**
+             * When the process is done, set boolean to true so the
+             * {@code while(!isProcessDone.get())} loop stops.
+             *
+             * @param exitValue
+             */
             @Override
             public void onProcessComplete(int exitValue) {
                 isProcessDone.set(true);
@@ -166,7 +170,8 @@ public abstract class Utils {
      *
      * @param string The string that you want to trim
      * @param trimChars The characters that need to be trimmed
-     * @return
+     * @return The input String, trimmed on both sides. This can be the as the
+     * String that is put in, if the {@code trimChars} did not match.
      */
     public static String trim(String string, String trimChars) {
         return string.replaceAll(String.format("%s$|^%s", trimChars, trimChars), "");

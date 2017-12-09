@@ -8,6 +8,7 @@ package App;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.concurrent.atomic.AtomicBoolean;
 import org.apache.commons.exec.CommandLine;
 import org.apache.commons.exec.DefaultExecutor;
 import org.apache.commons.exec.ExecuteException;
@@ -23,6 +24,7 @@ import sunetibargetool.SunetiBargeTool;
 public class CommandLineWrapper {
 
     public static final File DEFAULT_WORKING_DIR = new File(".");
+    public static final boolean RETURN_OUTPUT = true;
 
     /**
      * Method to execute a given command on the command line. This variant of
@@ -106,6 +108,74 @@ public class CommandLineWrapper {
     }
 
     /**
+     * Synchronous form of the executeCommand method that takes, apart from the
+     * command String, a boolean. Since this method also has an overloaded
+     * function that just takes a String as command, this function's should only
+     * be used with parameter true. For improved readability
+     *
+     * @param command String representing a command that is to be executed.
+     * @param returnOutput
+     * @return String representing the output of the command that was sent.
+     */
+    public static String executeCommand(String command, boolean returnOutput) {
+        if (returnOutput) {
+
+            // Since we use this variable inside the enclosed resultHandler,
+            // it must be final so a normal boolean can not be used. Hence we
+            // use an AtomicBoolean.
+            final AtomicBoolean isProcessDone = new AtomicBoolean();
+
+            // Create the outputstream that the output of the executed command is funneled into.
+            final OutputStream outputStream = new OutputStream() {
+                private final StringBuilder strBuilder = new StringBuilder();
+
+                @Override
+                public void write(int b) throws IOException {
+                    this.strBuilder.append((char) b);
+                }
+
+                @Override
+                public String toString() {
+                    return this.strBuilder.toString();
+                }
+            };
+
+            // Create a ExecuteResultHandler, this is 
+            ExecuteResultHandler executeResultHandler = new ExecuteResultHandler() {
+                /**
+                 * When the process is done, set boolean to true so the
+                 * {@code while(!isProcessDone.get())} loop stops.
+                 *
+                 * @param exitValue
+                 */
+                @Override
+                public void onProcessComplete(int exitValue) {
+                    isProcessDone.set(true);
+                }
+
+                @Override
+                public void onProcessFailed(ExecuteException ex) {
+                    SunetiBargeTool.log(String.format("Process failed: %s\n%s", ex, outputStream.toString()));
+                    isProcessDone.set(true);
+                }
+            };
+
+            executeCommand(command, DEFAULT_WORKING_DIR, outputStream, executeResultHandler);
+
+            while (!isProcessDone.get()) {
+                // Wait until the process is done...
+            }
+
+            // When the process is done, return the the output via the outputstream.
+            return outputStream.toString();
+        } else {
+            executeCommand(command, DEFAULT_WORKING_DIR, null);
+            System.out.println("Using executeCommand(String command, boolean returnOutput) with parameter false!");
+            return null;
+        }
+    }
+
+    /**
      * Method to open given file with Notepad.
      *
      * @param file File that is to be opened with Notepad, path to file must be
@@ -117,7 +187,7 @@ public class CommandLineWrapper {
             String command = String.format("\"%s\" \"%s\"", notepadPath, file.getAbsolutePath());
             executeCommand(command, DEFAULT_WORKING_DIR, String.format("Opened file '%s' successfully!", file.toString()));
         } catch (Exception ex) {
-            System.out.println("Opening file with notepad failed! " + ex);
+            SunetiBargeTool.log("Opening file with notepad failed! " + ex);
         }
     }
 }
