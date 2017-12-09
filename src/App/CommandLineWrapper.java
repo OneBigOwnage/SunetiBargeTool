@@ -14,6 +14,7 @@ import org.apache.commons.exec.ExecuteException;
 import org.apache.commons.exec.ExecuteResultHandler;
 import org.apache.commons.exec.Executor;
 import org.apache.commons.exec.PumpStreamHandler;
+import sunetibargetool.SunetiBargeTool;
 
 /**
  *
@@ -23,6 +24,18 @@ public class CommandLineWrapper {
 
     public static final File DEFAULT_WORKING_DIR = new File(".");
 
+    /**
+     * Method to execute a given command on the command line. This variant of
+     * the executeCommand method is just a bare wrapper since most parameters
+     * for the process must be supplied.
+     *
+     * @param command A String representing the command that is to be executed.
+     * @param workingDir A File representing the directory where the command
+     * will be executed.
+     * @param stream OutputStream that the process' output will be sent to.
+     * @param handler A handler that will be passed in with the command, useful
+     * for tracking when the process is done.
+     */
     public static void executeCommand(String command, File workingDir, OutputStream stream, ExecuteResultHandler handler) {
         try {
             CommandLine commandLine = new CommandLine(command);
@@ -31,13 +44,23 @@ public class CommandLineWrapper {
             executor.setWorkingDirectory(workingDir);
             executor.setStreamHandler(new PumpStreamHandler(stream));
             executor.setExitValues(new int[]{0, 1});
-
             executor.execute(commandLine, handler);
         } catch (IOException ex) {
             System.out.println("Exception was thrown in executeCommand: " + ex);
         }
     }
 
+    /**
+     * Method to execute a given command on the command line. In this version of
+     * this method it is possible to give in a working directory and a success
+     * message.
+     *
+     * @param command A String representing the command that is to be executed.
+     * @param workingDir A File representing the directory where the command
+     * will be executed.
+     * @param successMessage The message that is sent to the log if, and only if
+     * the command was successfully executed.
+     */
     public static void executeCommand(String command, File workingDir, final String successMessage) {
 
         final OutputStream defaultOutputStream = new OutputStream() {
@@ -64,7 +87,7 @@ public class CommandLineWrapper {
 
             @Override
             public void onProcessFailed(ExecuteException ex) {
-                System.out.println(String.format("Process failed: %s\n%s", ex, defaultOutputStream.toString()));
+                SunetiBargeTool.log(String.format("Process failed: %s\n%s", ex, defaultOutputStream.toString()));
             }
         };
 
@@ -73,9 +96,20 @@ public class CommandLineWrapper {
     }
 
     /**
-     * Method to quickly open given file
+     * Simplest form of this method, can be called with only a command String.
+     * Will use default values and call overloaded function.
      *
-     * @param file
+     * @param command String representing a command that is to be executed.
+     */
+    public static void executeCommand(String command) {
+        executeCommand(command, DEFAULT_WORKING_DIR, null);
+    }
+
+    /**
+     * Method to open given file with Notepad.
+     *
+     * @param file File that is to be opened with Notepad, path to file must be
+     * absolute since the command will be executed from the root.
      */
     public static void openFileWithNotepad(File file) {
         try {

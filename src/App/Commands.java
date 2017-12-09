@@ -7,9 +7,11 @@ package App;
 
 import Daemons.DatabaseDaemon;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.TreeSet;
 
 /**
@@ -28,6 +30,10 @@ public class Commands {
         setHighestVersionFolder();
     }
 
+    /**
+     * Method to start the postgres database via a pg_ctl command, executed by
+     * the CommandLineWrapper.
+     */
     public static void startDatabase() {
         if (DatabaseDaemon.isDatabaseRunning()) {
             System.out.println("Database already running...");
@@ -40,9 +46,13 @@ public class Commands {
         String log = "\"C:\\vessel solution\\database\\postgres_db\\postgres_log.txt\"";
 
         String command = String.format("%s start -D %s -o %s -l %s", pg_ctl, dir, options, log);
-        CommandLineWrapper.executeCommand(command, CommandLineWrapper.DEFAULT_WORKING_DIR, null);
+        CommandLineWrapper.executeCommand(command);
     }
 
+    /**
+     * Method to stop the postgres database via a pg_ctl command, executed by
+     * the CommandLineWrapper.
+     */
     public static void stopDatabase() {
         Database.getInstance().disconnect();
         String pg_ctl = "\"C:\\vessel solution\\database\\postgres_db\\bin\\pg_ctl.exe\"";
@@ -53,16 +63,26 @@ public class Commands {
         CommandLineWrapper.executeCommand(command, CommandLineWrapper.DEFAULT_WORKING_DIR, "Database Succesfully Stopped!");
     }
 
+    /**
+     * Opens the file "C:\vessel solution\database\database\pg_hba.conf" with
+     * notepad.
+     */
     public static void open_pg_hba_conf() {
         final String pg_hba_conf_filename = "C:\\vessel solution\\database\\database\\pg_hba.conf";
         CommandLineWrapper.openFileWithNotepad(new File(pg_hba_conf_filename));
     }
 
+    /**
+     * Opens the file "C:\vessel solution\Vessel Solution.bat" with notepad.
+     */
     public static void open_vessel_solution_bat() {
         final String vessel_solution_bat_filename = "C:\\vessel solution\\Vessel Solution.bat";
         CommandLineWrapper.openFileWithNotepad(new File(vessel_solution_bat_filename));
     }
 
+    /**
+     * Opens the servoy-log of the highest version folder, with notepad.
+     */
     public static void open_servoy_log() {
         if (highestVersionFolder != null) {
             final File servoy_log_filename = new File(highestVersionFolder.toString() + "\\servoy_log.txt");
@@ -70,6 +90,13 @@ public class Commands {
         }
     }
 
+    /**
+     * Gets the highest version folder from "C:\vessel sollution\", also sets
+     * the internal class variable highestVersionFolder to point to this
+     * directory.
+     *
+     * @return A File representing the directory of the highest version folder.
+     */
     public static File setHighestVersionFolder() {
         File vsDir = new File("C:\\vessel solution\\");
 
@@ -90,5 +117,33 @@ public class Commands {
         Object[] versionFoldersArray = versionFolders.toArray();
 
         return highestVersionFolder = new File(versionFoldersArray[versionFoldersArray.length - 1].toString());
+    }
+
+    /**
+     * Kills all java and javaw processes, excluding this Barge Tool's own java process.
+     */
+    public static void killVesselSolution() {
+        // Retrieve own PID, which will later be used to not kill own process.
+        int ownPID = Utils.getOwnProcessPID();
+        
+        // Get all processes from the Utils class.
+        Map<Integer, String> processesMap = Utils.getAllJavaProcesses();
+
+        // Kill all processes that contain the word "java", exluding this very java process.
+        for (Map.Entry<Integer, String> entry : processesMap.entrySet()) {
+            if (entry.getValue().contains("java") && !entry.getKey().equals(ownPID)) {
+                CommandLineWrapper.executeCommand(String.format("\"%s\\system32\\taskkill.exe\" -f -pid \"%s\"", System.getenv("windir"), entry.getKey()));
+            }
+        }
+    }
+
+    public static void forceStopDatabase() {
+        Database.getInstance().disconnect();
+        String pg_ctl = "\"C:\\vessel solution\\database\\postgres_db\\bin\\pg_ctl.exe\"";
+        String dir = "\"C:\\vessel solution\\database\\database\"";
+        String log = "\"C:\\vessel solution\\database\\postgres_db\\postgres_log.txt\"";
+
+        String command = String.format("%s stop -D %s -f -l %s", pg_ctl, dir, log);
+        CommandLineWrapper.executeCommand(command, CommandLineWrapper.DEFAULT_WORKING_DIR, "Database Succesfully Stopped!");
     }
 }

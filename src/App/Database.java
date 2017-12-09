@@ -126,7 +126,7 @@ public class Database {
     public Object executeQuery(Query query) {
         try {
             if (!hasConnection()) {
-                SunetiBargeTool.log("Database is not running...");
+                SunetiBargeTool.log("Executing Query but there is no active connection...");
                 return false;
             }
             

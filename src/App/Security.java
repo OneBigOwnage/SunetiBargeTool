@@ -14,46 +14,43 @@ import sunetibargetool.Config;
  * @author niekv
  */
 public class Security {
-    
+
     private final static String HASH_ALGORITHM = "SHA-256";
-    
-    public static final boolean checkPass(String pass) {
+
+    public static boolean checkPass(String pass) {
         String validHash = Config.get("app_password_hash");
         String currentHash = getHashFromString(pass);
-        
+
         return currentHash != null && validHash.equals(currentHash);
     }
-    
-    public static final String getHashFromString(String plainString) {
+
+    /**
+     * Returns a String representation of the hash calculated from given String.
+     *
+     * @param plainString
+     * @return
+     */
+    public static String getHashFromString(String plainString) {
         String hash = null;
         try {
             // Get instance of MessageDigest & reset it.
             MessageDigest digester = MessageDigest.getInstance(HASH_ALGORITHM);
             digester.reset();
-            
-            
+
             // Digest the given String.
             byte[] hashBytes = digester.digest(plainString.getBytes());
-            
-            
+
             // Turn the byte array into a new String.
             StringBuilder sBuffer = new StringBuilder();
             for (int i = 0; i < hashBytes.length; ++i) {
-                sBuffer.append(Integer.toHexString(hashBytes[i] & 0xFF | 0x100).substring(1,3));
+                sBuffer.append(Integer.toHexString(hashBytes[i] & 0xFF | 0x100).substring(1, 3));
             }
-            
+
             hash = sBuffer.toString();
         } catch (NoSuchAlgorithmException e) {
-            System.out.println("Error trying to hash the entered password, algorithm not found!");
+            System.out.println("Error trying to hash the given String, hash-algorithm not found!");
         }
-        
+
         return hash;
     }
-    
-    
-    
-    
-    
-    
-    
 }
