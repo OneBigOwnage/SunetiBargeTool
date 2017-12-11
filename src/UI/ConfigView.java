@@ -8,9 +8,11 @@ package UI;
 import App.Controller;
 import App.Commands;
 import App.Database;
+import App.ThreadManager;
 import App.Utils;
 import Daemons.DaemonManager;
 import Daemons.DaemonManager.DaemonType;
+import java.lang.reflect.Method;
 
 /**
  *
@@ -322,8 +324,9 @@ public class ConfigView extends javax.swing.JPanel {
     }//GEN-LAST:event_btn_disconnectActionPerformed
 
     private void btn_shutdown_vsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_shutdown_vsMouseClicked
+        Method killVesselSolution = Utils.getMethodByName("killVesselSolution", Commands.class);
+        ThreadManager.runInSeperateThread(killVesselSolution, null);
 //        Commands.killVesselSolution();
-        System.out.println("Length: " + Utils.getAllJavaProcesses().size());
     }//GEN-LAST:event_btn_shutdown_vsMouseClicked
 
     public void setDBStateLabel(boolean isRunning) {

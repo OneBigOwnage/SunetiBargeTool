@@ -53,11 +53,15 @@ public class DatabaseDaemon extends BaseDaemon implements Runnable {
 
         CommandLineWrapper.executeCommand(command, CommandLineWrapper.DEFAULT_WORKING_DIR, outputStream, new DefaultExecuteResultHandler());
 
-        // Don't go past here until the command has at least return either "server is running" or "no server running"
-        while (!Utils.regExMatch("(.*server is running.*)|(.*no server running.*)", outputStream.toString(), Pattern.DOTALL)) {
-            // Just do nothing...
+        try {
+            // Don't go past here until the command has at least return either "server is running" or "no server running"
+            while (!Utils.regExMatch("(.*server is running.*)|(.*no server running.*)", outputStream.toString(), Pattern.DOTALL)) {
+                // Just do nothing...
+            }
+        } catch (Exception e) {
+            System.out.println("This should be investigated...");
         }
-
+        
         // Return true if the outputted line contains "server is running", false otherwise.
         return Utils.regExMatch("(.*server is running.*)", outputStream.toString(), Pattern.DOTALL);
     }

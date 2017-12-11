@@ -6,6 +6,8 @@
 package UI;
 
 import App.Controller;
+import App.ThreadManager;
+import App.Utils;
 import Models.BargeInfoModel;
 import java.util.Map;
 import java.util.TreeMap;
@@ -31,9 +33,7 @@ public class BargeInfoView extends javax.swing.JPanel {
         initComponents();
         this.controller = controller;
         this.model = model;
-        if (Boolean.parseBoolean(Config.get("appstart_autoload_data"))) {
-            loadData();
-        }
+        loadDataPre();
     }
 
     /**
@@ -58,7 +58,7 @@ public class BargeInfoView extends javax.swing.JPanel {
 
         setBackground(new java.awt.Color(15, 124, 160));
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Solution Info", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI Semibold", 0, 18), new java.awt.Color(255, 255, 255))); // NOI18N
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Solution Info", 0, 0, new java.awt.Font("Segoe UI Semibold", 0, 18), new java.awt.Color(255, 255, 255))); // NOI18N
         jPanel1.setOpaque(false);
 
         jLabel3.setFont(new java.awt.Font("Segoe UI Semibold", 1, 14)); // NOI18N
@@ -133,7 +133,7 @@ public class BargeInfoView extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Version Info", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI Semibold", 0, 18), new java.awt.Color(255, 255, 255))); // NOI18N
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Version Info", 0, 0, new java.awt.Font("Segoe UI Semibold", 0, 18), new java.awt.Color(255, 255, 255))); // NOI18N
         jPanel2.setOpaque(false);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -188,6 +188,12 @@ public class BargeInfoView extends javax.swing.JPanel {
         lbl_broker.setText((this.data.get("brokerName") != null) ? this.data.get("brokerName") : "Not Found");
         lbl_qm.setText((this.data.get("qualityManagerName") != null) ? this.data.get("qualityManagerName") : "Not Found");
         lbl_fo.setText((this.data.get("ownerName") != null) ? this.data.get("ownerName") : "Not Found");
+    }
+
+    private void loadDataPre() {
+        if (Boolean.parseBoolean(Config.get("appstart_autoload_data"))) {
+            ThreadManager.runInSeperateThread(Utils.getMethodByName("loadData", this), this);
+        }
     }
 
     private void loadData() {

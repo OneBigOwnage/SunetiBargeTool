@@ -5,11 +5,13 @@
  */
 package Models;
 
+import App.CommandLineWrapper;
 import App.Controller;
 import App.Database;
 import App.Query;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -18,6 +20,7 @@ import java.util.TreeMap;
  * @author niekv
  */
 public class BargeInfoModel extends BaseModel {
+
 
     /**
      *
@@ -30,10 +33,11 @@ public class BargeInfoModel extends BaseModel {
     public Map<String, String> fetchData() {
         Map<String, String> dataMap = new TreeMap<>();
 
-        dataMap.put("bargeName",            getBargeName());
-        dataMap.put("brokerName",           getBrokerName());
-        dataMap.put("qualityManagerName",   getQualityManagerName());
-        dataMap.put("ownerName",            getOwnerName());
+        dataMap.put("bargeName", getBargeName());
+        dataMap.put("brokerName", getBrokerName());
+        dataMap.put("qualityManagerName", getQualityManagerName());
+        dataMap.put("ownerName", getOwnerName());
+        
         return dataMap;
     }
 

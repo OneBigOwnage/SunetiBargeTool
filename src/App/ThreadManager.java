@@ -26,7 +26,7 @@ public class ThreadManager {
                     Logger.getLogger(ThreadManager.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-        });
+        }).start();
     }
 
 }

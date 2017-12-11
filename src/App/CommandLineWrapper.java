@@ -84,7 +84,7 @@ public class CommandLineWrapper {
             public void onProcessComplete(int exitValue) {
                 if (successMessage != null) {
                     System.out.println(successMessage);
-                }
+                    }
             }
 
             @Override
@@ -150,12 +150,16 @@ public class CommandLineWrapper {
                  */
                 @Override
                 public void onProcessComplete(int exitValue) {
+                    /*System.out.println("onProcessComplete");
+                    System.out.println("- " + outputStream.toString());*/
                     isProcessDone.set(true);
                 }
 
                 @Override
                 public void onProcessFailed(ExecuteException ex) {
                     SunetiBargeTool.log(String.format("Process failed: %s\n%s", ex, outputStream.toString()));
+                    /*System.out.println("onProcessFailed");
+                    System.out.println("- " + outputStream.toString());*/
                     isProcessDone.set(true);
                 }
             };

@@ -9,7 +9,9 @@ import com.sun.jna.platform.win32.Kernel32;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.regex.Matcher;
@@ -22,6 +24,9 @@ import org.apache.commons.exec.ExecuteResultHandler;
  * @author niekv
  */
 public abstract class Utils {
+
+    public static boolean FILTER_APPLY_COMMAND = true;
+    public static boolean FILTER_APPLY_LIST_ADD = false;
 
     /**
      * Method to quickly RegEx match a pattern on a string, can be given extra
@@ -69,6 +74,28 @@ public abstract class Utils {
     }
 
     /**
+     * Returns a {@code Method} object, given a method name as String, and a
+     * Class where this method can be found in.
+     *
+     * @param methodName The string representing the method that should be
+     * searched for
+     * @param _class The class that contains the method
+     * @return
+     */
+    public static Method getMethodByName(String methodName, Class _class) {
+        Method method = null;
+
+        for (Method m : _class.getDeclaredMethods()) {
+            if (m.getName().equals(methodName)) {
+                method = m;
+                break;
+            }
+        }
+
+        return method;
+    }
+
+    /**
      * Returns the process PID (windows) of the current java process that is
      * this application.
      *
@@ -85,87 +112,6 @@ public abstract class Utils {
     }
 
     /**
-     * Gets all running processes (Windows only) as a HashMap. Keys in this
-     * HashMap are the PIDs, values are Strings representing the process name.
-     * PIDs are the keys in this Map because the PID is unique but the process
-     * name isn't.
-     *
-     * @return A HashMap filled with all the processes retrieved from the
-     * system.
-     */
-    public static Map<Integer, String> getAllJavaProcesses() {
-        // Using a HashMap for speed
-        Map<Integer, String> returnMap = new HashMap<>();
-
-        // Since we use this variable inside the enclosed resultHandler,
-        // it must be final so a normal boolean can not be used. Hence we
-        // use an AtomicBoolean.
-        final AtomicBoolean isProcessDone = new AtomicBoolean(false);
-
-        // Create the command that is to be send off to the command line,
-        // parameter (-nh) removes the header from the list,
-        // parameter (-fo "CSV") is to get the list in csv format which
-        // makes it easy to work with.
-        String command = String.format("\"%s\\system32\\tasklist.exe\" -fi \"ImageName eq javaw.exe\" -nh -v -fo \"CSV\"", System.getenv("windir"));
-
-        //
-        final OutputStream outputStream = new OutputStream() {
-            private final StringBuilder strBuilder = new StringBuilder();
-
-            @Override
-            public void write(int b) throws IOException {
-                this.strBuilder.append((char) b);
-            }
-
-            @Override
-            public String toString() {
-                return this.strBuilder.toString();
-            }
-        };
-
-        ExecuteResultHandler resultHandler = new ExecuteResultHandler() {
-            /**
-             * When the process is done, set boolean to true so the
-             * {@code while(!isProcessDone.get())} loop stops.
-             *
-             * @param exitValue
-             */
-            @Override
-            public void onProcessComplete(int exitValue) {
-                isProcessDone.set(true);
-            }
-
-            @Override
-            public void onProcessFailed(ExecuteException ex) {
-                isProcessDone.set(true);
-                sunetibargetool.SunetiBargeTool.log("Error occurred trying to get process list: " + ex);
-            }
-        };
-
-        CommandLineWrapper.executeCommand(command, CommandLineWrapper.DEFAULT_WORKING_DIR, outputStream, resultHandler);
-
-        while (!isProcessDone.get()) {
-            // Wait until the process is done...
-        }
-
-        // When the process is done, retrieve the output via the outputstream.
-        String csvProcessList = outputStream.toString();
-
-        String[] processLines = csvProcessList.split("\r\n");
-
-        for (String processLine : processLines) {
-            // Split on ',' because csv, the replaceAll statements are to remove
-            // leading & trailing double quotes.
-            String[] process = processLine.split(",");
-            String processName = process[0].replaceAll("\"$|^\"", "");
-            int processPID = Integer.parseInt(process[1].replaceAll("\"$|^\"", ""));
-            // Place all the processed in the map.
-            returnMap.put(processPID, processName);
-        }
-        return returnMap;
-    }
-
-    /**
      * Method to trim given characters from the start & end of a given string.
      *
      * @param string The string that you want to trim
@@ -176,4 +122,69 @@ public abstract class Utils {
     public static String trim(String string, String trimChars) {
         return string.replaceAll(String.format("%s$|^%s", trimChars, trimChars), "");
     }
+
+    /**
+     * Method to get all active processes. Returns a List of WindowsProcess
+     * objects. Possible to give in a process name filter.
+     *
+     *
+     * @param filter Filter to only return processed that contain given String.
+     * @param filterMatchExactly Place where the filter will be applied. Use
+     * Utils.FILTER_APPLY_COMMAND if you want to exactly match the filter
+     * (including extensions like .exe) or use Utils.FILTER_APPLY_LIST_ADD if
+     * you want to roughly match the filter. Be aware that
+     * Utils.FILTER_APPLY_LIST_ADD will be much slower.
+     *
+     * @return A list of WindowsProcesses
+     */
+    public static List<WindowsProcess> getProcesses(String filter, boolean filterMatchExactly) {
+        // If the filter is empty, set it to null.
+        // This way we don't have to do this check later in both if-statements.
+        if (filter.equals("")) {
+            filter = null;
+        }
+
+        List<WindowsProcess> returnList = new ArrayList<>();
+
+        // Create the command that is to be send off to the command line,
+        // Parameter (-nh) removes the header from the list,
+        // parameter (-fo "CSV") is to get the list in csv format which
+        // makes it easy to work with,
+        // Parameter (-fi) makes it possible to filter on name
+        String command;
+        if (filter != null && filterMatchExactly == FILTER_APPLY_COMMAND) {
+            command = String.format("\"%s\\system32\\tasklist.exe\" -fi \"ImageName eq %s\" -nh -v -fo \"CSV\"", System.getenv("windir"), filter);
+        } else {
+            command = String.format("\"%s\\system32\\tasklist.exe\" -nh -v -fo \"CSV\"", System.getenv("windir"));
+        }
+
+        String csvProcessList = CommandLineWrapper.executeCommand(command, CommandLineWrapper.RETURN_OUTPUT);
+
+        // Split the output on newlines.
+        String[] processLines = csvProcessList.split("\r\n");
+
+        if (processLines[0].contains("INFO")) {
+            return returnList;
+        }
+
+        for (String processLine : processLines) {
+            // Split on ',' because csv, and trim because the values are surrounded by double quotes.
+            String[] processInfo = processLine.split(",");
+
+            String processName = trim(processInfo[0], "\"");
+            String windowTitle = trim(processInfo[8], "\"");
+            int processPID = Integer.parseInt(trim(processInfo[1], "\""));
+
+            // If the filter does not match given processname, go to the next processLine.
+            if (filterMatchExactly == FILTER_APPLY_LIST_ADD && filter != null && !processName.contains(filter)) {
+                continue;
+            }
+
+            WindowsProcess process = new WindowsProcess(processPID, processName, windowTitle);
+
+            returnList.add(process);
+        }
+        return returnList;
+    }
+
 }

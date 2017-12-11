@@ -6,13 +6,16 @@
 package App;
 
 import Daemons.DatabaseDaemon;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.util.ArrayList;
+import java.io.OutputStream;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 import java.util.TreeSet;
+import org.apache.commons.exec.ExecuteException;
+import org.apache.commons.exec.ExecuteResultHandler;
+import sunetibargetool.SunetiBargeTool;
 
 /**
  *
@@ -91,9 +94,8 @@ public class Commands {
     }
 
     /**
-     * Gets the highest version folder from "C:\vessel sollution\", also sets
-     * the internal class variable highestVersionFolder to point to this
-     * directory.
+     * Gets the highest version folder from "C:\vessel solution\", also sets the
+     * internal class variable highestVersionFolder to point to this directory.
      *
      * @return A File representing the directory of the highest version folder.
      */
@@ -120,30 +122,64 @@ public class Commands {
     }
 
     /**
-     * Kills all java and javaw processes, excluding this Barge Tool's own java process.
+     * Kills all java and javaw.exe processes, excluding this Barge Tool's own
+     * java process.
      */
     public static void killVesselSolution() {
         // Retrieve own PID, which will later be used to not kill own process.
         int ownPID = Utils.getOwnProcessPID();
-        
+
         // Get all processes from the Utils class.
-        Map<Integer, String> processesMap = Utils.getAllJavaProcesses();
+        List<WindowsProcess> javaProcessesList = Utils.getProcesses("java", Utils.FILTER_APPLY_LIST_ADD);
 
         // Kill all processes that contain the word "java", exluding this very java process.
-        for (Map.Entry<Integer, String> entry : processesMap.entrySet()) {
-            if (entry.getValue().contains("java") && !entry.getKey().equals(ownPID)) {
-                CommandLineWrapper.executeCommand(String.format("\"%s\\system32\\taskkill.exe\" -f -pid \"%s\"", System.getenv("windir"), entry.getKey()));
+        for (WindowsProcess wProcess : javaProcessesList) {
+            if (wProcess.getProcessPID() != ownPID) {
+                CommandLineWrapper.executeCommand(String.format("\"%s\\system32\\taskkill.exe\" -f -pid \"%s\"", System.getenv("windir"), wProcess.getProcessPID()));
             }
         }
     }
 
+    /**
+     * Force stops the PostGres database, rolling back all active transactions.
+     * Also deletes the postmaster.pid file, which is left behind because of the
+     * -f parameter.
+     */
     public static void forceStopDatabase() {
         Database.getInstance().disconnect();
         String pg_ctl = "\"C:\\vessel solution\\database\\postgres_db\\bin\\pg_ctl.exe\"";
         String dir = "\"C:\\vessel solution\\database\\database\"";
         String log = "\"C:\\vessel solution\\database\\postgres_db\\postgres_log.txt\"";
 
-        String command = String.format("%s stop -D %s -f -l %s", pg_ctl, dir, log);
-        CommandLineWrapper.executeCommand(command, CommandLineWrapper.DEFAULT_WORKING_DIR, "Database Succesfully Stopped!");
+        String command = String.format("%s stop -D %s -m f -l %s", pg_ctl, dir, log);
+        
+        OutputStream outputStream = new ByteArrayOutputStream();
+        
+        ExecuteResultHandler handler = new ExecuteResultHandler() {
+            @Override
+            public void onProcessComplete(int i) {
+//                deletePostmasterPid();
+            }
+
+            @Override
+            public void onProcessFailed(ExecuteException ee) {
+                SunetiBargeTool.log("Not able to forcefully stop database!");
+            }
+        };
+        
+        CommandLineWrapper.executeCommand(command, CommandLineWrapper.DEFAULT_WORKING_DIR, outputStream, handler);
+//        CommandLineWrapper.executeCommand(command, CommandLineWrapper.DEFAULT_WORKING_DIR, "Database Succesfully Stopped!");
+    }
+
+    /**
+     * Method to delete the postmaster.pid file, since it is left behind when
+     * the database was not closed nicely
+     */
+    public static void deletePostmasterPid() {
+        final String fileLocation = "C:\\vessel solution\\database\\database\\postmaster.pid";
+        File postmasterPIDFile = new File(fileLocation);
+        if (postmasterPIDFile.exists() && !postmasterPIDFile.delete()) {
+            SunetiBargeTool.log("Could not delete postmaster.pid file!");
+        }
     }
 }
