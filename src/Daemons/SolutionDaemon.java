@@ -5,6 +5,11 @@
  */
 package Daemons;
 
+import App.Utils;
+import App.WindowsProcess;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
  * @author suneti
@@ -18,6 +23,11 @@ public class SolutionDaemon extends BaseDaemon {
     }
 
     public solutionState getSolutionState() {
+        List<WindowsProcess> processList = new ArrayList<>();
+        processList.addAll(Utils.getProcesses("javaw.exe", Utils.FILTER_APPLY_COMMAND));
+        processList.addAll(Utils.getProcesses("java.exe", Utils.FILTER_APPLY_COMMAND));
+        
+                
         
         
         

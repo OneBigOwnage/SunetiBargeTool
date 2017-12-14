@@ -12,7 +12,7 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author suneti
+ * @author niekv
  */
 public class ThreadManager {
 
@@ -29,4 +29,22 @@ public class ThreadManager {
         }).start();
     }
 
+    public static void runInSeperateThread(Thread thread, final Method method, final Object object, final Object... params) {
+        if (thread != null) {
+            thread.interrupt();
+        }
+        
+        thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    method.invoke(object, params);
+                } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
+                    Logger.getLogger(ThreadManager.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+        // Start the thread again.
+        thread.start();
+    }
 }

@@ -34,7 +34,7 @@ public class Commands {
     }
 
     /**
-     * Method to start the postgres database via a pg_ctl command, executed by
+     * Method to start the PostGres database via a pg_ctl command, executed by
      * the CommandLineWrapper.
      */
     public static void startDatabase() {
@@ -53,7 +53,7 @@ public class Commands {
     }
 
     /**
-     * Method to stop the postgres database via a pg_ctl command, executed by
+     * Method to stop the PostGres database via a pg_ctl command, executed by
      * the CommandLineWrapper.
      */
     public static void stopDatabase() {
@@ -130,8 +130,9 @@ public class Commands {
         int ownPID = Utils.getOwnProcessPID();
 
         // Get all processes from the Utils class.
-        List<WindowsProcess> javaProcessesList = Utils.getProcesses("java", Utils.FILTER_APPLY_LIST_ADD);
-
+        List<WindowsProcess> javaProcessesList = Utils.getProcesses("javaw.exe", Utils.FILTER_APPLY_COMMAND);
+        javaProcessesList.addAll(Utils.getProcesses("java.exe", Utils.FILTER_APPLY_COMMAND));
+        
         // Kill all processes that contain the word "java", exluding this very java process.
         for (WindowsProcess wProcess : javaProcessesList) {
             if (wProcess.getProcessPID() != ownPID) {

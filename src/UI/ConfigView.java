@@ -288,7 +288,7 @@ public class ConfigView extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_dbStartMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_dbStartMouseClicked
-
+        
     }//GEN-LAST:event_btn_dbStartMouseClicked
 
     private void btn_hbaConfMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_hbaConfMouseClicked

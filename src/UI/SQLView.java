@@ -8,10 +8,14 @@ package UI;
 import App.Controller;
 import App.Database;
 import App.Query;
+import App.ThreadManager;
+import App.Utils;
+import Daemons.DaemonManager;
 import Models.SQLModel;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.KeyEvent;
+import java.lang.reflect.Method;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -29,6 +33,8 @@ public class SQLView extends javax.swing.JPanel {
 
     protected Controller controller;
     protected SQLModel model;
+    private boolean isDatabaseRunning = false;
+    private boolean hasConnection = false;
 
     /**
      * Creates new form SQLView
@@ -40,6 +46,7 @@ public class SQLView extends javax.swing.JPanel {
         this.controller = controller;
         this.model = model;
         fixTable();
+        setDaemons();
     }
 
     /**
@@ -242,12 +249,12 @@ public class SQLView extends javax.swing.JPanel {
             if (prevText != null) {
                 this.SQLTextArea.setText(prevText);
             }
-       } else if (isAltDown && keyCode == KeyEvent.VK_RIGHT) {
-           String nextText = model.getNext();
+        } else if (isAltDown && keyCode == KeyEvent.VK_RIGHT) {
+            String nextText = model.getNext();
             if (nextText != null) {
                 this.SQLTextArea.setText(nextText);
             }
-       }
+        }
     }//GEN-LAST:event_SQLTextAreaKeyPressed
 
     private void fixTable() {
@@ -290,7 +297,7 @@ public class SQLView extends javax.swing.JPanel {
         }
     }
 
-    private void execQuery(boolean selectionOnly) {
+    public void execQuery(boolean selectionOnly) {
         lbl_result.setText("Query running...");
         Query query;
 
@@ -301,27 +308,22 @@ public class SQLView extends javax.swing.JPanel {
         }
 
         Database db = Database.getInstance();
-        if (!db.hasConnection()) {
-            lbl_conn.setText("No Connection!");
-            return;
-        }
 
         Object result = db.executeQuery(query);
 
         if (result instanceof String) {
             lbl_result.setText(result.toString());
         } else if (result instanceof Integer) {
-            lbl_result.setText("Query executed. Affected rows: " + result);
+            lbl_result.setText("Query executed succesfully, rows affected: " + result);
         } else if (result instanceof ResultSet) {
-            lbl_result.setText("Result plotted");
-            parseResultSet((ResultSet) result);
-            fixTableCellWidth();
+            lbl_result.setText("Result plotted in table");
+            parseResultSetInTable((ResultSet) result);
         } else {
-            lbl_result.setText("Unexpected response from database...");
+            lbl_result.setText("Unexpected response from database, please check the log!");
         }
     }
 
-    private void parseResultSet(ResultSet result) {
+    private void parseResultSetInTable(ResultSet result) {
         DefaultTableModel model = new DefaultTableModel();
         try {
             // Create table header.
@@ -347,7 +349,37 @@ public class SQLView extends javax.swing.JPanel {
 
         outputTable.setModel(model);
         outputTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        fixTableCellWidth();
+    }
 
+    private void setDaemons() {
+        DaemonManager.addSubscription(DaemonManager.DaemonType.DATABASE, this, "setDatabaseState");
+        DaemonManager.addSubscription(DaemonManager.DaemonType.BARGETOOL_CONNECTION, this, "setConnectionState");
+        Method labelMethod = Utils.getMethodByName("setLabels", this);
+        ThreadManager.runInSeperateThread(labelMethod, this);
+    }
+
+    public void setDatabaseState(boolean isRunning) {
+        this.isDatabaseRunning = isRunning;
+    }
+
+    public void setConnectionState(boolean isConnected) {
+        this.hasConnection = isConnected;
+    }
+
+    public void setLabels() {
+        while (true) {
+            String dbString = this.isDatabaseRunning ? "Database is running" : "Database is not running";
+            String connString = this.hasConnection ? "there is an active connection." : "there is no active connection.";
+            String lblString = String.format("%s & %s", dbString, connString);
+
+            lbl_conn.setText(lblString);
+
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException ex) {
+            }
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -363,5 +395,4 @@ public class SQLView extends javax.swing.JPanel {
     private javax.swing.JLabel lbl_result;
     private javax.swing.JTable outputTable;
     // End of variables declaration//GEN-END:variables
-
 }

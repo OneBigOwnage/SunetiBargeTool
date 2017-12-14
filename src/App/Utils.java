@@ -6,18 +6,11 @@
 package App;
 
 import com.sun.jna.platform.win32.Kernel32;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import org.apache.commons.exec.ExecuteException;
-import org.apache.commons.exec.ExecuteResultHandler;
 
 /**
  *
@@ -69,7 +62,9 @@ public abstract class Utils {
                 break;
             }
         }
-
+        if (method == null) {
+            System.out.println(String.format("Method '%s' does not exist for object '%s'!", methodName, object.getClass().getName()));
+        }
         return method;
     }
 
@@ -151,6 +146,7 @@ public abstract class Utils {
         // parameter (-fo "CSV") is to get the list in csv format which
         // makes it easy to work with,
         // Parameter (-fi) makes it possible to filter on name
+        // Parameter (-v) gives verbose. So we get more information, including the window title.
         String command;
         if (filter != null && filterMatchExactly == FILTER_APPLY_COMMAND) {
             command = String.format("\"%s\\system32\\tasklist.exe\" -fi \"ImageName eq %s\" -nh -v -fo \"CSV\"", System.getenv("windir"), filter);
@@ -168,12 +164,17 @@ public abstract class Utils {
         }
 
         for (String processLine : processLines) {
-            // Split on ',' because csv, and trim because the values are surrounded by double quotes.
+            // Split on ',' because the csv is seperated by commas.
             String[] processInfo = processLine.split(",");
 
-            String processName = trim(processInfo[0], "\"");
-            String windowTitle = trim(processInfo[8], "\"");
-            int processPID = Integer.parseInt(trim(processInfo[1], "\""));
+            // Remove the surrounding double quotes from each string.
+            for (int i = 0; i < processInfo.length; i++) {
+                processInfo[i] = Utils.trim(processInfo[i], "\"");
+            }
+
+            String processName = processInfo[0];
+            String windowTitle = processInfo[8];
+            int processPID = Integer.parseInt(processInfo[1]);
 
             // If the filter does not match given processname, go to the next processLine.
             if (filterMatchExactly == FILTER_APPLY_LIST_ADD && filter != null && !processName.contains(filter)) {
