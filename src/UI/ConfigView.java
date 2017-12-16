@@ -7,7 +7,7 @@ package UI;
 
 import App.Controller;
 import App.Commands;
-import App.Database;
+import Database.Database;
 import App.ThreadManager;
 import App.Utils;
 import Daemons.DaemonManager;

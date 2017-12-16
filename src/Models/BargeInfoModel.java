@@ -7,8 +7,8 @@ package Models;
 
 import App.Commands;
 import App.Controller;
-import App.Database;
-import App.Query;
+import Database.Database;
+import Database.Query;
 import java.io.File;
 import java.io.FileFilter;
 import java.sql.ResultSet;

@@ -7,7 +7,7 @@ package sunetibargetool;
 
 import App.Commands;
 import App.Controller;
-import App.Database;
+import Database.Database;
 import Daemons.DaemonManager;
 import Daemons.DatabaseDaemon;
 import Daemons.VSConnectionDaemon;

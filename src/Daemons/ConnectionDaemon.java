@@ -5,7 +5,7 @@
  */
 package Daemons;
 
-import App.Database;
+import Database.Database;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 

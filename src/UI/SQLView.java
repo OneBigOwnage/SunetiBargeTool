@@ -6,8 +6,8 @@
 package UI;
 
 import App.Controller;
-import App.Database;
-import App.Query;
+import Database.Database;
+import Database.Query;
 import App.ThreadManager;
 import App.Utils;
 import Daemons.DaemonManager;

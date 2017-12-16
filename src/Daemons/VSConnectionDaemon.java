@@ -5,8 +5,8 @@
  */
 package Daemons;
 
-import App.Database;
-import App.Query;
+import Database.Database;
+import Database.Query;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.sql.ResultSet;

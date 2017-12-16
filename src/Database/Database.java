@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package App;
+package Database;
 
+import Database.Query;
 import Daemons.DatabaseDaemon;
 import java.sql.Connection;
 import java.sql.DriverManager;
