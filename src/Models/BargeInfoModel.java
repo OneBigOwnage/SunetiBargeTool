@@ -8,6 +8,7 @@ package Models;
 import App.Commands;
 import App.Controller;
 import Database.Database;
+import Database.DatabaseHelper;
 import Database.Query;
 import java.io.File;
 import java.io.FileFilter;
@@ -61,138 +62,71 @@ public class BargeInfoModel extends BaseModel {
     }
 
     public String getBargeName() {
-        Database db = Database.getInstance();
-
         Query bargeNameQuery = new Query(
                 "SELECT barge_name "
                 + "FROM bcm_settings "
                 + "ORDER BY last_backup_datetime DESC "
                 + "LIMIT 1;");
 
-        Object bargeNameResult = db.executeQuery(bargeNameQuery);
-
-        String bargeName = null;
-
-        if (bargeNameResult instanceof ResultSet) {
-            ResultSet bargeNameResultSet = (ResultSet) bargeNameResult;
-            try {
-                if (bargeNameResultSet.next()) {
-                    bargeName = bargeNameResultSet.getString("barge_name");
-                }
-            } catch (SQLException ex) {
-            }
-        }
-
-        return bargeName;
+        return (String) DatabaseHelper.getSingleResultFromQuery(bargeNameQuery);
     }
 
     public String getBrokerName() {
-        Database db = Database.getInstance();
-
         Query brokerNameQuery = new Query(
                 "SELECT client_name "
                 + "FROM bcm_sbb_clients "
                 + "ORDER BY last_sync_datetime DESC "
                 + "LIMIT 1;");
 
-        Object brokerNameResult = db.executeQuery(brokerNameQuery);
-
-        String brokerName = null;
-
-        if (brokerNameResult instanceof ResultSet) {
-            ResultSet brokerNameResultSet = (ResultSet) brokerNameResult;
-            try {
-                if (brokerNameResultSet.next()) {
-                    brokerName = brokerNameResultSet.getString("client_name");
-                }
-            } catch (SQLException ex) {
-            }
-        }
-
-        return brokerName;
+        return (String) DatabaseHelper.getSingleResultFromQuery(brokerNameQuery);
     }
 
     public String getQualityManagerName() {
-        Database db = Database.getInstance();
-
         Query qualityManagerNameQuery = new Query(
                 "SELECT client_name "
                 + "FROM bcm_sqs_clients sqs JOIN bcm_settings bcm ON sqs.bcm_client_id = bcm.bcm_client_id "
                 + "WHERE bcm.manager_sqs_client_id = sqs_client_id;");
-
-        Object qualityManagerNameResult = db.executeQuery(qualityManagerNameQuery);
-
-        String qualityManagerName = null;
-
-        if (qualityManagerNameResult instanceof ResultSet) {
-            ResultSet qualityManagerNameResultSet = (ResultSet) qualityManagerNameResult;
-            try {
-                if (qualityManagerNameResultSet.next()) {
-                    qualityManagerName = qualityManagerNameResultSet.getString("client_name");
-                }
-            } catch (SQLException ex) {
-            }
-        }
-
-        return qualityManagerName;
+        return (String) DatabaseHelper.getSingleResultFromQuery(qualityManagerNameQuery);
     }
 
     public String getOwnerName() {
-        String ownerName = null;
-
-        Database db = Database.getInstance();
-
         Query ownerNameQuery = new Query(
                 "SELECT client_name "
                 + "FROM bcm_sqs_clients sqs JOIN bcm_settings bcm ON sqs.bcm_client_id = bcm.bcm_client_id "
                 + "WHERE bcm.owner_sqs_client_id = sqs_client_id;");
 
-        Object ownerNameResult = db.executeQuery(ownerNameQuery);
-
-        if (ownerNameResult instanceof ResultSet) {
-            ResultSet ownerNameResultSet = (ResultSet) ownerNameResult;
-            try {
-                if (ownerNameResultSet.next()) {
-                    ownerName = ownerNameResultSet.getString("client_name");
-                }
-            } catch (SQLException ex) {
-            }
-        }
-
-        return ownerName;
+        return (String) DatabaseHelper.getSingleResultFromQuery(ownerNameQuery);
     }
 
     public String getCurrentVersionKey() {
-        return "NOT IMPLEMENTED YET";
+        Query currentVersionKeyQuery = new Query(
+                "SELECT current_version_key "
+                + "FROM bcm_settings;");
+
+        return (String) DatabaseHelper.getSingleResultFromQuery(currentVersionKeyQuery);
     }
 
     public String getCurrentVersionFolder() {
-        return "NOT IMPLEMENTED YET";
+        Query currentVersionFolderQuery = new Query(
+                "SELECT current_version_folder "
+                + "FROM bcm_settings;");
+        return (String) DatabaseHelper.getSingleResultFromQuery(currentVersionFolderQuery);
     }
 
     public int getVersionFolderCount() {
-        // create return number.
         File installFolder = new File("C:\\vessel solution\\");
 
         // Get the install folder from the database. If there is none found,
         // the default of 'C:\vessel solution\' will be used.
-        Database db = Database.getInstance();
-
         Query installFolderStringQuery = new Query(
                 "SELECT installation_folder_path "
                 + "FROM bcm_settings;");
 
-        Object installFolderStringResult = db.executeQuery(installFolderStringQuery);
+        String installFolderString = (String) DatabaseHelper.getSingleResultFromQuery(installFolderStringQuery);
 
-        if (installFolderStringResult instanceof ResultSet) {
-            ResultSet installFolderStringResultSet = (ResultSet) installFolderStringResult;
-            try {
-                if (installFolderStringResultSet.next()) {
-                    String installFolderString = installFolderStringResultSet.getString("installation_folder_path");
-                    installFolder = new File(installFolderString);
-                }
-            } catch (SQLException ex) {
-            }
+        // If the return value of the query is not null, the installation folder is taken from the database.
+        if (installFolderString != null) {
+            installFolder = new File(installFolderString);
         }
 
         // Create a filefilter to only match folders that contain a file named 'servoy_runtime.jar'.
@@ -228,26 +162,10 @@ public class BargeInfoModel extends BaseModel {
     }
 
     public int getEniNumber() {
-        int eni = -1;
-
-        Database db = Database.getInstance();
-
-        Query brokerNameQuery = new Query(
+        Query eniNumberQuery = new Query(
                 "SELECT eni_number "
                 + "FROM bcm_settings ");
 
-        Object eniNumberResult = db.executeQuery(brokerNameQuery);
-
-        if (eniNumberResult instanceof ResultSet) {
-            ResultSet eniNumberResultSet = (ResultSet) eniNumberResult;
-            try {
-                if (eniNumberResultSet.next()) {
-                    eni = Integer.parseInt(eniNumberResultSet.getString("eni_number"));
-                }
-            } catch (SQLException ex) {
-            }
-        }
-
-        return eni;
+        return (int) DatabaseHelper.getSingleResultFromQuery(eniNumberQuery);
     }
 }
