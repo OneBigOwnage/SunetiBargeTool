@@ -5,12 +5,19 @@
  */
 package App;
 
+import com.sun.jna.Native;
 import com.sun.jna.platform.win32.Kernel32;
+import com.sun.jna.platform.win32.Tlhelp32;
+import com.sun.jna.platform.win32.WinNT;
+import com.sun.jna.win32.W32APIOptions;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import com.sun.jna.Native;
+import com.sun.jna.platform.win32.*;
+import com.sun.jna.win32.W32APIOptions;
 
 /**
  *
@@ -86,7 +93,9 @@ public abstract class Utils {
                 break;
             }
         }
-
+        if (method == null) {
+            System.out.println(String.format("Method '%s' does not exist for object '%s'!", methodName, _class.getName()));
+        }
         return method;
     }
 
@@ -187,5 +196,4 @@ public abstract class Utils {
         }
         return returnList;
     }
-
 }

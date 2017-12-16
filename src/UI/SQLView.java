@@ -24,6 +24,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
+import sunetibargetool.Config;
 
 /**
  *
@@ -159,10 +160,10 @@ public class SQLView extends javax.swing.JPanel {
                     .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lbl_result, javax.swing.GroupLayout.DEFAULT_SIZE, 955, Short.MAX_VALUE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(lbl_conn, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(lbl_result, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(lbl_conn, javax.swing.GroupLayout.PREFERRED_SIZE, 623, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -369,14 +370,19 @@ public class SQLView extends javax.swing.JPanel {
 
     public void setLabels() {
         while (true) {
-            String dbString = this.isDatabaseRunning ? "Database is running" : "Database is not running";
-            String connString = this.hasConnection ? "there is an active connection." : "there is no active connection.";
-            String lblString = String.format("%s & %s", dbString, connString);
+            if (this.hasConnection) {
+                lbl_conn.setText("There is an active connection with the database.");
+            } else if (!this.hasConnection && this.isDatabaseRunning) {
+                lbl_conn.setText("The database is running but there is no active connection.");
+            } else if (!this.hasConnection && !this.isDatabaseRunning) {
+                lbl_conn.setText("The database is not running");
+            }
 
-            lbl_conn.setText(lblString);
-
+            int daemonSleepTime = Integer.parseInt(Config.get("daemon_sleep_time"));
+            
+            // Make the thread sleep for 1 second, this is the daemon sleep time.
             try {
-                Thread.sleep(1000);
+                Thread.sleep(daemonSleepTime);
             } catch (InterruptedException ex) {
             }
         }

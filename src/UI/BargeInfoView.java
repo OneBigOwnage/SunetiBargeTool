@@ -9,6 +9,7 @@ import App.Controller;
 import App.ThreadManager;
 import App.Utils;
 import Models.BargeInfoModel;
+import Models.BargeInfoModel.bargeData;
 import java.util.Map;
 import java.util.TreeMap;
 import sunetibargetool.Config;
@@ -21,7 +22,7 @@ public class BargeInfoView extends javax.swing.JPanel {
 
     protected Controller controller;
     protected BargeInfoModel model;
-    protected Map<String, String> data = new TreeMap<>();
+    protected Map<bargeData, String> data = new TreeMap<>();
 
     /**
      * Creates new form BargeInfoView
@@ -54,11 +55,13 @@ public class BargeInfoView extends javax.swing.JPanel {
         lbl_broker = new javax.swing.JLabel();
         lbl_qm = new javax.swing.JLabel();
         lbl_fo = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        lbl_eni_number = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
 
         setBackground(new java.awt.Color(15, 124, 160));
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Solution Info", 0, 0, new java.awt.Font("Segoe UI Semibold", 0, 18), new java.awt.Color(255, 255, 255))); // NOI18N
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Solution Info", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI Semibold", 0, 18), new java.awt.Color(255, 255, 255))); // NOI18N
         jPanel1.setOpaque(false);
 
         jLabel3.setFont(new java.awt.Font("Segoe UI Semibold", 1, 14)); // NOI18N
@@ -93,23 +96,41 @@ public class BargeInfoView extends javax.swing.JPanel {
         lbl_fo.setForeground(new java.awt.Color(255, 255, 255));
         lbl_fo.setText("Not Loaded...");
 
+        jLabel5.setFont(new java.awt.Font("Segoe UI Semibold", 1, 14)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel5.setText("Eni Number:");
+
+        lbl_eni_number.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lbl_eni_number.setForeground(new java.awt.Color(255, 255, 255));
+        lbl_eni_number.setText("Not Loaded...");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(12, 12, 12)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lbl_bargeName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lbl_broker, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 228, Short.MAX_VALUE)
-                    .addComponent(lbl_qm, javax.swing.GroupLayout.DEFAULT_SIZE, 228, Short.MAX_VALUE)
-                    .addComponent(lbl_fo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 228, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(12, 12, 12)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lbl_eni_number, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lbl_bargeName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(lbl_fo, javax.swing.GroupLayout.DEFAULT_SIZE, 228, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(12, 12, 12)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lbl_broker, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lbl_qm, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -120,20 +141,24 @@ public class BargeInfoView extends javax.swing.JPanel {
                     .addComponent(lbl_bargeName))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(lbl_broker))
+                    .addComponent(jLabel5)
+                    .addComponent(lbl_eni_number))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lbl_broker)
+                    .addComponent(jLabel1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(lbl_qm))
-                .addGap(7, 7, 7)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(lbl_fo))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Version Info", 0, 0, new java.awt.Font("Segoe UI Semibold", 0, 18), new java.awt.Color(255, 255, 255))); // NOI18N
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Version Info", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI Semibold", 0, 18), new java.awt.Color(255, 255, 255))); // NOI18N
         jPanel2.setOpaque(false);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -165,7 +190,7 @@ public class BargeInfoView extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(336, Short.MAX_VALUE))
+                .addContainerGap(311, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -175,30 +200,38 @@ public class BargeInfoView extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JLabel lbl_bargeName;
     private javax.swing.JLabel lbl_broker;
+    private javax.swing.JLabel lbl_eni_number;
     private javax.swing.JLabel lbl_fo;
     private javax.swing.JLabel lbl_qm;
     // End of variables declaration//GEN-END:variables
 
     private void fillViewWithModelData() {
-        lbl_bargeName.setText((this.data.get("bargeName") != null) ? this.data.get("bargeName") : "Not Found");
-        lbl_broker.setText((this.data.get("brokerName") != null) ? this.data.get("brokerName") : "Not Found");
-        lbl_qm.setText((this.data.get("qualityManagerName") != null) ? this.data.get("qualityManagerName") : "Not Found");
-        lbl_fo.setText((this.data.get("ownerName") != null) ? this.data.get("ownerName") : "Not Found");
+        lbl_eni_number.setText((this.data.get(bargeData.ENI_NUMBER) != null) ? this.data.get(bargeData.ENI_NUMBER) : "Not Found");
+        lbl_bargeName.setText((this.data.get(bargeData.BARGE_NAME) != null) ? this.data.get(bargeData.BARGE_NAME) : "Not Found");
+        lbl_broker.setText((this.data.get(bargeData.BROKER_NAME) != null) ? this.data.get(bargeData.BROKER_NAME) : "Not Found");
+        lbl_qm.setText((this.data.get(bargeData.QUALITY_MANAGER_NAME) != null) ? this.data.get(bargeData.QUALITY_MANAGER_NAME) : "Not Found");
+        lbl_fo.setText((this.data.get(bargeData.OWNER_NAME) != null) ? this.data.get(bargeData.OWNER_NAME) : "Not Found");
     }
 
     private void loadDataPre() {
-        if (Boolean.parseBoolean(Config.get("appstart_autoload_data"))) {
+        Boolean autoLoad = Boolean.parseBoolean(Config.get("appstart_autoload_data"));
+        if (autoLoad) {
             ThreadManager.runInSeperateThread(Utils.getMethodByName("loadData", this), this);
         }
     }
 
-    private void loadData() {
+    public void loadData() {
         this.data.putAll(model.fetchData());
         fillViewWithModelData();
+        
+        for(Map.Entry<bargeData, String> entry : data.entrySet()) {
+            System.out.println(String.format("Barge Data Map: %s -> %s.", entry.getKey(), entry.getValue()));
+        }
     }
 
 }

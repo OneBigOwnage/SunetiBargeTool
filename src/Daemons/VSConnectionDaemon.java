@@ -24,7 +24,9 @@ public class VSConnectionDaemon extends BaseDaemon {
     }
 
     public static boolean isVesselSolutionConnected() {
-        if (!DatabaseDaemon.isDatabaseRunning() || !Database.getInstance().hasConnection()) {
+        if (!DatabaseDaemon.isDatabaseRunning()) {
+            return false;
+        } else if (!Database.getInstance().hasConnection()) {
             return false;
         }
 

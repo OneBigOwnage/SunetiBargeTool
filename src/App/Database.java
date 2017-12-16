@@ -101,7 +101,7 @@ public class Database {
 
         try {
             boolean autoReconnect = Boolean.parseBoolean(Config.get("auto_reconnect_database"));
-            if ((connection == null || !connection.isValid(0)) && autoReconnect) {
+            if (autoReconnect && (connection == null || !connection.isValid(0))) {
                 connect();
             }
             if (connection != null) {
