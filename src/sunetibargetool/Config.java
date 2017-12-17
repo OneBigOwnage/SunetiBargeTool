@@ -5,6 +5,7 @@
  */
 package sunetibargetool;
 
+import com.sun.javafx.fxml.PropertyNotFoundException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -23,39 +24,38 @@ public class Config {
     private static Properties properties;
 
     /**
-     * Method to load the properties file that is included in the JAR into memory.
-     * Will throw (output) errors if the loading fails.
-     * 
+     * Method to load the properties file that is included in the JAR into
+     * memory. Will throw (output) errors if the loading fails.
+     *
      * Note: The code is split to work in both a batteries-included-jar and IDE.
      */
     public static void load() {
         properties = new Properties();
         File propFile = null;
 
-        
         // Path to the config resource.
         String resource = "/bargeToolConfig.properties";
         URL res = Config.class.getResource(resource);
-        
+
         // This part is for the batteries-included-jar.
         if (res.toString().startsWith("jar:")) {
             try {
                 // Read .properties file as inputstream.
                 InputStream input = Config.class.getResourceAsStream(resource);
-                
+
                 // Create a temporary file outside of the JAR.
                 propFile = File.createTempFile("properties", ".tmp");
-                
+
                 OutputStream out = new FileOutputStream(propFile);
-                
+
                 int read;
                 byte[] bytes = new byte[1024];
-                
+
                 // Write everything from the config inside the JAR to the temp file.
                 while ((read = input.read(bytes)) != -1) {
                     out.write(bytes, 0, read);
                 }
-                
+
                 propFile.deleteOnExit();
             } catch (IOException ex) {
                 System.out.println("IOException trying to open properties file! Check if temp-directory has read/write access");
@@ -72,18 +72,52 @@ public class Config {
                 // Actually load the properties from the file.
                 properties.load(new FileInputStream(propFile));
             } catch (IOException ex) {
-                // Will never happen because of the prepended if-statement...
+                // Will never happen because of the prepended if-statement.
             }
         }
     }
 
     /**
+     * Method to retrieve a property from the internal properties object. That
+     * object is created from the attached 'bargetoolconfig.properties' file.
+     *
+     * @param key The key that is attached to the value of the property that is
+     * to be looked for.
+     * @return
+     */
+    public static Object getProperty(String key) {
+        try {
+            Object value = properties.getProperty(key);
+            if (value != null) {
+                return value;
+            } else {
+                throw new PropertyNotFoundException(String.format("Property '%s' was not found!", key));
+            }
+        } catch (PropertyNotFoundException e) {
+
+            return null;
+        }
+    }
+
+    /**
      * Method to retrieve a property from the properties variable.
-     * 
+     *
      * @param key The key that will be searched for in the properties.
-     * @return 
+     * @return
      */
     public static String get(String key) {
         return properties.getProperty(key);
+    }
+
+    public static String getString(String key) {
+        return (String) getProperty(key);
+    }
+
+    public static int getInteger(String key) {
+        return Integer.parseInt((String) getProperty(key));
+    }
+
+    public static boolean getBoolean(String key) {
+        return Boolean.parseBoolean((String) getProperty(key));
     }
 }
