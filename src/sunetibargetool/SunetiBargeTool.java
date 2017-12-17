@@ -42,8 +42,6 @@ public class SunetiBargeTool {
 //        controller.showLoginView();
         controller.afterLogin();
 
-        DaemonManager.defaultLoad();
-
         // Bootstrap all the daemons, via the DaemonManager.
         DaemonManager.defaultLoad();
     }

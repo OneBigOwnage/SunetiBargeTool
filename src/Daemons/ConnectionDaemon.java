@@ -15,20 +15,27 @@ import java.lang.reflect.Method;
  */
 public class ConnectionDaemon extends BaseDaemon implements Runnable {
 
+    protected static boolean isConnected;
+
     public ConnectionDaemon(int sleepTime) {
         super(sleepTime);
-    }
-    
-    public static boolean hasConnection() {
-        return Database.getInstance().hasConnection();
+        isConnected = false;
     }
 
+    private static void setIsConnected() {
+        isConnected = Database.getInstance().hasConnection();
+    }
+
+    public static boolean isConnected() {
+        return isConnected;
+    }
+    
     /**
      *
      */
     @Override
     public void dispatchSubscriptions() {
-        boolean isConnected = hasConnection();
+        setIsConnected();
         
         try {
             for (DeamonSubscription sub : this.subscribtionList) {

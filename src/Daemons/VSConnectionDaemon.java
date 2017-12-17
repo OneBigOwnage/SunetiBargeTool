@@ -19,18 +19,24 @@ import sunetibargetool.SunetiBargeTool;
  */
 public class VSConnectionDaemon extends BaseDaemon {
 
+    private static boolean isConnected = false;
+    
     public VSConnectionDaemon(int sleepTime) {
         super(sleepTime);
     }
 
     public static boolean isVesselSolutionConnected() {
+        return isConnected;
+    }
+    
+    public static void setIsVesselSolutionConnected() {
         if (!DatabaseDaemon.isDatabaseRunning()) {
-            return false;
+            isConnected = false;
+            return;
         } else if (!Database.getInstance().hasConnection()) {
-            return false;
+            isConnected = false;
+            return;
         }
-
-        boolean isConnected = false;
 
         Query query = new Query(
                 "SELECT * "
@@ -47,19 +53,17 @@ public class VSConnectionDaemon extends BaseDaemon {
         } catch (SQLException ex) {
             SunetiBargeTool.log("Could not check if Vessel Solution is connected to database: " + ex);
         }
-
-        return isConnected;
     }
 
     @Override
     public void dispatchSubscriptions() {
-        boolean isVSConnected = isVesselSolutionConnected();
+        setIsVesselSolutionConnected();
 
         for (DeamonSubscription sub : this.subscribtionList) {
             Method method = sub.getMethod();
             Object obj = sub.getObject();
             try {
-                method.invoke(obj, isVSConnected);
+                method.invoke(obj, isConnected);
             } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
                 SunetiBargeTool.log("Something went wrong trying to execute VSConnectionDaemon: " + ex);
             }

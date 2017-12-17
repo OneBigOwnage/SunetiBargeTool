@@ -28,9 +28,6 @@ public abstract class BaseDaemon implements Runnable {
     }
             
             
-    /**
-     * Not implemented because this should be implemented one class lower.
-     */
     @Override
     public void run() {
         // Give the daemon an initial wait time, to wait for

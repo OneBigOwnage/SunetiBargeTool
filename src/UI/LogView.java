@@ -98,7 +98,7 @@ public class LogView extends javax.swing.JPanel {
         logField.append(logLine);
         // Also System.out.println if flag logToConsole is true.
         if (this.logToConsole) {
-            System.out.print(logLine);
+//            System.out.print(logLine);
         }
     }
 
