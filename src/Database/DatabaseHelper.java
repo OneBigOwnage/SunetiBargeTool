@@ -19,7 +19,19 @@ public abstract class DatabaseHelper {
     static {
         DATABASE = Database.getInstance();
     }
-    
+
+    /**
+     * Gets a single value from the database, by given Query. This is especially
+     * useful when trying to retrieve very simple values from the database. Like
+     * a single name or number. This method takes a Query object, and returns
+     * the first value of the first row in the result. The returned value can
+     * then be cast to a less generic type. It is worth noting that it is
+     * important to check if the returned value is not NULL.
+     *
+     * @param query The query object that you want to fire off to the database.
+     * @return An Object containing the retrieved value, should be checked for
+     * null and cast to the type you are expecting.
+     */
     public static Object getSingleResultFromQuery(Query query) {
         // Get the result from executing a query.
         Object result = DATABASE.executeQuery(query);

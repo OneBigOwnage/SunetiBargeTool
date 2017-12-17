@@ -29,6 +29,27 @@ public class SunetiBargeTool {
         Config.load();
         UILib.fillMaps();
 
+        appStart();
+        AddShutDownHook();
+
+        // Create new Controller and send action 'showLoginView'.
+        controller = new Controller();
+//        controller.showLoginView();
+        controller.afterLogin();
+
+        DaemonManager.defaultLoad();
+
+        // Bootstrap all the daemons, via the DaemonManager.
+        DaemonManager.defaultLoad();
+    }
+
+    public static void log(String text) {
+        if (controller != null) {
+            controller.log(text);
+        }
+    }
+
+    private static void appStart() {
         boolean autoStart = Boolean.parseBoolean(Config.get("appstart_start_db"));
         boolean autoConnect = Boolean.parseBoolean(Config.get("appstart_connect_db"));
 
@@ -39,7 +60,13 @@ public class SunetiBargeTool {
         if (autoConnect) {
             Database.getInstance().connect();
         }
+    }
 
+    public static void exitApp() {
+        System.exit(0);
+    }
+
+    private static void AddShutDownHook() {
         // Add shutdownHook to disconnect from database, so it is not left running when Barge Tool is shut down.
         Runtime.getRuntime().addShutdownHook(new Thread() {
             @Override
@@ -58,28 +85,5 @@ public class SunetiBargeTool {
                 }
             }
         });
-
-        // Create new Controller and send action 'showLoginView'.
-        controller = new Controller();
-//        controller.showLoginView();
-        controller.afterLogin();
-
-        // Bootstrap all the daemons, via the DaemonManager.
-        try {
-            Class.forName(DaemonManager.class.getName());
-        } catch (ClassNotFoundException ex) {
-            controller.log("Class '" + DaemonManager.class.getName() + "' not found! " + ex);
-        }
-
-    }
-
-    public static void log(String text) {
-        if (controller != null) {
-            controller.log(text);
-        }
-    }
-
-    public static void exitApp() {
-        System.exit(0);
     }
 }

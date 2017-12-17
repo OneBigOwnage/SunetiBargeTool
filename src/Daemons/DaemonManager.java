@@ -39,7 +39,6 @@ public class DaemonManager {
     static {
         daemonList = new HashMap<>();
         createDaemons();
-        startDaemons();
     }
 
     /**
@@ -56,7 +55,7 @@ public class DaemonManager {
         daemonList.put(DaemonType.VESSEL_SOLUTION_CONNECTION, new VSConnectionDaemon(daemonSleepTime));
     }
 
-    private static void startDaemons() {
+    private static void startAllDaemons() {
         for (Map.Entry<DaemonType, BaseDaemon> daemon : daemonList.entrySet()) {
             new Thread(daemon.getValue()).start();
         }
@@ -70,5 +69,13 @@ public class DaemonManager {
         } else {
             System.out.println("Method '" + methodName + "' does not exist for '" + obj.getClass().getName() + "'");
         }
+    }
+    
+    public static void defaultLoad() {
+        startAllDaemons();
+    }
+    
+    public static void StartDaemon(DaemonType type) {
+        // To be implemented
     }
 }
