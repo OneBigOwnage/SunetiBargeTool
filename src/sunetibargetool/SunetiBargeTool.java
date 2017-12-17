@@ -7,11 +7,14 @@ package sunetibargetool;
 
 import App.Commands;
 import App.Controller;
+import App.ThreadManager;
+import App.Utils;
 import Database.Database;
 import Daemons.DaemonManager;
 import Daemons.DatabaseDaemon;
 import Daemons.VSConnectionDaemon;
 import UI.UILib;
+import java.lang.reflect.Method;
 
 /**
  *
@@ -28,8 +31,10 @@ public class SunetiBargeTool {
         // Load the configuration file from the JAR.
         Config.load();
         UILib.fillMaps();
-
-        appStart();
+        
+        Method appStartMethod = Utils.getMethodByName("appStart", SunetiBargeTool.class);
+        ThreadManager.runInSeperateThread(appStartMethod, null);
+        
         AddShutDownHook();
 
         // Create new Controller and send action 'showLoginView'.
@@ -49,15 +54,23 @@ public class SunetiBargeTool {
         }
     }
 
-    private static void appStart() {
+    public static void appStart() {
         boolean autoStart = Boolean.parseBoolean(Config.get("appstart_start_db"));
         boolean autoConnect = Boolean.parseBoolean(Config.get("appstart_connect_db"));
+        int appStartWaitTime = Config.getInteger("appstart_wait_time");
 
         if (autoStart && !DatabaseDaemon.isDatabaseRunning()) {
+            log("Going to start database...");
             Commands.startDatabase();
         }
 
         if (autoConnect) {
+            log("Going to auto connect to the database...");
+            try {
+                Thread.sleep(appStartWaitTime);
+            } catch (InterruptedException ex) {
+                log("appStart-thread was interrupted!");
+            }
             Database.getInstance().connect();
         }
     }

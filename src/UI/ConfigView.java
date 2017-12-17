@@ -326,7 +326,6 @@ public class ConfigView extends javax.swing.JPanel {
     private void btn_shutdown_vsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_shutdown_vsMouseClicked
         Method killVesselSolution = Utils.getMethodByName("killVesselSolution", Commands.class);
         ThreadManager.runInSeperateThread(killVesselSolution, null);
-//        Commands.killVesselSolution();
     }//GEN-LAST:event_btn_shutdown_vsMouseClicked
 
     public void setDBStateLabel(boolean isRunning) {

@@ -10,6 +10,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.JTextArea;
+import sunetibargetool.Config;
 
 /**
  *
@@ -20,12 +21,13 @@ public class LogView extends javax.swing.JPanel {
     protected Controller controller;
     private final JTextArea logField;
     private final DateFormat TIME_FORMAT = new SimpleDateFormat("HH:mm:ss");
-    
-    
+    private boolean logToConsole;
+
     public LogView(Controller controller) {
         initComponents();
         this.logField = logTextArea;
         this.controller = controller;
+        this.logToConsole = Config.getBoolean("log_to_console");
     }
 
     /**
@@ -90,11 +92,16 @@ public class LogView extends javax.swing.JPanel {
     }//GEN-LAST:event_btn_empty_logMousePressed
 
     public void appendToLog(String text) {
-        System.out.println(text);
         String currentTime = this.TIME_FORMAT.format(new Date());
-        logField.append(String.format("[ %s ] - %s\n", currentTime, text));
+        String logLine = String.format("[ %s ] - %s\n", currentTime, text);
+
+        logField.append(logLine);
+        // Also System.out.println if flag logToConsole is true.
+        if (this.logToConsole) {
+            System.out.print(logLine);
+        }
     }
-    
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_empty_log;

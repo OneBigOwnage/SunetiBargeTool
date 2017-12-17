@@ -9,6 +9,7 @@ import sunetibargetool.SunetiBargeTool;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import sunetibargetool.Config;
 
 /**
  *
@@ -17,10 +18,12 @@ import java.util.List;
 public abstract class BaseDaemon implements Runnable {
     
     protected final int daemonSleepTime;
+    protected final int daemonStartupSleepTime;
     protected final List<DeamonSubscription> subscribtionList;
     
     protected BaseDaemon(int sleepTime) {
         this.daemonSleepTime = sleepTime;
+        this.daemonStartupSleepTime = Config.getInteger("daemon_startup_wait_time");
         this.subscribtionList = new ArrayList<>();
     }
             
@@ -30,6 +33,14 @@ public abstract class BaseDaemon implements Runnable {
      */
     @Override
     public void run() {
+        // Give the daemon an initial wait time, to wait for
+        // all other processes to be started.
+        try {
+           Thread.sleep(this.daemonStartupSleepTime); 
+        } catch (InterruptedException e) {
+            SunetiBargeTool.log("A Daemon thread was interruped on startup!");
+        }
+        
         while (true) {            
             this.dispatchSubscriptions();
             try {
