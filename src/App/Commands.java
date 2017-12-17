@@ -59,6 +59,7 @@ public class Commands {
      */
     public static void stopDatabase() {
         Database.getInstance().disconnect();
+        
         String pg_ctl = "\"C:\\vessel solution\\database\\postgres_db\\bin\\pg_ctl.exe\"";
         String dir = "\"C:\\vessel solution\\database\\database\"";
         String log = "\"C:\\vessel solution\\database\\postgres_db\\postgres_log.txt\"";

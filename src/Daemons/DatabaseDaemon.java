@@ -21,6 +21,7 @@ import org.apache.commons.exec.DefaultExecuteResultHandler;
 public class DatabaseDaemon extends BaseDaemon implements Runnable {
 
     protected static boolean isDatabaseRunning = false;
+    protected static boolean isStopping = false;
     
     public DatabaseDaemon(int sleepTime) {
         super(sleepTime);
@@ -28,6 +29,10 @@ public class DatabaseDaemon extends BaseDaemon implements Runnable {
 
     public static boolean isDatabaseRunning() {
         return isDatabaseRunning;
+    }
+    
+    public void setIsStopping(boolean isStopping) {
+        isDatabaseRunning = isStopping;
     }
     
     public void setIsDatabaseRunning() {
@@ -60,8 +65,9 @@ public class DatabaseDaemon extends BaseDaemon implements Runnable {
                 // Just do nothing...
             }
         } catch (Exception ex) {
-            outputStream.toString();
             System.out.println("This should be investigated... " + ex);
+            outputStream.toString();
+            System.out.println("Breakpoint on this line...");
         }
         
         // Return true if the outputted line contains "server is running", false otherwise.

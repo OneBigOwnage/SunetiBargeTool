@@ -48,7 +48,7 @@ public class BargeInfoModel extends BaseModel {
     public Map<bargeData, String> fetchData() {
         Map<bargeData, String> dataMap = new TreeMap<>();
 
-        dataMap.put(bargeData.ENI_NUMBER, Integer.toString(getEniNumber()));
+        dataMap.put(bargeData.ENI_NUMBER, getEniNumber());
         dataMap.put(bargeData.BARGE_NAME, getBargeName());
         dataMap.put(bargeData.BROKER_NAME, getBrokerName());
         dataMap.put(bargeData.QUALITY_MANAGER_NAME, getQualityManagerName());
@@ -108,7 +108,7 @@ public class BargeInfoModel extends BaseModel {
 
     public String getCurrentVersionFolder() {
         Query currentVersionFolderQuery = new Query(
-                "SELECT current_version_folder "
+                "SELECT current_version_folder_name "
                 + "FROM bcm_settings;");
         return (String) DatabaseHelper.getSingleResultFromQuery(currentVersionFolderQuery);
     }
@@ -161,11 +161,11 @@ public class BargeInfoModel extends BaseModel {
         return Commands.highestVersionFolder.getName();
     }
 
-    public int getEniNumber() {
+    public String getEniNumber() {
         Query eniNumberQuery = new Query(
                 "SELECT eni_number "
-                + "FROM bcm_settings ");
+                + "FROM bcm_settings;");
 
-        return (int) DatabaseHelper.getSingleResultFromQuery(eniNumberQuery);
+        return (String) DatabaseHelper.getSingleResultFromQuery(eniNumberQuery);
     }
 }
