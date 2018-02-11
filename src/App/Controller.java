@@ -7,6 +7,7 @@ package App;
 
 import Models.BargeInfoModel;
 import Models.BaseModel;
+import Models.ProcedureModel;
 import Models.SQLModel;
 import UI.BargeInfoView;
 import UI.ConfigView;
@@ -26,7 +27,6 @@ import java.util.TreeMap;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
-import sunetibargetool.Config;
 
 /**
  *
@@ -115,6 +115,7 @@ public class Controller {
     private void initModels() {
         modelList.put("BargeInfoModel", new BargeInfoModel(this));
         modelList.put("SQLModel", new SQLModel(this));
+        modelList.put("ProcedureModel", new ProcedureModel(this));
     }
 
     private void initViews() {
@@ -124,7 +125,7 @@ public class Controller {
         viewList.put("SQLView", new SQLView(this, (SQLModel) modelList.get("SQLModel")));
         viewList.put("SideBar", new SideBar(this));
         viewList.put("ConfigView", new ConfigView(this));
-        viewList.put("StandardProcedureView", new StandardProcedureView(this));
+        viewList.put("StandardProcedureView", new StandardProcedureView(this, (ProcedureModel) modelList.get("ProcedureModel")));
     }
 
     public void log(String text) {

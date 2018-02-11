@@ -15,7 +15,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 import java.util.Properties;
-import javax.swing.border.LineBorder;
 
 /**
  *
@@ -127,8 +126,8 @@ public class Config {
      *
      */
     public enum Colors {
-        APPLICATION_DEFAULT_BLUE(new Color(15,124,160)),
-        FONT_COLOR_WHITE(new Color(255,255,255)),
+        APPLICATION_DEFAULT_BLUE(new Color(15, 124, 160)),
+        FONT_COLOR_WHITE(new Color(255, 255, 255)),
         BTN_NORMAL_BG(new Color(15, 124, 160)),
         BTN_NORMAL_BORDER(new Color(60, 60, 60)),
         BTN_NORMAL_FONT(new Color(60, 60, 60)),
@@ -148,4 +147,19 @@ public class Config {
             return color;
         }
     }
+
+    /**
+     * A list of all the models in this MVC application.
+     */
+    public enum Models {
+        
+    }
+
+    /**
+     * A list of all the Views in this MVC application.
+     */
+    public enum Views {
+
+    }
+
 }

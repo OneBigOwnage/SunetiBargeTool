@@ -6,6 +6,9 @@
 package Models;
 
 import App.Controller;
+import StandardProcedures.StandardProcedure;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -13,8 +16,15 @@ import App.Controller;
  */
 public class ProcedureModel extends BaseModel {
     
+    private ArrayList<StandardProcedure> procedureList;
+    
     public ProcedureModel(Controller controller) {
         super(controller);
+        loadProcedureList();
+    }
+    
+    private void loadProcedureList() {
+        List<Class> subClassNames = StandardProcedure.getSubClassNames();
     }
     
 }
