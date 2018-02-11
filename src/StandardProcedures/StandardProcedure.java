@@ -1,6 +1,6 @@
 package StandardProcedures;
 
-import App.ClassEnumerator;
+import HelperClasses.ClassEnumerator;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -71,7 +71,7 @@ public abstract class StandardProcedure {
      *
      * @return A list of subclasses from this class.
      */
-    public static ArrayList<Class> getSubClassNames() {
+    public static ArrayList<Class> getSubClasses() {
 
         ArrayList<Class> subClassList = new ArrayList<>();
 
@@ -88,6 +88,11 @@ public abstract class StandardProcedure {
 
         // Return the list of known subclasses.
         return subClassList;
+    }
+    
+    @Override
+    public String toString() {
+        return this.name;
     }
 
 }

@@ -5,7 +5,10 @@
  */
 package UI;
 
+import UiHelpers.UiLib;
 import App.Controller;
+import Models.ProcedureModel;
+import UiHelpers.CustomListCellRenderer;
 
 /**
  *
@@ -14,14 +17,19 @@ import App.Controller;
 public class StandardProcedureView extends javax.swing.JPanel {
 
     protected Controller controller;
-    
+    protected ProcedureModel model;
+
     /**
      * Creates new form StandardProcedureView
+     *
      * @param controller
+     * @param model
      */
-    public StandardProcedureView(Controller controller) {
+    public StandardProcedureView(Controller controller, ProcedureModel model) {
         initComponents();
         this.controller = controller;
+        this.model = model;
+        fixUI();
     }
 
     /**
@@ -34,8 +42,31 @@ public class StandardProcedureView extends javax.swing.JPanel {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jTextField1 = new javax.swing.JTextField();
+        searchField = new javax.swing.JTextField();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        procedureList = new javax.swing.JList<>();
         jPanel2 = new javax.swing.JPanel();
+
+        setBackground(new java.awt.Color(15, 124, 160));
+
+        jPanel1.setBackground(new java.awt.Color(15, 124, 160));
+
+        searchField.setBackground(new java.awt.Color(15, 124, 160));
+        searchField.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        searchField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                searchFieldKeyTyped(evt);
+            }
+        });
+
+        procedureList.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        procedureList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+        procedureList.setCellRenderer(null);
+        jScrollPane1.setViewportView(procedureList);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -43,22 +74,28 @@ public class StandardProcedureView extends javax.swing.JPanel {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 321, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(searchField, javax.swing.GroupLayout.DEFAULT_SIZE, 321, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(361, Short.MAX_VALUE))
+                .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 345, Short.MAX_VALUE)
+                .addContainerGap())
         );
+
+        jPanel2.setBackground(new java.awt.Color(15, 124, 160));
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 352, Short.MAX_VALUE)
+            .addGap(0, 244, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -71,8 +108,8 @@ public class StandardProcedureView extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 114, Short.MAX_VALUE)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -81,10 +118,25 @@ public class StandardProcedureView extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void searchFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchFieldKeyTyped
+        // Implement search here, should probably with done by filtering on name
+        // in the procedureModel thing or whatever.
+        fixUI();
+    }//GEN-LAST:event_searchFieldKeyTyped
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JList<String> procedureList;
+    private javax.swing.JTextField searchField;
     // End of variables declaration//GEN-END:variables
+
+    private void fixUI() {
+        UiLib.styleTextField(searchField);
+        procedureList.setCellRenderer(new CustomListCellRenderer());
+        procedureList.setModel(model.getProcedureListModel());
+    }
+
 }

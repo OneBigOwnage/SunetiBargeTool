@@ -6,25 +6,32 @@
 package Models;
 
 import App.Controller;
+import HelperClasses.ProcedureListModel;
+import StandardProcedures.ProcedureManager;
 import StandardProcedures.StandardProcedure;
-import java.util.ArrayList;
 import java.util.List;
+import javax.swing.ListModel;
 
 /**
  *
  * @author niekv
  */
 public class ProcedureModel extends BaseModel {
-    
-    private ArrayList<StandardProcedure> procedureList;
-    
+
+    private final List<StandardProcedure> procedureList;
+
     public ProcedureModel(Controller controller) {
         super(controller);
-        loadProcedureList();
+        procedureList = ProcedureManager.getProcedures();
     }
-    
-    private void loadProcedureList() {
-        List<Class> subClassNames = StandardProcedure.getSubClassNames();
+
+    public ListModel getProcedureListModel() {
+        ProcedureListModel listModel = new ProcedureListModel();
+        for (StandardProcedure procedure : procedureList) {
+            listModel.add(procedure);
+        }
+        System.out.println("Length: " + listModel.getSize());
+        return listModel;
     }
-    
+
 }

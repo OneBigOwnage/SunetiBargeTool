@@ -13,6 +13,7 @@ import Database.Database;
 import Daemons.DaemonManager;
 import Daemons.DatabaseDaemon;
 import Daemons.VSConnectionDaemon;
+import StandardProcedures.ProcedureManager;
 import java.lang.reflect.Method;
 
 /**
@@ -35,6 +36,11 @@ public class SunetiBargeTool {
 
         AddShutDownHook();
 
+        ProcedureManager.load();
+        
+        // Bootstrap all the daemons, via the DaemonManager.
+        DaemonManager.defaultLoad();
+        
         // Create new Controller and send action 'showLoginView'.
         controller = new Controller();
 
@@ -43,9 +49,6 @@ public class SunetiBargeTool {
 //        controller.showLoginView();
         controller.afterLogin();
         // *** IMPORTANT ***
-
-        // Bootstrap all the daemons, via the DaemonManager.
-        DaemonManager.defaultLoad();
     }
 
     public static void log(String text) {

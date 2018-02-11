@@ -5,18 +5,36 @@
  */
 package StandardProcedures;
 
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
  * @author suneti
  */
-public class ProcedureManager {
-    
-    public static void executeProcedure() {
-        
+abstract public class ProcedureManager {
+
+    /**
+     * The list of Standard Procedures.
+     */
+    private static List<StandardProcedure> procedures;
+
+    public static void load() {
+        // Loading the list of standard procedures.
+        procedures = new ArrayList<>();
+        for (Class<? extends StandardProcedure> procedureClass : StandardProcedure.getSubClasses()) {
+            try {
+                StandardProcedure procedure = procedureClass.newInstance();
+                procedures.add(procedure);
+            } catch (InstantiationException | IllegalAccessException ex) {
+                System.out.println("There was a problem trying to load a standard procedure!" + ex);
+            }
+        }
+
     }
-    
-    
-    
-    
+
+    public static List<StandardProcedure> getProcedures() {
+        return procedures;
+    }
+
 }
