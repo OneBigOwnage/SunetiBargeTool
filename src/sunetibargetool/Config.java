@@ -127,6 +127,8 @@ public class Config {
      *
      */
     public enum Colors {
+        APPLICATION_DEFAULT_BLUE(new Color(15,124,160)),
+        FONT_COLOR_WHITE(new Color(255,255,255)),
         BTN_NORMAL_BG(new Color(15, 124, 160)),
         BTN_NORMAL_BORDER(new Color(60, 60, 60)),
         BTN_NORMAL_FONT(new Color(60, 60, 60)),

@@ -15,7 +15,7 @@ import UI.LoginView;
 import UI.SQLView;
 import UI.SideBar;
 import UI.StandardProcedureView;
-import UI.UILib;
+import UiHelpers.UiLib;
 import UI.UserInterface;
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -99,14 +99,14 @@ public class Controller {
         List<Component> componentList = new ArrayList<>();
 
         for (Map.Entry<String, JPanel> view : viewList.entrySet()) {
-            componentList.addAll(UILib.getAllComponents(view.getValue()));
+            componentList.addAll(UiLib.getAllComponents(view.getValue()));
         }
 
         for (Component component : componentList) {
             if (component instanceof JButton) {
-                UILib.UIButtonHelper((JButton) component);
+                UiLib.UIButtonHelper((JButton) component);
             } else if (component instanceof JPanel && ((JPanel) component).getBorder() instanceof TitledBorder) {
-                UILib.UITitledBorderHelper((JPanel) component);
+                UiLib.UITitledBorderHelper((JPanel) component);
             }
         }
 
