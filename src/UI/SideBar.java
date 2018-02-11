@@ -85,12 +85,17 @@ public class SideBar extends javax.swing.JPanel {
 
         jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/home_icon_procedure.png"))); // NOI18N
         jLabel7.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel7.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                standardProcedures(evt);
+            }
+        });
 
         btn_log.setIcon(new javax.swing.ImageIcon(getClass().getResource("/home_icon_log.png"))); // NOI18N
         btn_log.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btn_log.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
-                btn_logMousePressed(evt);
+                log(evt);
             }
         });
 
@@ -155,14 +160,18 @@ public class SideBar extends javax.swing.JPanel {
     private void SQL(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_SQL
         controller.showSQLView();
     }//GEN-LAST:event_SQL
-
-    private void btn_logMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_logMousePressed
+    
+    private void log(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_log
         controller.showLogView();
-    }//GEN-LAST:event_btn_logMousePressed
+    }//GEN-LAST:event_log
 
     private void jLabel4MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MousePressed
         SunetiBargeTool.exitApp();
     }//GEN-LAST:event_jLabel4MousePressed
+
+    private void standardProcedures(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_standardProcedures
+        controller.showStandardProcedureView();
+    }//GEN-LAST:event_standardProcedures
     
     public void setBgColor(Color color) {
         setBackground(color);

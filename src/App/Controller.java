@@ -14,6 +14,7 @@ import UI.LogView;
 import UI.LoginView;
 import UI.SQLView;
 import UI.SideBar;
+import UI.StandardProcedureView;
 import UI.UILib;
 import UI.UserInterface;
 import java.awt.BorderLayout;
@@ -25,6 +26,7 @@ import java.util.TreeMap;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
+import sunetibargetool.Config;
 
 /**
  *
@@ -86,6 +88,12 @@ public class Controller {
         this.userInterface.clearPanel(BorderLayout.CENTER);
         this.userInterface.setPanel(viewList.get("LogView"), BorderLayout.CENTER);
     }
+    
+    public void showStandardProcedureView() {
+        this.userInterface.clearPanel(BorderLayout.CENTER);
+        this.userInterface.setPanel(viewList.get("StandardProcedureView"), BorderLayout.CENTER);
+    }
+    
 
     private void fixUserInterface() {
         List<Component> componentList = new ArrayList<>();
@@ -116,6 +124,7 @@ public class Controller {
         viewList.put("SQLView", new SQLView(this, (SQLModel) modelList.get("SQLModel")));
         viewList.put("SideBar", new SideBar(this));
         viewList.put("ConfigView", new ConfigView(this));
+        viewList.put("StandardProcedureView", new StandardProcedureView(this));
     }
 
     public void log(String text) {
