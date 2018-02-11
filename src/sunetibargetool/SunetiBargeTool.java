@@ -13,7 +13,6 @@ import Database.Database;
 import Daemons.DaemonManager;
 import Daemons.DatabaseDaemon;
 import Daemons.VSConnectionDaemon;
-import UI.UILib;
 import java.lang.reflect.Method;
 
 /**
@@ -30,16 +29,20 @@ public class SunetiBargeTool {
     public static void main(String[] args) {
         // Load the configuration file from the JAR.
         Config.load();
-        
+
         Method appStartMethod = Utils.getMethodByName("appStart", SunetiBargeTool.class);
         ThreadManager.runInSeperateThread(appStartMethod, null);
-        
+
         AddShutDownHook();
 
         // Create new Controller and send action 'showLoginView'.
         controller = new Controller();
+
+        // *** IMPORTANT ***
+        // In production, uncomment first line and delete second line!
 //        controller.showLoginView();
         controller.afterLogin();
+        // *** IMPORTANT ***
 
         // Bootstrap all the daemons, via the DaemonManager.
         DaemonManager.defaultLoad();
