@@ -30,7 +30,6 @@ public class SunetiBargeTool {
     public static void main(String[] args) {
         // Load the configuration file from the JAR.
         Config.load();
-        UILib.fillMaps();
         
         Method appStartMethod = Utils.getMethodByName("appStart", SunetiBargeTool.class);
         ThreadManager.runInSeperateThread(appStartMethod, null);

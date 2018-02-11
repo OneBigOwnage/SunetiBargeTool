@@ -6,6 +6,7 @@
 package sunetibargetool;
 
 import com.sun.javafx.fxml.PropertyNotFoundException;
+import java.awt.Color;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -14,6 +15,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 import java.util.Properties;
+import javax.swing.border.LineBorder;
 
 /**
  *
@@ -119,5 +121,29 @@ public class Config {
 
     public static boolean getBoolean(String key) {
         return Boolean.parseBoolean((String) getProperty(key));
+    }
+
+    /**
+     *
+     */
+    public enum Colors {
+        BTN_NORMAL_BG(new Color(15, 124, 160)),
+        BTN_NORMAL_BORDER(new Color(60, 60, 60)),
+        BTN_NORMAL_FONT(new Color(60, 60, 60)),
+        BTN_HOVER_BORDER(new Color(60, 60, 60)),
+        BTN_HOVER_FONT(new Color(255, 255, 255)),
+        BTN_DOWN_BG(new Color(8, 75, 96)),
+        TITLED_BORDER_BORDER_COLOR(new Color(60, 60, 60)),
+        TITLED_BORDER_FONT_COLOR(new Color(60, 60, 60));
+
+        private final Color color;
+
+        private Colors(Color c) {
+            this.color = c;
+        }
+
+        public Color getColor() {
+            return color;
+        }
     }
 }
