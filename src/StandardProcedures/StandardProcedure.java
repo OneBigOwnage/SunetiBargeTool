@@ -29,6 +29,7 @@ public abstract class StandardProcedure {
      *
      * @param name
      * @param description
+     * @param warningMessages
      */
     public StandardProcedure(String name, String description, String[] warningMessages) {
         this.name = name;
