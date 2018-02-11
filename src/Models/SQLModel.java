@@ -24,7 +24,6 @@ public class SQLModel extends BaseModel {
     
     public SQLModel(Controller controller) {
         super(controller);
-        this.controller = controller;
         this.queryList = new ArrayList<>();
         this.updateIterator();
     }
