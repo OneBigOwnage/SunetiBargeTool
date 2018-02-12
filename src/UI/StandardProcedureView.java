@@ -9,6 +9,9 @@ import UiHelpers.UiLib;
 import App.Controller;
 import Models.ProcedureModel;
 import UiHelpers.CustomListCellRenderer;
+import java.awt.Color;
+import javax.swing.border.LineBorder;
+import sunetibargetool.Config;
 
 /**
  *
@@ -59,6 +62,8 @@ public class StandardProcedureView extends javax.swing.JPanel {
             }
         });
 
+        jScrollPane1.setBorder(null);
+
         procedureList.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2" };
             public int getSize() { return strings.length; }
@@ -75,7 +80,7 @@ public class StandardProcedureView extends javax.swing.JPanel {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(searchField, javax.swing.GroupLayout.DEFAULT_SIZE, 321, Short.MAX_VALUE)
+                    .addComponent(searchField, javax.swing.GroupLayout.DEFAULT_SIZE, 224, Short.MAX_VALUE)
                     .addComponent(jScrollPane1))
                 .addContainerGap())
         );
@@ -95,7 +100,7 @@ public class StandardProcedureView extends javax.swing.JPanel {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 244, Short.MAX_VALUE)
+            .addGap(0, 449, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -107,9 +112,9 @@ public class StandardProcedureView extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 114, Short.MAX_VALUE)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -137,6 +142,9 @@ public class StandardProcedureView extends javax.swing.JPanel {
         UiLib.styleTextField(searchField);
         procedureList.setCellRenderer(new CustomListCellRenderer());
         procedureList.setModel(model.getProcedureListModel());
+        procedureList.setBorder(new LineBorder(Config.Colors.APPLICATION_DEFAULT_GREY.getColor(), 2));
+        procedureList.setBackground(Config.Colors.APPLICATION_DEFAULT_BLUE.getColor());
+        
     }
 
 }

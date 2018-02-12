@@ -38,6 +38,7 @@ public class UserInterface extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Suneti Barge Tool");
+        setMinimumSize(new java.awt.Dimension(930, 465));
         setName("mainFrame"); // NOI18N
         setSize(new java.awt.Dimension(1100, 500));
 
