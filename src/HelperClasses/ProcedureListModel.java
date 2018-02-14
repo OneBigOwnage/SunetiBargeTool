@@ -14,7 +14,7 @@ import javax.swing.AbstractListModel;
  *
  * @author niekv
  */
-public class ProcedureListModel extends AbstractListModel<Object> {
+public class ProcedureListModel extends AbstractListModel<StandardProcedure> {
 
     private final List<StandardProcedure> list;
 

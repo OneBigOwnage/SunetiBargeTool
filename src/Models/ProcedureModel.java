@@ -30,7 +30,6 @@ public class ProcedureModel extends BaseModel {
         for (StandardProcedure procedure : procedureList) {
             listModel.add(procedure);
         }
-        System.out.println("Length: " + listModel.getSize());
         return listModel;
     }
 

@@ -7,10 +7,16 @@ package UI;
 
 import UiHelpers.UiLib;
 import App.Controller;
+import HelperClasses.ProcedureListModel;
 import Models.ProcedureModel;
+import StandardProcedures.StandardProcedure;
 import UiHelpers.CustomListCellRenderer;
 import java.awt.Color;
+import javax.swing.DefaultListModel;
+import javax.swing.JPanel;
+import javax.swing.ListModel;
 import javax.swing.border.LineBorder;
+import javax.xml.bind.annotation.XmlElement;
 import sunetibargetool.Config;
 
 /**
@@ -48,7 +54,7 @@ public class StandardProcedureView extends javax.swing.JPanel {
         searchField = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         procedureList = new javax.swing.JList<>();
-        jPanel2 = new javax.swing.JPanel();
+        content_panel = new javax.swing.JPanel();
 
         setBackground(new java.awt.Color(15, 124, 160));
 
@@ -64,11 +70,6 @@ public class StandardProcedureView extends javax.swing.JPanel {
 
         jScrollPane1.setBorder(null);
 
-        procedureList.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
         procedureList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         procedureList.setCellRenderer(null);
         jScrollPane1.setViewportView(procedureList);
@@ -80,8 +81,8 @@ public class StandardProcedureView extends javax.swing.JPanel {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(searchField, javax.swing.GroupLayout.DEFAULT_SIZE, 224, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1))
+                    .addComponent(searchField, javax.swing.GroupLayout.DEFAULT_SIZE, 240, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 240, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -94,16 +95,16 @@ public class StandardProcedureView extends javax.swing.JPanel {
                 .addContainerGap())
         );
 
-        jPanel2.setBackground(new java.awt.Color(15, 124, 160));
+        content_panel.setBackground(new java.awt.Color(15, 124, 160));
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 449, Short.MAX_VALUE)
+        javax.swing.GroupLayout content_panelLayout = new javax.swing.GroupLayout(content_panel);
+        content_panel.setLayout(content_panelLayout);
+        content_panelLayout.setHorizontalGroup(
+            content_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 433, Short.MAX_VALUE)
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        content_panelLayout.setVerticalGroup(
+            content_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 0, Short.MAX_VALUE)
         );
 
@@ -114,12 +115,12 @@ public class StandardProcedureView extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(content_panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(content_panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -127,12 +128,13 @@ public class StandardProcedureView extends javax.swing.JPanel {
         // Implement search here, should probably with done by filtering on name
         // in the procedureModel thing or whatever.
         fixUI();
+        showSummaryView();
     }//GEN-LAST:event_searchFieldKeyTyped
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel content_panel;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JList<String> procedureList;
     private javax.swing.JTextField searchField;
@@ -144,7 +146,32 @@ public class StandardProcedureView extends javax.swing.JPanel {
         procedureList.setModel(model.getProcedureListModel());
         procedureList.setBorder(new LineBorder(Config.Colors.APPLICATION_DEFAULT_GREY.getColor(), 2));
         procedureList.setBackground(Config.Colors.APPLICATION_DEFAULT_BLUE.getColor());
-        
+
     }
 
+    public void showSummaryView(StandardProcedure procedure) {
+        setContentPanel(new ProcedureSummaryView(procedure));
+    }
+    
+    
+    public void showWarningView(StandardProcedure procedure) {
+        
+    }
+    
+    public void showExecuteView(StandardProcedure procedure) {
+        
+    }
+    
+    private void setContentPanel(JPanel view) {
+        content_panel.removeAll();
+        content_panel.add(view);
+    }
+    
+    private StandardProcedure getSelectedProcedure() {
+        ListModel<StandardProcedure> model = new DefaultListModel<>();
+        // fill list with items somewhere.
+        procedureList.setModel(model);
+        
+    }
+    
 }
