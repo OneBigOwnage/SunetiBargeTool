@@ -11,12 +11,10 @@ import HelperClasses.ProcedureListModel;
 import Models.ProcedureModel;
 import StandardProcedures.StandardProcedure;
 import UiHelpers.CustomListCellRenderer;
-import java.awt.Color;
-import javax.swing.DefaultListModel;
+import java.awt.BorderLayout;
+import javax.swing.BorderFactory;
 import javax.swing.JPanel;
-import javax.swing.ListModel;
 import javax.swing.border.LineBorder;
-import javax.xml.bind.annotation.XmlElement;
 import sunetibargetool.Config;
 
 /**
@@ -31,14 +29,15 @@ public class StandardProcedureView extends javax.swing.JPanel {
     /**
      * Creates new form StandardProcedureView
      *
-     * @param controller
-     * @param model
+     * @param controller The controller to initialize the view with.
+     * @param model The model to initialize the view with.
      */
     public StandardProcedureView(Controller controller, ProcedureModel model) {
         initComponents();
         this.controller = controller;
         this.model = model;
         fixUI();
+        procedureList.setModel(model.getProcedureListModel());
     }
 
     /**
@@ -52,7 +51,7 @@ public class StandardProcedureView extends javax.swing.JPanel {
 
         jPanel1 = new javax.swing.JPanel();
         searchField = new javax.swing.JTextField();
-        jScrollPane1 = new javax.swing.JScrollPane();
+        procedureListScrollPane = new javax.swing.JScrollPane();
         procedureList = new javax.swing.JList<>();
         content_panel = new javax.swing.JPanel();
 
@@ -68,11 +67,13 @@ public class StandardProcedureView extends javax.swing.JPanel {
             }
         });
 
-        jScrollPane1.setBorder(null);
-
         procedureList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-        procedureList.setCellRenderer(null);
-        jScrollPane1.setViewportView(procedureList);
+        procedureList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                procedureListSelectionChanged(evt);
+            }
+        });
+        procedureListScrollPane.setViewportView(procedureList);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -81,8 +82,8 @@ public class StandardProcedureView extends javax.swing.JPanel {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(searchField, javax.swing.GroupLayout.DEFAULT_SIZE, 240, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 240, Short.MAX_VALUE))
+                    .addComponent(searchField)
+                    .addComponent(procedureListScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 354, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -91,21 +92,21 @@ public class StandardProcedureView extends javax.swing.JPanel {
                 .addContainerGap()
                 .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 345, Short.MAX_VALUE)
+                .addComponent(procedureListScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 345, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
-        content_panel.setBackground(new java.awt.Color(15, 124, 160));
+        content_panel.setBackground(Config.Colors.APPLICATION_DEFAULT_BLUE.getColor());
 
         javax.swing.GroupLayout content_panelLayout = new javax.swing.GroupLayout(content_panel);
         content_panel.setLayout(content_panelLayout);
         content_panelLayout.setHorizontalGroup(
             content_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 433, Short.MAX_VALUE)
+            .addGap(0, 319, Short.MAX_VALUE)
         );
         content_panelLayout.setVerticalGroup(
             content_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 391, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -113,65 +114,69 @@ public class StandardProcedureView extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(content_panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(content_panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(content_panel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void searchFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchFieldKeyTyped
         // Implement search here, should probably with done by filtering on name
         // in the procedureModel thing or whatever.
-        fixUI();
-        showSummaryView();
     }//GEN-LAST:event_searchFieldKeyTyped
 
+    private void procedureListSelectionChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_procedureListSelectionChanged
+        // If statement is to only change UI once per change, not twice. ( https://stackoverflow.com/questions/12461627/ )
+        if (!evt.getValueIsAdjusting()) {
+            showWarningView(getSelectedProcedure());
+        }
+    }//GEN-LAST:event_procedureListSelectionChanged
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel content_panel;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JList<String> procedureList;
+    private javax.swing.JScrollPane procedureListScrollPane;
     private javax.swing.JTextField searchField;
     // End of variables declaration//GEN-END:variables
 
     private void fixUI() {
         UiLib.styleTextField(searchField);
+        procedureListScrollPane.setBorder(BorderFactory.createEmptyBorder());
         procedureList.setCellRenderer(new CustomListCellRenderer());
-        procedureList.setModel(model.getProcedureListModel());
         procedureList.setBorder(new LineBorder(Config.Colors.APPLICATION_DEFAULT_GREY.getColor(), 2));
         procedureList.setBackground(Config.Colors.APPLICATION_DEFAULT_BLUE.getColor());
-
+        content_panel.setLayout(new BorderLayout());
     }
 
     public void showSummaryView(StandardProcedure procedure) {
         setContentPanel(new ProcedureSummaryView(procedure));
     }
-    
-    
+
     public void showWarningView(StandardProcedure procedure) {
-        
+        setContentPanel(new ProcedureWarningView(procedure));
     }
-    
+
     public void showExecuteView(StandardProcedure procedure) {
-        
+        setContentPanel(new ProcedureExecutionView(procedure));
     }
-    
+
     private void setContentPanel(JPanel view) {
         content_panel.removeAll();
-        content_panel.add(view);
+        content_panel.add(view, BorderLayout.CENTER);
+        content_panel.revalidate();
+        content_panel.repaint();
     }
-    
-    private StandardProcedure getSelectedProcedure() {
-        ListModel<StandardProcedure> model = new DefaultListModel<>();
-        // fill list with items somewhere.
-        procedureList.setModel(model);
-        
+
+    public StandardProcedure getSelectedProcedure() {
+        ProcedureListModel dataModel = (ProcedureListModel) procedureList.getModel();
+        int selectedIndex = procedureList.getSelectedIndex();
+        return (StandardProcedure) dataModel.getElementAt(selectedIndex);
     }
-    
+
 }

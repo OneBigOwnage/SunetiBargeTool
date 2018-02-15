@@ -88,12 +88,11 @@ public class Controller {
         this.userInterface.clearPanel(BorderLayout.CENTER);
         this.userInterface.setPanel(viewList.get("LogView"), BorderLayout.CENTER);
     }
-    
+
     public void showStandardProcedureView() {
         this.userInterface.clearPanel(BorderLayout.CENTER);
-        this.userInterface.setPanel(viewList.get("StandardProcedureView"), BorderLayout.CENTER);
+        this.userInterface.setPanel(viewList.get("ProcedureView"), BorderLayout.CENTER);
     }
-    
 
     private void fixUserInterface() {
         List<Component> componentList = new ArrayList<>();
@@ -125,7 +124,7 @@ public class Controller {
         viewList.put("SQLView", new SQLView(this, (SQLModel) modelList.get("SQLModel")));
         viewList.put("SideBar", new SideBar(this));
         viewList.put("ConfigView", new ConfigView(this));
-        viewList.put("StandardProcedureView", new StandardProcedureView(this, (ProcedureModel) modelList.get("ProcedureModel")));
+        viewList.put("ProcedureView", new StandardProcedureView(this, (ProcedureModel) modelList.get("ProcedureModel")));
     }
 
     public void log(String text) {

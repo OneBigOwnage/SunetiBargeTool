@@ -15,15 +15,12 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.ListCellRenderer;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 import javax.swing.border.MatteBorder;
 import javax.swing.border.TitledBorder;
-import javax.swing.text.StyleConstants;
 import sunetibargetool.Config;
 
 /**
@@ -127,7 +124,11 @@ public final class UiLib {
      * @return The default font of this application
      */
     public static Font getDefaultFont() {
-        return new Font("Segoe UI", 0, 14);
+        return new Font("Segoe UI", Font.PLAIN, 14);
+    }
+    
+    public static Font getTitleFont() {
+        return new Font("Segoe UI", Font.BOLD, 16);
     }
 
 }

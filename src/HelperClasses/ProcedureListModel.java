@@ -5,7 +5,6 @@
  */
 package HelperClasses;
 
-import StandardProcedures.StandardProcedure;
 import java.util.LinkedList;
 import java.util.List;
 import javax.swing.AbstractListModel;
@@ -14,7 +13,7 @@ import javax.swing.AbstractListModel;
  *
  * @author niekv
  */
-public class ProcedureListModel extends AbstractListModel<StandardProcedure> {
+public class ProcedureListModel<StandardProcedure> extends AbstractListModel<StandardProcedure> {
 
     private final List<StandardProcedure> list;
 
