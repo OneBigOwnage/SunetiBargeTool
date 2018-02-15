@@ -9,7 +9,7 @@ import App.Controller;
 import Database.Database;
 import Database.Query;
 import App.ThreadManager;
-import App.Utils;
+import HelperClasses.Utils;
 import Daemons.DaemonManager;
 import Models.SQLModel;
 import java.awt.Color;

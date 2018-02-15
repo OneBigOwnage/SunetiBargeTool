@@ -5,6 +5,7 @@
  */
 package App;
 
+import HelperClasses.Utils;
 import Database.Database;
 import Daemons.DatabaseDaemon;
 import java.io.ByteArrayOutputStream;

@@ -6,7 +6,7 @@
 package Daemons;
 
 import App.CommandLineWrapper;
-import App.Utils;
+import HelperClasses.Utils;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;

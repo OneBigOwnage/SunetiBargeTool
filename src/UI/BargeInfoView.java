@@ -7,7 +7,7 @@ package UI;
 
 import App.Controller;
 import App.ThreadManager;
-import App.Utils;
+import HelperClasses.Utils;
 import Models.BargeInfoModel;
 import Models.BargeInfoModel.bargeData;
 import java.util.Map;

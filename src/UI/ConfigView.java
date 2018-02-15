@@ -9,7 +9,7 @@ import App.Controller;
 import App.Commands;
 import Database.Database;
 import App.ThreadManager;
-import App.Utils;
+import HelperClasses.Utils;
 import Daemons.DaemonManager;
 import Daemons.DaemonManager.DaemonType;
 import java.lang.reflect.Method;

@@ -3,8 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package App;
+package HelperClasses;
 
+import App.CommandLineWrapper;
+import App.WindowsProcess;
 import com.sun.jna.platform.win32.Kernel32;
 import java.lang.reflect.Method;
 import java.util.ArrayList;

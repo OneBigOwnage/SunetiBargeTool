@@ -5,7 +5,7 @@
  */
 package Daemons;
 
-import App.Utils;
+import HelperClasses.Utils;
 import App.WindowsProcess;
 import java.util.ArrayList;
 import java.util.List;
