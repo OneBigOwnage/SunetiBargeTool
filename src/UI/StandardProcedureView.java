@@ -11,6 +11,7 @@ import HelperClasses.ProcedureListModel;
 import Models.ProcedureModel;
 import StandardProcedures.StandardProcedure;
 import UiHelpers.CustomListCellRenderer;
+import UiHelpers.ProcedureViewFactory;
 import java.awt.BorderLayout;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
@@ -133,7 +134,7 @@ public class StandardProcedureView extends javax.swing.JPanel {
     private void procedureListSelectionChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_procedureListSelectionChanged
         // If statement is to only change UI once per change, not twice. ( https://stackoverflow.com/questions/12461627/ )
         if (!evt.getValueIsAdjusting()) {
-            showWarningView(getSelectedProcedure());
+            showSummaryView(getSelectedProcedure());
         }
     }//GEN-LAST:event_procedureListSelectionChanged
 
@@ -155,15 +156,16 @@ public class StandardProcedureView extends javax.swing.JPanel {
     }
 
     public void showSummaryView(StandardProcedure procedure) {
-        setContentPanel(new ProcedureSummaryView(procedure));
+        setContentPanel(ProcedureViewFactory.getSummaryView(procedure, this));
     }
 
     public void showWarningView(StandardProcedure procedure) {
-        setContentPanel(new ProcedureWarningView(procedure));
+        System.out.println("Yes Boyz!");
+//        setContentPanel(ProcedureViewFactory.getSummaryView(procedure));
     }
 
     public void showExecuteView(StandardProcedure procedure) {
-        setContentPanel(new ProcedureExecutionView(procedure));
+//        setContentPanel(ProcedureViewFactory.getSummaryView(procedure));
     }
 
     private void setContentPanel(JPanel view) {
