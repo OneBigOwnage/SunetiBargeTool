@@ -39,6 +39,9 @@ public class StandardProcedureView extends javax.swing.JPanel {
         this.model = model;
         fixUI();
         procedureList.setModel(model.getProcedureListModel());
+        if (procedureList.getModel().getSize() > 0) {
+            procedureList.setSelectedIndex(0);
+        }
     }
 
     /**
@@ -160,12 +163,11 @@ public class StandardProcedureView extends javax.swing.JPanel {
     }
 
     public void showWarningView(StandardProcedure procedure) {
-        System.out.println("Yes Boyz!");
-//        setContentPanel(ProcedureViewFactory.getSummaryView(procedure));
+        setContentPanel(ProcedureViewFactory.getWarningView(procedure, this));
     }
 
     public void showExecuteView(StandardProcedure procedure) {
-//        setContentPanel(ProcedureViewFactory.getSummaryView(procedure));
+//        setContentPanel(ProcedureViewFactory.getExecuteView(procedure, this));
     }
 
     private void setContentPanel(JPanel view) {
