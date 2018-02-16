@@ -12,10 +12,17 @@ package StandardProcedures.Procedures;
 public class TemplateProcedure extends StandardProcedures.StandardProcedure {
 
     public TemplateProcedure() {
-        super("Template Procedure, to get the user's login name",
+        super(
+                // Title
+                "Template Procedure, to get the user's login name",
+                // Description
                 "The template class for standard procedures in the Barge Tool app.\n"
                 + "This procedure shows the login name(s) that are not equal to 'superuser'.",
-                new String[]{"This procedure shows the user's login name in plain text.",
+                // -----
+                new String[]{
+                    // Warnings:
+                    "This procedure shows the user's login name in plain text.",
+                    // -----
                     "This is a second warning of the template procedure."});
     }
 
