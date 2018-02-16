@@ -5,6 +5,7 @@
  */
 package UiHelpers;
 
+import HelperClasses.Utils;
 import StandardProcedures.StandardProcedure;
 import UI.StandardProcedureView;
 import java.awt.Cursor;
@@ -14,12 +15,17 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.JTextPane;
 import sunetibargetool.Config;
+import sunetibargetool.SunetiBargeTool;
 
 /**
  *
@@ -105,7 +111,55 @@ public class ProcedureViewFactory {
         return view;
     }
 
-    public static JPanel getWarningView(StandardProcedure procedure) {
+    public static JPanel getWarningView(final StandardProcedure procedure, final StandardProcedureView contentPanel) {
+        JPanel view = new JPanel(new GridBagLayout());
+        GridBagConstraints constraints = new GridBagConstraints();
+
+        // Setting default constraints
+        constraints.weightx = 1;
+
+        // Adding the title.
+        constraints.gridx = 0;
+        constraints.gridy = 0;
+        constraints.weighty = 0;
+        constraints.insets = new Insets(2, 6, 10, 25);
+
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.anchor = GridBagConstraints.NORTH;
+
+        view.add(getTitleLabel(procedure.getName()), constraints);
+
+        // Adding the warning content panel
+        //
+        //
+        // Adding the separator.
+        constraints.gridy = 3;
+        constraints.weighty = 0;
+
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.anchor = GridBagConstraints.SOUTH;
+        constraints.insets = new Insets(10, 6, 0, 25);
+
+        view.add(getBottomLine(), constraints);
+
+        // Adding the previous button.
+        // Adding the next button.
+        constraints.gridy = 4;
+        constraints.weighty = 0;
+
+        constraints.fill = GridBagConstraints.NONE;
+        constraints.anchor = GridBagConstraints.EAST;
+        constraints.insets = new Insets(5, 0, 10, 25);
+
+        JButton nextButton = getNextButton();
+
+        nextButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                contentPanel.showExecuteView(procedure);
+            }
+        });
+        view.add(nextButton, constraints);
 
         return null;
     }
@@ -156,6 +210,16 @@ public class ProcedureViewFactory {
         pane.setFocusable(false);
         pane.setCursor(Cursor.getDefaultCursor());
         return pane;
+    }
+
+    private ActionListener getActionListener(final StandardProcedureView procedureViewObject, final Method destinationMethod, final StandardProcedure procedure) {
+        
+        return new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                
+            }
+        };
     }
 
 }
