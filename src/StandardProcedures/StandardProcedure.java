@@ -24,7 +24,8 @@ public abstract class StandardProcedure {
     private final String description;
 
     /**
-     *
+     * An array of warning Strings, that will be displayed in the warning view
+     * of the StandardProcedureView.
      */
     private final String[] warningMessages;
 
@@ -54,7 +55,8 @@ public abstract class StandardProcedure {
     }
 
     /**
-     *
+     * This acts as a template for a method that has to be implemented by the
+     * extending class.
      */
     abstract public void performProcedure();
 
@@ -89,10 +91,4 @@ public abstract class StandardProcedure {
         // Return the list of known subclasses.
         return subClassList;
     }
-    
-    @Override
-    public String toString() {
-        return this.name;
-    }
-
 }

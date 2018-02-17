@@ -12,6 +12,7 @@ import javax.swing.AbstractListModel;
 /**
  *
  * @author niekv
+ * @param <StandardProcedure>
  */
 public class ProcedureListModel<StandardProcedure> extends AbstractListModel<StandardProcedure> {
 

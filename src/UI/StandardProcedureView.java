@@ -167,7 +167,7 @@ public class StandardProcedureView extends javax.swing.JPanel {
     }
 
     public void showExecuteView(StandardProcedure procedure) {
-//        setContentPanel(ProcedureViewFactory.getExecuteView(procedure, this));
+        setContentPanel(ProcedureViewFactory.getExecuteView(procedure, this));
     }
 
     private void setContentPanel(JPanel view) {

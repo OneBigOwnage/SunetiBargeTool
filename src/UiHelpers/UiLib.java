@@ -126,7 +126,12 @@ public final class UiLib {
     public static Font getDefaultFont() {
         return new Font("Segoe UI", Font.PLAIN, 14);
     }
-    
+
+    /**
+     * Gets the application default title font; Segoe UI 16pt.
+     *
+     * @return The default title font of this application.
+     */
     public static Font getTitleFont() {
         return new Font("Segoe UI", Font.BOLD, 16);
     }
