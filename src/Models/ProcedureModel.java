@@ -22,7 +22,7 @@ public class ProcedureModel extends BaseModel {
 
     public ProcedureModel(Controller controller) {
         super(controller);
-        procedureList = ProcedureManager.getProcedures();
+        procedureList = ProcedureManager.getDeclaredProcedures();
     }
 
     public ListModel getProcedureListModel() {

@@ -19,6 +19,8 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
+import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 import sunetibargetool.Config;
 
@@ -30,6 +32,7 @@ public class StandardProcedureView extends javax.swing.JPanel {
 
     protected Controller controller;
     protected ProcedureModel model;
+    private Thread progressBarAnimationThread;
 
     /**
      * Creates new form StandardProcedureView
@@ -153,6 +156,9 @@ public class StandardProcedureView extends javax.swing.JPanel {
     private javax.swing.JTextField searchField;
     // End of variables declaration//GEN-END:variables
 
+    /**
+     * Various UI changes and fixes, used when initializing this view.
+     */
     private void fixUI() {
         UiLib.styleTextField(searchField);
         procedureListScrollPane.setBorder(BorderFactory.createEmptyBorder());
@@ -160,6 +166,34 @@ public class StandardProcedureView extends javax.swing.JPanel {
         procedureList.setBorder(new LineBorder(Config.Colors.APPLICATION_DEFAULT_GREY.getColor(), 2));
         procedureList.setBackground(Config.Colors.APPLICATION_DEFAULT_BLUE.getColor());
         content_panel.setLayout(new BorderLayout());
+    }
+
+    /**
+     * Removes all components from the content_panel of this view, then adds the
+     * given view to the content_panel.
+     *
+     * @param view The view that is to be set on the content_panel.
+     */
+    private void setContentPanel(JPanel view) {
+        content_panel.removeAll();
+        content_panel.add(view, BorderLayout.CENTER);
+        content_panel.revalidate();
+        content_panel.repaint();
+    }
+
+    /**
+     * Method to enable/disable the components on this view.
+     *
+     * @param enabled True for enabled, false for disabled.
+     */
+    private void setViewEnabled(boolean enabled) {
+        List<Component> compList = UiLib.getAllComponents(this);
+
+        for (Component component : compList) {
+            if (component instanceof JButton || component instanceof JList || component instanceof JTextField) {
+                component.setEnabled(enabled);
+            }
+        }
     }
 
     public void showSummaryView(StandardProcedure procedure) {
@@ -174,13 +208,6 @@ public class StandardProcedureView extends javax.swing.JPanel {
         setContentPanel(ProcedureViewFactory.getExecuteView(procedure, this));
     }
 
-    private void setContentPanel(JPanel view) {
-        content_panel.removeAll();
-        content_panel.add(view, BorderLayout.CENTER);
-        content_panel.revalidate();
-        content_panel.repaint();
-    }
-
     public StandardProcedure getSelectedProcedure() {
         ProcedureListModel dataModel = (ProcedureListModel) procedureList.getModel();
         int selectedIndex = procedureList.getSelectedIndex();
@@ -188,20 +215,50 @@ public class StandardProcedureView extends javax.swing.JPanel {
     }
 
     /**
-     * Method to enable/disable the components on this view.
+     * Notifies the UI that a procedure has been started, disabling some
+     * components and starting the progress bar.
      *
-     * @param enabled True for enabled, false for disabled.
+     * @param procedure StandardProcedure that is about to be executed.
      */
-    public void setViewEnabled(boolean enabled) {
-        List<Component> compList  = UiLib.getAllComponents(this);
-        
-        for (Component component : compList) {
-            if (component instanceof JButton) {
-                ((JButton) component).setEnabled(enabled);
-            } else if (component instanceof JList) {
-                ((JList) component).setEnabled(enabled);
-            }
+    public void notifyUIOnProcedureStart(StandardProcedure procedure) {
+        setViewEnabled(false);
+        JProgressBar progressBar = UiLib.getProgressBar(content_panel);
+        double fillTime;
+        if (procedure.getAverageExecutionTime() == 0.0) {
+            fillTime = 10.0;
+        } else {
+            fillTime = procedure.getAverageExecutionTime();
         }
+        (progressBarAnimationThread = UiLib.getAnimateProgressBarThread(progressBar, fillTime)).start();
+    }
+
+    /**
+     * Notifies the UI that a procedure has ended it's execution. Method also
+     * takes a boolean parameter indicating whether or not the execution was
+     * successful.
+     *
+     * @param successful Whether or not the procedure has been executed
+     * successfully.
+     */
+    public void notifyUIOnProcedureEnd(boolean successful) {
+        setViewEnabled(true);
+        progressBarAnimationThread.interrupt();
+        // This is in place because it takes the JVM a little time
+        // to interrupt the thread.
+        try {
+            Thread.sleep(10);
+        } catch (InterruptedException e) {
+        }
+
+        String endMsg = "Procedure Failed!";
+        if (successful) {
+            endMsg = "Procedure Successful!";
+        }
+
+        JProgressBar progressBar = UiLib.getProgressBar(content_panel);
+        progressBar.setIndeterminate(false);
+        progressBar.setString(endMsg);
+        progressBar.setValue(100);
     }
 
 }

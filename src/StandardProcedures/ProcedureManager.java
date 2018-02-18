@@ -5,9 +5,11 @@
  */
 package StandardProcedures;
 
+import UI.StandardProcedureView;
 import java.util.ArrayList;
 import java.util.List;
 import sunetibargetool.Config;
+import sunetibargetool.SunetiBargeTool;
 
 /**
  *
@@ -77,7 +79,35 @@ abstract public class ProcedureManager {
      * @param runThreaded Pass in true to execute procedure in a separate
      * thread.
      */
-    public static void execute(StandardProcedure procedure, boolean runThreaded) {
+    public static void execute(final StandardProcedure procedure, boolean runThreaded) {
+        final StandardProcedureView procedureView = (StandardProcedureView) SunetiBargeTool.getController().getView(Config.View.STANDARD_PROCEDURE_VIEW);
+        procedureView.notifyUIOnProcedureStart(procedure);
 
+        if (runThreaded) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    boolean success = false;
+                    try {
+                        procedure.performProcedure();
+                        success = true;
+                    } catch (Exception ex) {
+                        SunetiBargeTool.log("Exception was thrown whilst performing a standard procedure:\n" + ex);
+                    } finally {
+                        procedureView.notifyUIOnProcedureEnd(success);
+                    }
+                }
+            }).start();
+        } else {
+            boolean success = false;
+            try {
+                procedure.performProcedure();
+                success = true;
+            } catch (Exception ex) {
+                SunetiBargeTool.log("Exception was thrown whilst performing a standard procedure:\n" + ex);
+            } finally {
+                procedureView.notifyUIOnProcedureEnd(success);
+            }
+        }
     }
 }

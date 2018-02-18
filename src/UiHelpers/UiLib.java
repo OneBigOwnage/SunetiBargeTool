@@ -152,9 +152,10 @@ public final class UiLib {
      *
      * @param progressBar The JProgressBar you want to animate.
      * @param time The time in seconds from start to end of the animation.
+     * @return 
      */
-    public static void animateProgressBar(final JProgressBar progressBar, final double time) {
-        new Thread(new Runnable() {
+    public static Thread getAnimateProgressBarThread(final JProgressBar progressBar, final double time) {
+        return new Thread(new Runnable() {
             @Override
             public void run() {
                 // Thread.sleep() takes an integer number as milliseconds.
@@ -162,18 +163,20 @@ public final class UiLib {
                 // seconds, and then cast it to an integer which also
                 // automatically rounds down.
                 int timePerPercent = (int) time * 10;
-
-                for (int percentFilled = 1; percentFilled <= 100; percentFilled++) {
-                    progressBar.setValue(percentFilled);
-
-                    try {
+                try {
+                    for (int percentFilled = 1; percentFilled <= 100; percentFilled++) {
+                        // Both the value and String need to be set, because when a sting has been set
+                        progressBar.setValue(percentFilled);
+                        progressBar.setString(String.format("%s%%", percentFilled));
                         Thread.sleep(timePerPercent);
-                    } catch (InterruptedException ex) {
-                        System.out.println("ProgressBar-Thread was interrupted!\n" + ex);
                     }
+                    progressBar.setString("Please Wait....");
+                    progressBar.setIndeterminate(true);
+                } catch (InterruptedException ex) {
                 }
+
             }
-        }).start();
+        });
     }
 
     /**

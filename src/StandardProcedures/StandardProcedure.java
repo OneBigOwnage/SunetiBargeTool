@@ -113,8 +113,9 @@ public abstract class StandardProcedure {
     /**
      * This acts as a template for a method that has to be implemented by the
      * extending class.
+     * @throws java.lang.Exception
      */
-    abstract public void performProcedure();
+    abstract public void performProcedure() throws Exception;
 
     /**
      *
