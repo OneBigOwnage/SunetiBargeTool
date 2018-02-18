@@ -185,4 +185,22 @@ public final class UiLib {
     public static Border createDefaultLineBorder() {
         return new LineBorder(Config.Colors.APPLICATION_DEFAULT_GREY.getColor(), 2);
     }
+
+    /**
+     * Finds and returns the first instance of JProgressBar on the container,
+     * returns NULL if no instance is found. Also looks on sub-containers of the
+     * given Container.
+     *
+     * @param container Container to search a JProgressBar instance on.
+     * @return The first instance of a JProgressBar, or NULL if none is found.
+     */
+    public static JProgressBar getProgressBar(Container container) {
+        List<Component> compList = getAllComponents(container);
+        for (Component component : compList) {
+            if (component instanceof JProgressBar) {
+                return (JProgressBar) component;
+            }
+        }
+        return null;
+    }
 }
