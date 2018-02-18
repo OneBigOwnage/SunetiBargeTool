@@ -21,6 +21,7 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JTextField;
+import javax.swing.ListModel;
 import javax.swing.border.LineBorder;
 import sunetibargetool.Config;
 
@@ -73,8 +74,8 @@ public class StandardProcedureView extends javax.swing.JPanel {
         searchField.setBackground(new java.awt.Color(15, 124, 160));
         searchField.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         searchField.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                searchFieldKeyTyped(evt);
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                searchFieldKeyReleased(evt);
             }
         });
 
@@ -136,17 +137,24 @@ public class StandardProcedureView extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void searchFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchFieldKeyTyped
-        // Implement search here, should probably with done by filtering on name
-        // in the procedureModel thing or whatever.
-    }//GEN-LAST:event_searchFieldKeyTyped
-
     private void procedureListSelectionChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_procedureListSelectionChanged
         // If statement is to only change UI once per change, not twice. ( https://stackoverflow.com/questions/12461627/ )
         if (!evt.getValueIsAdjusting()) {
-            showSummaryView(getSelectedProcedure());
+            StandardProcedure selectedProcedure = getSelectedProcedure();
+            if (selectedProcedure != null) {
+                showSummaryView(selectedProcedure);
+            }
         }
     }//GEN-LAST:event_procedureListSelectionChanged
+
+    private void searchFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchFieldKeyReleased
+        String filterString = searchField.getText();
+        ListModel listModel = model.getFilteredProcedureListModel(filterString);
+        procedureList.setModel(listModel);
+        if (listModel.getSize() > 0) {
+            procedureList.setSelectedIndex(0);
+        }
+    }//GEN-LAST:event_searchFieldKeyReleased
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel content_panel;
@@ -211,7 +219,12 @@ public class StandardProcedureView extends javax.swing.JPanel {
     public StandardProcedure getSelectedProcedure() {
         ProcedureListModel dataModel = (ProcedureListModel) procedureList.getModel();
         int selectedIndex = procedureList.getSelectedIndex();
-        return (StandardProcedure) dataModel.getElementAt(selectedIndex);
+
+        if (selectedIndex >= 0) {
+            return (StandardProcedure) dataModel.getElementAt(selectedIndex);
+        } else {
+            return null;
+        }
     }
 
     /**
