@@ -22,6 +22,29 @@ import java.util.Properties;
  */
 public class Config {
 
+    /**
+     * All views used in this application, packed inside an enum.
+     */
+    public enum Views {
+        LOGIN_VIEW,
+        BARGE_INFO_VIEW,
+        CONFIG_VIEW,
+        SQL_VIEW,
+        BACKUP_VIEW,
+        STANDARD_PROCEDURE_VIEW,
+        LOG_VIEW;
+    }
+
+    /**
+     * All models used in this application, packed inside an enum.
+     */
+    public enum Models {
+        BARGE_INFO_MODEL,
+        BASE_MODEL,
+        PROCEDURE_MODEL,
+        SQL_MODEL;
+    }
+
     private static Properties properties;
 
     /**
@@ -123,7 +146,9 @@ public class Config {
     }
 
     /**
-     *
+     * All the different and default colors used in this application, neatly
+     * sorted inside an enum. Use the getColor() method to retrieve a usable
+     * Color.
      */
     public enum Colors {
         APPLICATION_DEFAULT_BLUE(new Color(15, 124, 160)),
@@ -149,20 +174,6 @@ public class Config {
         public Color getColor() {
             return color;
         }
-    }
-
-    /**
-     * A list of all the models in this MVC application.
-     */
-    public enum Models {
-        
-    }
-
-    /**
-     * A list of all the Views in this MVC application.
-     */
-    public enum Views {
-
     }
 
 }
