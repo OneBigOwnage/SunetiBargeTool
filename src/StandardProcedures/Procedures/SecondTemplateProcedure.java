@@ -16,7 +16,8 @@ public class SecondTemplateProcedure extends StandardProcedures.StandardProcedur
                 "The template class for standard procedures in the Barge Tool app.\n"
                 + "This procedure shows the login name(s) that are not equal to 'superuser'.",
                 new String[]{"This procedure shows the user's login name in plain text.",
-                    "This is a second warning of the template procedure."});
+                    "This is a second warning of the template procedure."},
+                1.0);
     }
 
     @Override

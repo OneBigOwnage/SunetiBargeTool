@@ -98,10 +98,12 @@ public class ProcedureViewFactory {
     }
 
     private static JComponent getExecutePane(StandardProcedure procedure) {
-        JProgressBar bar = new JProgressBar();
-        bar.setValue(50);
-        bar.setVisible(true);
-        return bar;
+        JProgressBar progressBar = new JProgressBar();
+        progressBar.setStringPainted(true);
+        progressBar.setBorderPainted(false);
+        progressBar.setFont(UiLib.getTitleFont());
+
+        return progressBar;
     }
 
     /**
@@ -174,6 +176,17 @@ public class ProcedureViewFactory {
         return view;
     }
 
+    /**
+     * This method creates a warning view for a standard procedure. This view
+     * has title, TextPane with the warnings of the procedure, a 'prev' button
+     * to return to the summary view and a 'next' button to go to the execute
+     * view.
+     *
+     * @param procedure The procedure used to initialize this view.
+     * @param contentPanel The view on which to call the actions that are linked
+     * to the 'next' and 'previous' buttons.
+     * @return A JPanel view
+     */
     public static JPanel getWarningView(final StandardProcedure procedure, final StandardProcedureView contentPanel) {
         JPanel view = new JPanel(new GridBagLayout());
         view.setBackground(Config.Colors.APPLICATION_DEFAULT_BLUE.getColor());
@@ -233,7 +246,6 @@ public class ProcedureViewFactory {
 
         // Adding the next button.
         constraints.gridy = 3;
-//        constraints.gridx = 1;
         constraints.weighty = 0;
 
         constraints.fill = GridBagConstraints.NONE;
@@ -253,6 +265,17 @@ public class ProcedureViewFactory {
         return view;
     }
 
+    /**
+     * This method creates a procedure execute view for a standard procedure.
+     * This view has title, a progress-bar with the progress of the procedure, a
+     * 'prev' button to return to the warning view and an 'execute' button to
+     * execute the procedure.
+     *
+     * @param procedure The procedure used to initialize this view.
+     * @param contentPanel The view on which to call the actions that are linked
+     * to the 'previous' button.
+     * @return A JPanel view
+     */
     public static JPanel getExecuteView(final StandardProcedure procedure, final StandardProcedureView contentPanel) {
         JPanel view = new JPanel(new GridBagLayout());
         view.setBackground(Config.Colors.APPLICATION_DEFAULT_BLUE.getColor());
@@ -276,11 +299,12 @@ public class ProcedureViewFactory {
         // Adding the progress bar view.
         constraints.gridy = 1;
         constraints.weighty = 1;
-        constraints.fill = GridBagConstraints.BOTH;
-        constraints.anchor = GridBagConstraints.CENTER;
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.anchor = GridBagConstraints.SOUTH;
         constraints.insets = new Insets(0, 6, 0, 25);
 
-        view.add(getExecutePane(procedure), constraints);
+        final JProgressBar progressBar = (JProgressBar) getExecutePane(procedure);
+        view.add(progressBar, constraints);
 
         // Adding the separator.
         constraints.gridy = 2;
@@ -323,6 +347,14 @@ public class ProcedureViewFactory {
         executeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                double loadingTime = procedure.getAverageExecutionTime();
+
+                if (loadingTime <= 0.0) {
+                    loadingTime = 10.0;
+                }
+
+                UiLib.animateProgressBar(progressBar, loadingTime);
+
                 procedure.performProcedure();
             }
         });

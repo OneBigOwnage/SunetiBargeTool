@@ -6,12 +6,14 @@
 package UI;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.net.URL;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import sunetibargetool.Config;
 
 /**
  *
@@ -98,8 +100,7 @@ public class UserInterface extends javax.swing.JFrame {
         URL iconURL = getClass().getClassLoader().getResource("main_icon.png");
         ImageIcon icon = new ImageIcon(iconURL);
         setIconImage(icon.getImage());
-        
-        
+
         // Sets the layout to borderlayout, to easily place panels.
         setLayout(new BorderLayout());
 
@@ -109,10 +110,19 @@ public class UserInterface extends javax.swing.JFrame {
         } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | UnsupportedLookAndFeelException e) {
             System.out.println("Could not set custom LAF!");
         }
-        
+
         // Sets the (preferred) size of this JFrame, can be adjusted later on.
         setPreferredSize(new Dimension(1100, 500));
         setSize(getPreferredSize());
+
+        // Give some decent looks to the progress bars in this application.
+        Color defaultGrey = Config.Colors.APPLICATION_DEFAULT_GREY.getColor();
+        Color defaultBlue = Config.Colors.APPLICATION_DEFAULT_BLUE.getColor();
+
+        UIManager.put("ProgressBar.background", defaultBlue);
+        UIManager.put("ProgressBar.foreground", defaultGrey);
+        UIManager.put("ProgressBar.selectionBackground", defaultGrey);
+        UIManager.put("ProgressBar.selectionForeground", defaultBlue);
     }
 
     public void setPanel(JPanel panel, String place) {

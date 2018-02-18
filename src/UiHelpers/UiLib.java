@@ -16,6 +16,7 @@ import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
@@ -136,4 +137,44 @@ public final class UiLib {
         return new Font("Segoe UI", Font.BOLD, 16);
     }
 
+    /**
+     * Animates given progress bar from 0 to 100 percent in given amount of
+     * seconds. This method can be overloaded to give in start and end points
+     * for more flexibility.
+     *
+     * @param progressBar The JProgressBar you want to animate.
+     * @param time The time in seconds from start to end of the animation.
+     */
+    public static void animateProgressBar(final JProgressBar progressBar, final double time) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                // Thread.sleep() takes an integer number as milliseconds.
+                // So we multiply the time by 1000 to get milliseconds from
+                // seconds, and then cast it to an integer which also
+                // automatically rounds down.
+                int timePerPercent = (int) time * 10;
+
+                for (int percentFilled = 1; percentFilled <= 100; percentFilled++) {
+                    progressBar.setValue(percentFilled);
+
+                    try {
+                        Thread.sleep(timePerPercent);
+                    } catch (InterruptedException ex) {
+                        System.out.println("ProgressBar-Thread was interrupted!\n" + ex);
+                    }
+                }
+            }
+        }).start();
+    }
+
+    /**
+     * Creates and returns a line border with the default application grey color
+     * and thickness 2.
+     *
+     * @return A grey LineBorder with thickness 2.
+     */
+    public static Border createDefaultLineBorder() {
+        return new LineBorder(Config.Colors.APPLICATION_DEFAULT_GREY.getColor(), 2);
+    }
 }

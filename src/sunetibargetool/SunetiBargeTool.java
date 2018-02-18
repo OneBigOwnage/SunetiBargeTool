@@ -102,4 +102,12 @@ public class SunetiBargeTool {
             }
         });
     }
+    
+    /**
+     * Getter for the main Controller in this application.
+     * @return 
+     */
+    public static Controller getController() {
+        return controller;
+    }
 }
