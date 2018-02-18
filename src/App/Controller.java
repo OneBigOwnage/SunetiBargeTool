@@ -27,6 +27,9 @@ import java.util.TreeMap;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
+import sunetibargetool.Config;
+import sunetibargetool.Config.Model;
+import sunetibargetool.Config.View;
 
 /**
  *
@@ -35,8 +38,8 @@ import javax.swing.border.TitledBorder;
 public class Controller {
 
     protected UserInterface userInterface;
-    protected Map<String, JPanel> viewList = new TreeMap<>();
-    protected Map<String, BaseModel> modelList = new TreeMap<>();
+    protected Map<View, JPanel> viewList = new TreeMap<>();
+    protected Map<Model, BaseModel> modelList = new TreeMap<>();
 
     public Controller() {
         this.userInterface = new UserInterface();
@@ -51,7 +54,7 @@ public class Controller {
      * Shows the showLoginView screen.
      */
     public void showLoginView() {
-        this.userInterface.setPanel(viewList.get("LoginView"), BorderLayout.CENTER);
+        this.userInterface.setPanel(viewList.get(Config.View.LOGIN_VIEW), BorderLayout.CENTER);
     }
 
     /**
@@ -59,8 +62,8 @@ public class Controller {
      */
     public void afterLogin() {
         this.userInterface.clearPanel(BorderLayout.CENTER);
-        this.userInterface.setPanel(viewList.get("SideBar"), BorderLayout.WEST);
-        this.userInterface.setPanel(viewList.get("BargeInfoView"), BorderLayout.CENTER);
+        this.userInterface.setPanel(viewList.get(Config.View.SIDE_BAR), BorderLayout.WEST);
+        this.userInterface.setPanel(viewList.get(Config.View.BARGE_INFO_VIEW), BorderLayout.CENTER);
     }
 
     /**
@@ -68,7 +71,7 @@ public class Controller {
      */
     public void showBargeInfoView() {
         this.userInterface.clearPanel(BorderLayout.CENTER);
-        this.userInterface.setPanel(viewList.get("BargeInfoView"), BorderLayout.CENTER);
+        this.userInterface.setPanel(viewList.get(Config.View.BARGE_INFO_VIEW), BorderLayout.CENTER);
     }
 
     /**
@@ -76,28 +79,28 @@ public class Controller {
      */
     public void showConfigView() {
         this.userInterface.clearPanel(BorderLayout.CENTER);
-        this.userInterface.setPanel(viewList.get("ConfigView"), BorderLayout.CENTER);
+        this.userInterface.setPanel(viewList.get(Config.View.CONFIG_VIEW), BorderLayout.CENTER);
     }
 
     public void showSQLView() {
         this.userInterface.clearPanel(BorderLayout.CENTER);
-        this.userInterface.setPanel(viewList.get("SQLView"), BorderLayout.CENTER);
+        this.userInterface.setPanel(viewList.get(Config.View.SQL_VIEW), BorderLayout.CENTER);
     }
 
     public void showLogView() {
         this.userInterface.clearPanel(BorderLayout.CENTER);
-        this.userInterface.setPanel(viewList.get("LogView"), BorderLayout.CENTER);
+        this.userInterface.setPanel(viewList.get(Config.View.LOG_VIEW), BorderLayout.CENTER);
     }
 
     public void showStandardProcedureView() {
         this.userInterface.clearPanel(BorderLayout.CENTER);
-        this.userInterface.setPanel(viewList.get("ProcedureView"), BorderLayout.CENTER);
+        this.userInterface.setPanel(viewList.get(Config.View.STANDARD_PROCEDURE_VIEW), BorderLayout.CENTER);
     }
 
     private void fixUserInterface() {
         List<Component> componentList = new ArrayList<>();
 
-        for (Map.Entry<String, JPanel> view : viewList.entrySet()) {
+        for (Map.Entry<View, JPanel> view : viewList.entrySet()) {
             componentList.addAll(UiLib.getAllComponents(view.getValue()));
         }
 
@@ -112,23 +115,23 @@ public class Controller {
     }
 
     private void initModels() {
-        modelList.put("BargeInfoModel", new BargeInfoModel(this));
-        modelList.put("SQLModel", new SQLModel(this));
-        modelList.put("ProcedureModel", new ProcedureModel(this));
+        modelList.put(Config.Model.BARGE_INFO_MODEL, new BargeInfoModel(this));
+        modelList.put(Config.Model.SQL_MODEL, new SQLModel(this));
+        modelList.put(Config.Model.PROCEDURE_MODEL, new ProcedureModel(this));
     }
 
     private void initViews() {
-        viewList.put("LogView", new LogView(this));
-        viewList.put("BargeInfoView", new BargeInfoView(this, (BargeInfoModel) modelList.get("BargeInfoModel")));
-        viewList.put("LoginView", new LoginView(this));
-        viewList.put("SQLView", new SQLView(this, (SQLModel) modelList.get("SQLModel")));
-        viewList.put("SideBar", new SideBar(this));
-        viewList.put("ConfigView", new ConfigView(this));
-        viewList.put("ProcedureView", new StandardProcedureView(this, (ProcedureModel) modelList.get("ProcedureModel")));
+        viewList.put(Config.View.LOG_VIEW, new LogView(this));
+        viewList.put(Config.View.BARGE_INFO_VIEW, new BargeInfoView(this, (BargeInfoModel) modelList.get(Config.Model.BARGE_INFO_MODEL)));
+        viewList.put(Config.View.LOGIN_VIEW, new LoginView(this));
+        viewList.put(Config.View.SQL_VIEW, new SQLView(this, (SQLModel) modelList.get(Config.Model.SQL_MODEL)));
+        viewList.put(Config.View.SIDE_BAR, new SideBar(this));
+        viewList.put(Config.View.CONFIG_VIEW, new ConfigView(this));
+        viewList.put(Config.View.STANDARD_PROCEDURE_VIEW, new StandardProcedureView(this, (ProcedureModel) modelList.get(Config.Model.PROCEDURE_MODEL)));
     }
 
     public void log(String text) {
-        ((LogView) viewList.get("LogView")).appendToLog(text);
+        ((LogView) viewList.get(Config.View.LOG_VIEW)).appendToLog(text);
     }
 
 }
