@@ -32,7 +32,8 @@ public class Config {
         SQL_VIEW,
         BACKUP_VIEW,
         STANDARD_PROCEDURE_VIEW,
-        LOG_VIEW;
+        LOG_VIEW,
+        SIDE_BAR;
     }
 
     /**
