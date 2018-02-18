@@ -70,6 +70,14 @@ public final class UiLib {
         });
     }
 
+    /**
+     * Returns all components in a given Container object. This method uses
+     * recursion to 'deep' get all components, so it will also get components
+     * that are in sub-containers of the given container object.
+     *
+     * @param container The container from which to get all the components.
+     * @return
+     */
     public static List<Component> getAllComponents(final Container container) {
         Component[] componentArray = container.getComponents();
         List<Component> componentList = new ArrayList<>();
