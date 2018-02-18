@@ -36,16 +36,15 @@ public class SunetiBargeTool {
 
         AddShutDownHook();
 
-        ProcedureManager.load();
-        
         // Bootstrap all the daemons, via the DaemonManager.
         DaemonManager.defaultLoad();
-        
+
         // Create new Controller and send action 'showLoginView'.
         controller = new Controller();
 
         // *** IMPORTANT ***
         // In production, uncomment first line and delete second line!
+        // Second line is used to skip the Login part of the application.
 //        controller.showLoginView();
         controller.afterLogin();
         // *** IMPORTANT ***
@@ -102,10 +101,11 @@ public class SunetiBargeTool {
             }
         });
     }
-    
+
     /**
      * Getter for the main Controller in this application.
-     * @return 
+     *
+     * @return
      */
     public static Controller getController() {
         return controller;
