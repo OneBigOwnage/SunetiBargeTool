@@ -25,7 +25,7 @@ public class Config {
     /**
      * All views used in this application, packed inside an enum.
      */
-    public enum Views {
+    public enum View {
         LOGIN_VIEW,
         BARGE_INFO_VIEW,
         CONFIG_VIEW,
@@ -38,7 +38,7 @@ public class Config {
     /**
      * All models used in this application, packed inside an enum.
      */
-    public enum Models {
+    public enum Model {
         BARGE_INFO_MODEL,
         BASE_MODEL,
         PROCEDURE_MODEL,
