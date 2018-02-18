@@ -13,7 +13,11 @@ import StandardProcedures.StandardProcedure;
 import UiHelpers.CustomListCellRenderer;
 import UiHelpers.ProcedureViewFactory;
 import java.awt.BorderLayout;
+import java.awt.Component;
+import java.util.List;
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 import sunetibargetool.Config;
@@ -181,6 +185,23 @@ public class StandardProcedureView extends javax.swing.JPanel {
         ProcedureListModel dataModel = (ProcedureListModel) procedureList.getModel();
         int selectedIndex = procedureList.getSelectedIndex();
         return (StandardProcedure) dataModel.getElementAt(selectedIndex);
+    }
+
+    /**
+     * Method to enable/disable the components on this view.
+     *
+     * @param enabled True for enabled, false for disabled.
+     */
+    public void setViewEnabled(boolean enabled) {
+        List<Component> compList  = UiLib.getAllComponents(this);
+        
+        for (Component component : compList) {
+            if (component instanceof JButton) {
+                ((JButton) component).setEnabled(enabled);
+            } else if (component instanceof JList) {
+                ((JList) component).setEnabled(enabled);
+            }
+        }
     }
 
 }
