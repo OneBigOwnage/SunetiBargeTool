@@ -5,6 +5,7 @@
  */
 package UiHelpers;
 
+import StandardProcedures.ProcedureManager;
 import StandardProcedures.StandardProcedure;
 import UI.StandardProcedureView;
 import java.awt.Dimension;
@@ -347,15 +348,7 @@ public class ProcedureViewFactory {
         executeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                double loadingTime = procedure.getAverageExecutionTime();
-
-                if (loadingTime <= 0.0) {
-                    loadingTime = 10.0;
-                }
-
-                UiLib.animateProgressBar(progressBar, loadingTime);
-
-                procedure.performProcedure();
+                ProcedureManager.execute(procedure);
             }
         });
         view.add(executeButton, constraints);
