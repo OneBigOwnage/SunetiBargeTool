@@ -24,17 +24,29 @@ public abstract class StandardProcedure {
     private final String description;
 
     /**
-     * An array of warning Strings, that will be displayed in the warning view
-     * of the StandardProcedureView.
+     * An array of warning Strings, each String representing a single warning
+     * message. These messages will be shown on the warning-view before
+     * executing the procedure.
      */
     private final String[] warningMessages;
 
     /**
-     * Default constructor for the StandardProcedure class.
+     * An estimate of the execution time of the standard procedure. This is
+     * used, among other things, the loading time of the progress bar in the
+     * execute view. This attribute is manually set in the constructor of this
+     * object and is therefore just an indication.
+     */
+    private double averageExecutionTime;
+
+    /**
+     * Default constructor for the StandardProcedure class. This constructor
+     * should ideally be used then the averageExecutionTime is either unknown or
+     * can vary a lot.
      *
-     * @param name
-     * @param description
-     * @param warningMessages
+     * @param name The name of the standard procedure
+     * @param description The full description of the standard procedure
+     * @param warningMessages A String Array, containing the warning messages
+     * for the standard procedure
      */
     public StandardProcedure(String name, String description, String[] warningMessages) {
         this.name = name;
@@ -42,16 +54,60 @@ public abstract class StandardProcedure {
         this.warningMessages = warningMessages;
     }
 
+    /**
+     * Constructor method which accommodates for the setting of
+     * averageExecutionTime.
+     *
+     * @param name The name of the procedure
+     * @param description The full description of the procedure
+     * @param warningMessages A String Array, containing the warning messages
+     * for the procedure
+     * @param averageExecutionTime An indication of the average time it takes
+     * for this procedure to complete, start to end.
+     */
+    public StandardProcedure(String name, String description, String[] warningMessages, double averageExecutionTime) {
+        this.name = name;
+        this.description = description;
+        this.warningMessages = warningMessages;
+        this.averageExecutionTime = averageExecutionTime;
+    }
+
+    /**
+     * Getter for the name attribute of this object.
+     *
+     * @return
+     */
     public String getName() {
         return this.name;
     }
 
+    /**
+     * Getter for the description attribute of this object.
+     *
+     * @return
+     */
     public String getDescription() {
         return this.description;
     }
 
+    /**
+     * Getter for the warningMessages attribute of this object, in String Array.
+     * format.
+     *
+     * @return
+     */
     public String[] getWarningMessages() {
         return this.warningMessages;
+    }
+
+    /**
+     * Getter for the averageExecutionTime attribute of this object. Remember
+     * this is only an estimation.
+     *
+     * @return
+     */
+    public double getAverageExecutionTime() {
+        return this.averageExecutionTime;
     }
 
     /**
