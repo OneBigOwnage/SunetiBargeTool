@@ -129,7 +129,7 @@ public class Controller {
         viewList.put(View.SIDE_BAR, new SideBar(this));
         viewList.put(View.CONFIG_VIEW, new ConfigView(this));
         viewList.put(View.STANDARD_PROCEDURE_VIEW, new StandardProcedureView(this, (ProcedureModel) modelList.get(Model.PROCEDURE_MODEL)));
-        viewList.put(View.BACKUP_VIEW, new BackupView(this, (BackupModel) modelList.get(Model.PROCEDURE_MODEL)));
+        viewList.put(View.BACKUP_VIEW, new BackupView(this, (BackupModel) modelList.get(Model.BACKUP_MODEL)));
     }
 
     public void log(String text) {
