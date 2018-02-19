@@ -7,13 +7,10 @@ package Models;
 
 import App.Commands;
 import App.Controller;
-import Database.Database;
 import Database.DatabaseHelper;
 import Database.Query;
 import java.io.File;
 import java.io.FileFilter;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +22,9 @@ import java.util.TreeMap;
  */
 public class BargeInfoModel extends BaseModel {
 
+    /**
+     * Enumeration to have constants for the barge data.
+     */
     public enum bargeData {
         BARGE_NAME,
         ENI_NUMBER,
@@ -38,8 +38,10 @@ public class BargeInfoModel extends BaseModel {
     };
 
     /**
+     * Default constructor for the BargeInfoModel class.
      *
-     * @param controller
+     * @param controller The controller that you want to use to initialize this
+     * model.
      */
     public BargeInfoModel(Controller controller) {
         super(controller);
@@ -61,6 +63,11 @@ public class BargeInfoModel extends BaseModel {
         return dataMap;
     }
 
+    /**
+     * Method to retrieve the barge name from the database.
+     *
+     * @return 
+     */
     public String getBargeName() {
         Query bargeNameQuery = new Query(
                 "SELECT barge_name "

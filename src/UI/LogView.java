@@ -23,6 +23,11 @@ public class LogView extends javax.swing.JPanel {
     private final DateFormat TIME_FORMAT = new SimpleDateFormat("HH:mm:ss");
     private boolean logToConsole;
 
+    /**
+     * Default constructor for this class.
+     *
+     * @param controller The controller that is used to initialize this class.
+     */
     public LogView(Controller controller) {
         initComponents();
         this.logField = logTextArea;
@@ -96,9 +101,9 @@ public class LogView extends javax.swing.JPanel {
         String logLine = String.format("[ %s ] - %s\n", currentTime, text);
 
         logField.append(logLine);
-        // Also System.out.println if flag logToConsole is true.
+        // Also System.out.print if flag logToConsole is true.
         if (this.logToConsole) {
-//            System.out.print(logLine);
+            System.out.print(logLine);
         }
     }
 

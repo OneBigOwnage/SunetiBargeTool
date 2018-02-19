@@ -23,7 +23,7 @@ import java.util.Properties;
 public class Config {
 
     /**
-     * All views used in this application, packed inside an enum.
+     * All views used in this application, packed inside an enumeration.
      */
     public enum View {
         LOGIN_VIEW,
@@ -37,15 +37,23 @@ public class Config {
     }
 
     /**
-     * All models used in this application, packed inside an enum.
+     * All models used in this application, packed inside an enumeration.
      */
     public enum Model {
-        BARGE_INFO_MODEL,
         BASE_MODEL,
-        PROCEDURE_MODEL,
-        SQL_MODEL;
+        BARGE_INFO_MODEL,
+        BACKUP_MODEL,
+        SQL_MODEL,
+        PROCEDURE_MODEL;
     }
 
+    /**
+     * The Properties object of this class. In here all the configuration and
+     * properties of the application are stored. This object is loaded from the
+     * properties file inside the build directory or inside the JAR if it's
+     * compiled. This class provides a methods to retrieve property values from
+     * this object.
+     */
     private static Properties properties;
 
     /**
