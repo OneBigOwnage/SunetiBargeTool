@@ -5,6 +5,7 @@
  */
 package UI;
 
+import UiHelpers.UiLib;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -128,18 +129,26 @@ public class UserInterface extends javax.swing.JFrame {
             System.out.println("Could not set custom LAF!");
         }
 
+        // Define some colors for easy use in the rest of this method.
+        Color defaultGrey = Config.Colors.APPLICATION_DEFAULT_GREY.getColor();
+        Color defaultBlue = Config.Colors.APPLICATION_DEFAULT_BLUE.getColor();
+        Color defaultWhite = Config.Colors.FONT_COLOR_WHITE.getColor();
+
         // Sets the (preferred) size of this JFrame, can be adjusted later on.
         setPreferredSize(new Dimension(1100, 500));
         setSize(getPreferredSize());
 
         // Give some decent looks to the progress bars in this application.
-        Color defaultGrey = Config.Colors.APPLICATION_DEFAULT_GREY.getColor();
-        Color defaultBlue = Config.Colors.APPLICATION_DEFAULT_BLUE.getColor();
-
         UIManager.put("ProgressBar.background", defaultBlue);
         UIManager.put("ProgressBar.foreground", defaultGrey);
         UIManager.put("ProgressBar.selectionBackground", defaultGrey);
         UIManager.put("ProgressBar.selectionForeground", defaultBlue);
+
+        // Style the comboboxes in this application.
+        UIManager.put("ComboBox.background", defaultBlue);
+        UIManager.put("ComboBox.selectionBackground", defaultBlue);
+        UIManager.put("ComboBox.selectionForeground", defaultWhite);
+        UIManager.put("ComboBox.font", UiLib.getDefaultFont());
     }
 
     /**
