@@ -8,6 +8,7 @@ package UiHelpers;
 import StandardProcedures.ProcedureManager;
 import StandardProcedures.StandardProcedure;
 import UI.StandardProcedureView;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -15,10 +16,10 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
+import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JTextPane;
 import javax.swing.text.JTextComponent;
@@ -30,6 +31,10 @@ import sunetibargetool.Config;
  */
 public class ProcedureViewFactory {
 
+    public enum CONSTANTS {
+        EXECUTION_STATUS_FIELD
+    }
+    
     private static JLabel getTitleLabel(String title) {
         JLabel label = new JLabel(title);
         label.setFont(UiLib.getTitleFont());
@@ -98,7 +103,26 @@ public class ProcedureViewFactory {
         return pane;
     }
 
-    private static JComponent getExecutePane(StandardProcedure procedure) {
+    private static Component getExecutionStatusComponent() {
+        String startingText = "Hello World!";
+
+        JTextPane textPane = new JTextPane();
+        textPane.setName(CONSTANTS.EXECUTION_STATUS_FIELD.name());
+        textPane.setText(startingText);
+        textPane.setBackground(Config.Colors.APPLICATION_DEFAULT_BLUE.getColor());
+        textPane.setForeground(Config.Colors.FONT_COLOR_WHITE.getColor());
+        textPane.setFont(UiLib.getDefaultFont());
+        textPane.setEditable(false);
+        textPane.setBorder(UiLib.createDefaultLineBorder());
+        UiLib.setComponentPadding(textPane, 5, 5, 5, 5);
+        
+        JScrollPane scrollPane = new JScrollPane(textPane, JScrollPane.VERTICAL_SCROLLBAR_NEVER, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.setBorder(null);
+        
+        return scrollPane;
+    }
+
+    private static JProgressBar getProgressBar() {
         JProgressBar progressBar = new JProgressBar();
         progressBar.setStringPainted(true);
         progressBar.setBorderPainted(false);
@@ -297,18 +321,26 @@ public class ProcedureViewFactory {
 
         view.add(getTitleLabel(procedure.getName()), constraints);
 
-        // Adding the progress bar view.
+        // Adding the execution-status-pane
         constraints.gridy = 1;
         constraints.weighty = 1;
+        constraints.fill = GridBagConstraints.BOTH;
+        constraints.anchor = GridBagConstraints.CENTER;
+        constraints.insets = new Insets(10, 6, 0, 25);
+
+        view.add(getExecutionStatusComponent(), constraints);
+
+        // Adding the progress bar.
+        constraints.gridy = 2;
+        constraints.weighty = 0;
         constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.anchor = GridBagConstraints.SOUTH;
-        constraints.insets = new Insets(0, 6, 0, 25);
+        constraints.insets = new Insets(25, 6, 0, 25);
 
-        final JProgressBar progressBar = (JProgressBar) getExecutePane(procedure);
-        view.add(progressBar, constraints);
+        view.add(getProgressBar(), constraints);
 
         // Adding the separator.
-        constraints.gridy = 2;
+        constraints.gridy = 3;
         constraints.weighty = 0;
 
         constraints.fill = GridBagConstraints.HORIZONTAL;
@@ -318,7 +350,7 @@ public class ProcedureViewFactory {
         view.add(getSeperatorLine(), constraints);
 
         // Adding the prev button.
-        constraints.gridy = 3;
+        constraints.gridy = 4;
         constraints.weighty = 0;
 
         constraints.fill = GridBagConstraints.NONE;
@@ -336,7 +368,7 @@ public class ProcedureViewFactory {
         view.add(prevButton, constraints);
 
         // Adding the execute button.
-        constraints.gridy = 3;
+        constraints.gridy = 4;
         constraints.weighty = 0;
 
         constraints.fill = GridBagConstraints.NONE;

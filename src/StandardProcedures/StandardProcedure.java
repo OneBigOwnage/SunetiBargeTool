@@ -1,8 +1,11 @@
 package StandardProcedures;
 
 import HelperClasses.ClassEnumerator;
+import UI.StandardProcedureView;
 import java.util.ArrayList;
 import java.util.List;
+import sunetibargetool.Config;
+import sunetibargetool.SunetiBargeTool;
 
 /**
  *
@@ -147,5 +150,10 @@ public abstract class StandardProcedure {
 
         // Return the list of known subclasses.
         return subClassList;
+    }
+    
+    protected void sendFeedback(String text) {
+        StandardProcedureView view = (StandardProcedureView) SunetiBargeTool.getController().getView(Config.View.STANDARD_PROCEDURE_VIEW);
+        view.appendExecutionText(text);
     }
 }

@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JTextField;
@@ -152,7 +153,7 @@ public final class UiLib {
      *
      * @param progressBar The JProgressBar you want to animate.
      * @param time The time in seconds from start to end of the animation.
-     * @return 
+     * @return
      */
     public static Thread getAnimateProgressBarThread(final JProgressBar progressBar, final double time) {
         return new Thread(new Runnable() {
@@ -206,4 +207,45 @@ public final class UiLib {
         }
         return null;
     }
+
+    /**
+     * Adds an empty border to the component, leaving the current border intact.
+     *
+     * @param component The component that the padding must be added to.
+     * @param top The amount of padding that has to be added to the top of the
+     * component.
+     * @param left The amount of padding that has to be added to the left of the
+     * component.
+     * @param bottom The amount of padding that has to be added to the bottom of
+     * the component.
+     * @param right The amount of padding that has to be added to the right of
+     * the component.
+     */
+    public static void setComponentPadding(JComponent component, int top, int left, int bottom, int right) {
+        Border paddingBorder = BorderFactory.createEmptyBorder(top, left, bottom, right);
+        Border originalBorder = component.getBorder();
+        // Add the paddingBorder as inner border, whilst keeping the outer(original) border intact.
+        component.setBorder(BorderFactory.createCompoundBorder(originalBorder, paddingBorder));
+    }
+
+    /**
+     * Deep searches the given container for all components, and returns the
+     * first instance that matches given name. Returns NULL if no component with
+     * given name is found.
+     *
+     * @param container The container that is to be searched for components.
+     * @param name The name of the component
+     * @return
+     */
+    public static Component getComponentByName(Container container, String name) {
+        List<Component> componentList = getAllComponents(container);
+
+        for (Component component : componentList) {
+            if (component.getName() != null && component.getName().equals(name)) {
+                return component;
+            }
+        }
+        return null;
+    }
+
 }
