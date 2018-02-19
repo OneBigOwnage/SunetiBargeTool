@@ -5,18 +5,29 @@
  */
 package UI;
 
+import App.Controller;
+import Models.BackupModel;
+
 /**
  *
  * @author suneti
  */
 public class BackupView extends javax.swing.JPanel {
 
+    private final Controller controller;
+    private final BackupModel model;
+
     /**
      * Creates new form BackupView
+     *
+     * @param controller The controller used to initialize this view.
+     * @param model The model used to initialize this view.
      */
-    public BackupView() {
+    public BackupView(Controller controller, BackupModel model) {
         initComponents();
         initComponentsExtra();
+        this.controller = controller;
+        this.model = model;
     }
 
     /**
@@ -32,11 +43,11 @@ public class BackupView extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGap(0, 868, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGap(0, 481, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -46,6 +57,6 @@ public class BackupView extends javax.swing.JPanel {
      * Method to do various fixes and style customizations to the GUI.
      */
     private void initComponentsExtra() {
-        
+
     }
 }

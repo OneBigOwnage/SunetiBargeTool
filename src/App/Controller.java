@@ -5,10 +5,12 @@
  */
 package App;
 
+import Models.BackupModel;
 import Models.BargeInfoModel;
 import Models.BaseModel;
 import Models.ProcedureModel;
 import Models.SQLModel;
+import UI.BackupView;
 import UI.BargeInfoView;
 import UI.ConfigView;
 import UI.LogView;
@@ -58,7 +60,7 @@ public class Controller {
     }
 
     /**
-     * Method called after successful showLoginView. Initializes the side bar.
+     * Method called after successfully logging in. Also shows the side bar.
      */
     public void afterLogin() {
         this.userInterface.showSidebar(true);
@@ -116,6 +118,7 @@ public class Controller {
         modelList.put(Model.BARGE_INFO_MODEL, new BargeInfoModel(this));
         modelList.put(Model.SQL_MODEL, new SQLModel(this));
         modelList.put(Model.PROCEDURE_MODEL, new ProcedureModel(this));
+        modelList.put(Model.BACKUP_MODEL, new BackupModel(this));
     }
 
     private void initViews() {
@@ -126,6 +129,7 @@ public class Controller {
         viewList.put(View.SIDE_BAR, new SideBar(this));
         viewList.put(View.CONFIG_VIEW, new ConfigView(this));
         viewList.put(View.STANDARD_PROCEDURE_VIEW, new StandardProcedureView(this, (ProcedureModel) modelList.get(Model.PROCEDURE_MODEL)));
+        viewList.put(View.BACKUP_VIEW, new BackupView(this, (BackupModel) modelList.get(Model.PROCEDURE_MODEL)));
     }
 
     public void log(String text) {
@@ -136,7 +140,7 @@ public class Controller {
      * Retrieves a view by Config.View.
      *
      * @param viewName Name of the view you want to retrieve, in Config.View
-     * enum format.
+     * enumeration format.
      * @return
      */
     public JPanel getView(View viewName) {
@@ -147,7 +151,7 @@ public class Controller {
      * Retrieves a model by Config.Model.
      *
      * @param modelName Name of the model you want to retrieve, in Config.Model
-     * enum format.
+     * enumeration format.
      * @return
      */
     public BaseModel getModel(Model modelName) {
