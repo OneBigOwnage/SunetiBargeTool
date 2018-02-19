@@ -23,7 +23,9 @@ import javax.swing.JProgressBar;
 import javax.swing.JTextField;
 import javax.swing.ListModel;
 import javax.swing.border.LineBorder;
+import javax.swing.text.JTextComponent;
 import sunetibargetool.Config;
+import sunetibargetool.SunetiBargeTool;
 
 /**
  *
@@ -272,6 +274,27 @@ public class StandardProcedureView extends javax.swing.JPanel {
         progressBar.setIndeterminate(false);
         progressBar.setString(endMsg);
         progressBar.setValue(100);
+    }
+
+    /**
+     * Method to add a line to the visual output of the Standard Procedure
+     * execution view. This method also automatically adds a timestamp and a
+     * linefeed to given String.
+     *
+     * @param text The line of text that is to be added.
+     */
+    public void appendExecutionText(String text) {
+        String prefix = "abc ";
+        String suffix = " def";
+
+        String completeLine = String.format("%s%s%s", prefix, text, suffix);
+
+        JTextComponent executionOutputField = (JTextComponent) UiLib.getComponentByName(content_panel, ProcedureViewFactory.CONSTANTS.EXECUTION_STATUS_FIELD.name());
+        if (executionOutputField != null) {
+            executionOutputField.setText(completeLine);
+        } else {
+            SunetiBargeTool.log("Unable to find 'executionOutputField' in procedure execution view!");
+        }
     }
 
 }
