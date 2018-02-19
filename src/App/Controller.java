@@ -90,7 +90,7 @@ public class Controller {
     }
 
     public void showBackupView() {
-
+        this.userInterface.showView(viewList.get(View.BACKUP_VIEW));
     }
 
     public void showStandardProcedureView() {
