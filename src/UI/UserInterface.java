@@ -15,6 +15,7 @@ import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import sunetibargetool.Config;
+import sunetibargetool.SunetiBargeTool;
 
 /**
  *
@@ -147,7 +148,8 @@ public class UserInterface extends javax.swing.JFrame {
      * @param place
      */
     public final void setupSidebar(JPanel sidebar, String place) {
-        
+        this.sidebar = sidebar;
+        this.sidebarPlace = place;
     }
 
     /**
@@ -168,24 +170,32 @@ public class UserInterface extends javax.swing.JFrame {
 
         // Add the new view to the GUI.
         add(view, viewPlace);
+        revalidate();
+        repaint();
     }
 
     /**
      * Shows or hides the side-bar. Outputs a message when the side-bar is not
-     * set, when the  or is already in the given state.
+     * set, when the or is already in the given state.
      *
      * @param show True for show, false for hide.
      */
     public void showSidebar(boolean show) {
-        BorderLayout layout = (BorderLayout) getContentPane().getLayout();
-        if (this.sidebar == null || this.sidebarPlace == null || layout.getLayoutComponent(this.sidebarPlace) == null) {
-            
-        } else {
-            if (show) {
-                
-            } else {
-                
+        // Don't do anything when either of these is not filled in.
+        if (this.sidebar == null || this.sidebarPlace == null) {
+            SunetiBargeTool.log("Not possible to set sidebar, either the sidebar or sidebarPlace is not filled in correctly");
+            return;
+        }
+
+        try {
+            BorderLayout layout = (BorderLayout) getContentPane().getLayout();
+            if (show && null == layout.getLayoutComponent(this.sidebarPlace)) {
+                getContentPane().add(this.sidebar, this.sidebarPlace);
+            } else if (!show && layout.getLayoutComponent(this.sidebarPlace) != null) {
+                layout.removeLayoutComponent(this.sidebar);
             }
+        } catch (NullPointerException | IllegalArgumentException ex) {
+            SunetiBargeTool.log("Currently not possible to show/hide the sidebar: " + ex);
         }
     }
 

@@ -46,6 +46,7 @@ public class Controller {
         this.userInterface.setVisible(true);
         initModels();
         initViews();
+        this.userInterface.setupSidebar(viewList.get(View.SIDE_BAR), BorderLayout.WEST);
         fixUserInterface();
     }
 

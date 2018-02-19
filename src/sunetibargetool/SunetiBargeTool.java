@@ -13,7 +13,6 @@ import Database.Database;
 import Daemons.DaemonManager;
 import Daemons.DatabaseDaemon;
 import Daemons.VSConnectionDaemon;
-import StandardProcedures.ProcedureManager;
 import java.lang.reflect.Method;
 
 /**
@@ -50,9 +49,17 @@ public class SunetiBargeTool {
         // *** IMPORTANT ***
     }
 
+    /**
+     * Forwards given string to the controller to log. If the controller is not
+     * initialized yet, System.out.println() will be used.
+     *
+     * @param text The text that is to be logged.
+     */
     public static void log(String text) {
         if (controller != null) {
             controller.log(text);
+        } else {
+            System.out.println("LOG: " + text);
         }
     }
 
