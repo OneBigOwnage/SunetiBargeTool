@@ -19,9 +19,10 @@ import sunetibargetool.SunetiBargeTool;
 public class SideBar extends javax.swing.JPanel {
 
     protected Controller controller;
-    
+
     /**
      * Creates new form sideBar
+     *
      * @param c The Controller
      */
     public SideBar(Controller c) {
@@ -82,6 +83,11 @@ public class SideBar extends javax.swing.JPanel {
 
         jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/home_icon_backup.png"))); // NOI18N
         jLabel5.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel5.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                onMousePressedBackup(evt);
+            }
+        });
 
         jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/home_icon_procedure.png"))); // NOI18N
         jLabel7.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -132,23 +138,23 @@ public class SideBar extends javax.swing.JPanel {
                 .addComponent(jLabel4))
         );
     }// </editor-fold>//GEN-END:initComponents
-    
+
     /**
      * Method to draw a line next to the menu icons.
+     *
      * @param graphics
      */
     @Override
     public void paint(Graphics graphics) {
         super.paint(graphics);
-        
+
         // Draw a line.
         Graphics2D graphicsNew = (Graphics2D) graphics;
         Line2D line = new Line2D.Float(62, 0, 62, getHeight());
         graphicsNew.draw(line);
     }
-    
-    
-    
+
+
     private void bargeInfo(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bargeInfo
         this.controller.showBargeInfoView();
     }//GEN-LAST:event_bargeInfo
@@ -160,7 +166,7 @@ public class SideBar extends javax.swing.JPanel {
     private void SQL(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_SQL
         controller.showSQLView();
     }//GEN-LAST:event_SQL
-    
+
     private void log(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_log
         controller.showLogView();
     }//GEN-LAST:event_log
@@ -172,12 +178,16 @@ public class SideBar extends javax.swing.JPanel {
     private void standardProcedures(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_standardProcedures
         controller.showStandardProcedureView();
     }//GEN-LAST:event_standardProcedures
-    
+
+    private void onMousePressedBackup(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_onMousePressedBackup
+        controller.showBackupView();
+    }//GEN-LAST:event_onMousePressedBackup
+
     public void setBgColor(Color color) {
         setBackground(color);
     }
-    
-    
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel btn_log;
     private javax.swing.JLabel jLabel1;
