@@ -7,13 +7,10 @@ package Models;
 
 import App.Commands;
 import App.Controller;
-import Database.Database;
 import Database.DatabaseHelper;
 import Database.Query;
 import java.io.File;
 import java.io.FileFilter;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
