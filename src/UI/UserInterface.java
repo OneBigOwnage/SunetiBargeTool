@@ -7,6 +7,7 @@ package UI;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.net.URL;
 import javax.swing.ImageIcon;
@@ -21,12 +22,27 @@ import sunetibargetool.Config;
  */
 public class UserInterface extends javax.swing.JFrame {
 
+    private String sidebarPlace;
+    private JPanel sidebar;
+
     /**
-     * Creates new form UI
+     * Default constructor of this GUI
      */
     public UserInterface() {
         initComponents();
         initExtra();
+    }
+
+    /**
+     * Constructor to create this GUI with
+     *
+     * @param sidebar
+     * @param sidebarPlace
+     */
+    public UserInterface(JPanel sidebar, String sidebarPlace) {
+        initComponents();
+        initExtra();
+        setupSidebar(sidebar, sidebarPlace);
     }
 
     /**
@@ -125,25 +141,52 @@ public class UserInterface extends javax.swing.JFrame {
         UIManager.put("ProgressBar.selectionForeground", defaultBlue);
     }
 
-    public void setPanel(JPanel panel, String place) {
-        add(panel, place);
-        revalidate();
-        repaint();
+    /**
+     *
+     * @param sidebar
+     * @param place
+     */
+    public final void setupSidebar(JPanel sidebar, String place) {
+        
     }
 
-    public void removePanel(JPanel panel) {
-        remove(panel);
-        revalidate();
-        repaint();
-    }
-
-    public void clearPanel(String place) {
+    /**
+     * Removes the current view from the GUI if there is any and sets given view
+     * as the currently displayed view.
+     *
+     * @param view The view that is to be shown on the GUI.
+     */
+    public void showView(JPanel view) {
+        String viewPlace = BorderLayout.CENTER;
         BorderLayout layout = (BorderLayout) getContentPane().getLayout();
-        if (layout.getLayoutComponent(place) != null) {
-            remove(layout.getLayoutComponent(place));
+        Component currentView = layout.getLayoutComponent(viewPlace);
+
+        // If there currently a view displayed, remove it.
+        if (currentView != null) {
+            remove(currentView);
         }
-        revalidate();
-        repaint();
+
+        // Add the new view to the GUI.
+        add(view, viewPlace);
+    }
+
+    /**
+     * Shows or hides the side-bar. Outputs a message when the side-bar is not
+     * set, when the  or is already in the given state.
+     *
+     * @param show True for show, false for hide.
+     */
+    public void showSidebar(boolean show) {
+        BorderLayout layout = (BorderLayout) getContentPane().getLayout();
+        if (this.sidebar == null || this.sidebarPlace == null || layout.getLayoutComponent(this.sidebarPlace) == null) {
+            
+        } else {
+            if (show) {
+                
+            } else {
+                
+            }
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

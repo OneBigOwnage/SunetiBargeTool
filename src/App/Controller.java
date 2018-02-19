@@ -50,50 +50,48 @@ public class Controller {
     }
 
     /**
-     * Shows the showLoginView screen.
+     * Shows the Login View.
      */
     public void showLoginView() {
-        this.userInterface.setPanel(viewList.get(View.LOGIN_VIEW), BorderLayout.CENTER);
+        this.userInterface.showView(viewList.get(View.LOGIN_VIEW));
     }
 
     /**
      * Method called after successful showLoginView. Initializes the side bar.
      */
     public void afterLogin() {
-        this.userInterface.clearPanel(BorderLayout.CENTER);
-        this.userInterface.setPanel(viewList.get(View.SIDE_BAR), BorderLayout.WEST);
-        this.userInterface.setPanel(viewList.get(View.BARGE_INFO_VIEW), BorderLayout.CENTER);
+        this.userInterface.showSidebar(true);
+        this.userInterface.showView(viewList.get(View.BARGE_INFO_VIEW));
     }
 
     /**
      * Shows the screen with information about the barge/solution.
      */
     public void showBargeInfoView() {
-        this.userInterface.clearPanel(BorderLayout.CENTER);
-        this.userInterface.setPanel(viewList.get(View.BARGE_INFO_VIEW), BorderLayout.CENTER);
+        this.userInterface.showView(viewList.get(View.BARGE_INFO_VIEW));
     }
 
     /**
      * Shows the configuration screen
      */
     public void showConfigView() {
-        this.userInterface.clearPanel(BorderLayout.CENTER);
-        this.userInterface.setPanel(viewList.get(View.CONFIG_VIEW), BorderLayout.CENTER);
+        this.userInterface.showView(viewList.get(View.CONFIG_VIEW));
     }
 
     public void showSQLView() {
-        this.userInterface.clearPanel(BorderLayout.CENTER);
-        this.userInterface.setPanel(viewList.get(View.SQL_VIEW), BorderLayout.CENTER);
+        this.userInterface.showView(viewList.get(View.SQL_VIEW));
     }
 
     public void showLogView() {
-        this.userInterface.clearPanel(BorderLayout.CENTER);
-        this.userInterface.setPanel(viewList.get(View.LOG_VIEW), BorderLayout.CENTER);
+        this.userInterface.showView(viewList.get(View.LOG_VIEW));
+    }
+
+    public void showBackupView() {
+
     }
 
     public void showStandardProcedureView() {
-        this.userInterface.clearPanel(BorderLayout.CENTER);
-        this.userInterface.setPanel(viewList.get(View.STANDARD_PROCEDURE_VIEW), BorderLayout.CENTER);
+        this.userInterface.showView(viewList.get(View.STANDARD_PROCEDURE_VIEW));
     }
 
     private void fixUserInterface() {
