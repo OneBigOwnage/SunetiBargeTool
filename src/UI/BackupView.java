@@ -13,7 +13,6 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.geom.Line2D;
 import javax.swing.DefaultListModel;
-import javax.swing.ListModel;
 import sunetibargetool.Config;
 
 public class BackupView extends javax.swing.JPanel {
@@ -37,6 +36,7 @@ public class BackupView extends javax.swing.JPanel {
         initComponentsExtra();
         this.controller = controller;
         this.model = model;
+        loadData();
     }
 
     /**
@@ -55,13 +55,11 @@ public class BackupView extends javax.swing.JPanel {
         backupPresetDescription = new javax.swing.JTextPane();
         jLabel1 = new javax.swing.JLabel();
         tablePanel = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
+        createBackupButton = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         excludedTablesList = new javax.swing.JList<>();
         jScrollPane3 = new javax.swing.JScrollPane();
         includedTablesList = new javax.swing.JList<>();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(15, 124, 160));
         setPreferredSize(new java.awt.Dimension(967, 479));
@@ -114,84 +112,51 @@ public class BackupView extends javax.swing.JPanel {
                 .addContainerGap())
         );
 
-        jButton1.setText("Create Backup");
+        createBackupButton.setText("Create Backup");
 
-        jScrollPane2.setBorder(null);
+        jScrollPane2.setBorder(UiLib.createDefaultLineBorder());
+        jScrollPane2.setOpaque(false);
 
-        excludedTablesList.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
+        excludedTablesList.setBackground(Config.Colors.APPLICATION_DEFAULT_BLUE.getColor());
         excludedTablesList.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 excludedTablesListMousePressed(evt);
             }
         });
-        excludedTablesList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
-            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
-                excludedTablesListValueChanged(evt);
-            }
-        });
         jScrollPane2.setViewportView(excludedTablesList);
 
-        jScrollPane3.setBorder(null);
+        jScrollPane3.setBorder(UiLib.createDefaultLineBorder());
 
-        includedTablesList.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
+        includedTablesList.setBackground(Config.Colors.APPLICATION_DEFAULT_BLUE.getColor());
+        includedTablesList.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                includedTablesListMousePressed(evt);
+            }
         });
         jScrollPane3.setViewportView(includedTablesList);
-
-        jButton2.setText("=>");
-        jButton2.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                jButton2KeyPressed(evt);
-            }
-        });
-
-        jButton3.setText("<=");
-        jButton3.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                jButton3MousePressed(evt);
-            }
-        });
 
         javax.swing.GroupLayout tablePanelLayout = new javax.swing.GroupLayout(tablePanel);
         tablePanel.setLayout(tablePanelLayout);
         tablePanelLayout.setHorizontalGroup(
             tablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, tablePanelLayout.createSequentialGroup()
+                .addGap(45, 45, 45)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 306, Short.MAX_VALUE)
                 .addGroup(tablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(tablePanelLayout.createSequentialGroup()
-                        .addGap(45, 45, 45)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(tablePanelLayout.createSequentialGroup()
-                        .addGap(95, 95, 95)
-                        .addComponent(jButton2)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 303, Short.MAX_VALUE)
-                .addGroup(tablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(tablePanelLayout.createSequentialGroup()
-                        .addGap(48, 48, 48)
-                        .addComponent(jButton3)))
+                    .addComponent(createBackupButton, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(15, 15, 15))
         );
         tablePanelLayout.setVerticalGroup(
             tablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(tablePanelLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(174, Short.MAX_VALUE)
                 .addGroup(tablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(tablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton3)
-                    .addComponent(jButton2))
-                .addGap(84, 84, 84)
-                .addComponent(jButton1)
+                .addGap(128, 128, 128)
+                .addComponent(createBackupButton)
                 .addGap(14, 14, 14))
         );
 
@@ -216,33 +181,28 @@ public class BackupView extends javax.swing.JPanel {
     }//GEN-LAST:event_onLoadPresetButtonClicked
 
     private void excludedTablesListMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_excludedTablesListMousePressed
-        System.out.println("Click!");
+        Rectangle listCellBounds = excludedTablesList.getCellBounds(excludedTablesList.getFirstVisibleIndex(), excludedTablesList.getLastVisibleIndex());
+        if (null != listCellBounds && listCellBounds.contains(evt.getPoint())) {
+            switchTable(SWITCH_TYPE.TO_RIGHT);
+        } else {
+            excludedTablesList.clearSelection();
+        }
     }//GEN-LAST:event_excludedTablesListMousePressed
 
-    private void excludedTablesListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_excludedTablesListValueChanged
-        // If statement is to only change UI once per change, not twice. ( https://stackoverflow.com/questions/12461627/ )
-        if (!evt.getValueIsAdjusting()) {
-            System.out.println("IF");
+    private void includedTablesListMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_includedTablesListMousePressed
+        Rectangle listCellBounds = includedTablesList.getCellBounds(includedTablesList.getFirstVisibleIndex(), includedTablesList.getLastVisibleIndex());
+        if (null != listCellBounds && listCellBounds.contains(evt.getPoint())) {
+            switchTable(SWITCH_TYPE.TO_LEFT);
         } else {
-            System.out.println("ELSE");
+            includedTablesList.clearSelection();
         }
-    }//GEN-LAST:event_excludedTablesListValueChanged
-
-    private void jButton2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jButton2KeyPressed
-        switchTable(SWITCH_TYPE.TO_RIGHT);
-    }//GEN-LAST:event_jButton2KeyPressed
-
-    private void jButton3MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton3MousePressed
-        switchTable(SWITCH_TYPE.TO_LEFT);
-    }//GEN-LAST:event_jButton3MousePressed
+    }//GEN-LAST:event_includedTablesListMousePressed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextPane backupPresetDescription;
+    private javax.swing.JButton createBackupButton;
     private javax.swing.JList<String> excludedTablesList;
     private javax.swing.JList<String> includedTablesList;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
@@ -264,22 +224,31 @@ public class BackupView extends javax.swing.JPanel {
         backupPresetDescription.setBackground(Config.Colors.APPLICATION_DEFAULT_BLUE.getColor());
 
         // Style the preset picker.
-//        Component[] components = presetPicker.getComponents();
-//        for (Component component : components) {
-//            if (component instanceof CellRendererPane) {
-//                // cell renderer here:
-//                CellRendererPane container = (CellRendererPane) component;
-//                System.out.println("Count: " + container.getComponentCount());
-//            } else {
-//                // JButton here:
-//                ((JButton) component).setBorder(UiLib.createDefaultLineBorder());
-//            }
-//        }
+        // TODO: Actually style the preset picker.
         presetPicker.setBounds(new Rectangle(12, 9, 331, 26));
+
         // Style the description pane.
         UiLib.setComponentPadding(backupPresetDescription, 5, 5, 5, 5);
         backupPresetDescription.setFont(UiLib.getDefaultFont());
+    }
 
+    /**
+     * Method to load all data from the model, into the view.
+     */
+    private void loadData() {
+        DefaultListModel exModel = new DefaultListModel();
+        DefaultListModel inModel = new DefaultListModel();
+
+        exModel.addElement("table 01");
+        exModel.addElement("table 02");
+        exModel.addElement("table 03");
+
+        inModel.addElement("table 01");
+        inModel.addElement("table 02");
+        inModel.addElement("table 03");
+
+        this.excludedTablesList.setModel(exModel);
+        this.includedTablesList.setModel(inModel);
     }
 
     /**
@@ -306,31 +275,26 @@ public class BackupView extends javax.swing.JPanel {
     public void switchTable(SWITCH_TYPE switchType) {
         int leftIndex = excludedTablesList.getSelectedIndex();
         int rightIndex = includedTablesList.getSelectedIndex();
-        ListModel leftModel = excludedTablesList.getModel();
-        ListModel rightModel = includedTablesList.getModel();
+        DefaultListModel<String> leftModel = (DefaultListModel) excludedTablesList.getModel();
+        DefaultListModel<String> rightModel = (DefaultListModel) includedTablesList.getModel();
 
-        DefaultListModel<String> modelX = (DefaultListModel<String>) leftModel;
-        
-        
-        
         if (switchType.equals(SWITCH_TYPE.TO_RIGHT) && leftIndex >= 0) {
-//            String tableName = leftModel.getElementAt(leftIndex);
-//
-//            rightModel.add(rightIndex, tableName);
-//            leftModel.removeElement(tableName);
-//
-//            includedTablesList.setModel(rightModel);
-//            excludedTablesList.setModel(leftModel);
+            String tableName = leftModel.getElementAt(leftIndex);
+
+            rightModel.add(0, tableName);
+            leftModel.removeElement(tableName);
+
+            includedTablesList.setModel(rightModel);
+            excludedTablesList.setModel(leftModel);
 
         } else if (switchType.equals(SWITCH_TYPE.TO_LEFT) && rightIndex >= 0) {
-//            String tableName = rightModel.getElementAt(rightIndex);
-//
-//            leftModel.add(leftIndex, tableName);
-//            rightModel.removeElement(tableName);
-//
-//            includedTablesList.setModel(rightModel);
-//            excludedTablesList.setModel(leftModel);
+            String tableName = rightModel.getElementAt(rightIndex);
+
+            leftModel.add(0, tableName);
+            rightModel.removeElement(tableName);
+
+            includedTablesList.setModel(rightModel);
+            excludedTablesList.setModel(leftModel);
         }
     }
-
 }
