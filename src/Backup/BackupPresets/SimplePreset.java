@@ -13,4 +13,9 @@ import Backup.BackupPreset;
  */
 public class SimplePreset extends BackupPreset {
     
+    public SimplePreset() {
+        super(PresetType.EXCLUDE_SELECTED, new String[0]);
+    }
+    
+    
 }

@@ -12,4 +12,27 @@ package Backup;
  */
 public abstract class BackupPreset {
     
+    public enum PresetType {
+        INCLUDE_SELECTED,
+        EXCLUDE_SELECTED;
+    }
+    
+    protected final PresetType presetType;
+    protected final String[] selectedTables;
+    
+    
+    public BackupPreset(PresetType presetType, String[] selectedTables) {
+        this.presetType = presetType;
+        this.selectedTables = selectedTables;
+    }
+    
+    
+    public String[] getSelectedTables() {
+        return this.selectedTables;
+    }
+    
+    public PresetType getPresetType() {
+        return this.presetType;
+    }
+    
 }
