@@ -52,7 +52,7 @@ public class BackupView extends javax.swing.JPanel {
         initComponentsExtra();
         this.controller = controller;
         this.model = model;
-        loadData();
+        loadData(false);
         loadBackupPresetsIntoView();
     }
 
@@ -78,6 +78,7 @@ public class BackupView extends javax.swing.JPanel {
         jScrollPane3 = new javax.swing.JScrollPane();
         includedTablesList = new javax.swing.JList<>();
         jLabel2 = new javax.swing.JLabel();
+        reloadTablesButton = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(15, 124, 160));
         setPreferredSize(new java.awt.Dimension(967, 479));
@@ -129,9 +130,9 @@ public class BackupView extends javax.swing.JPanel {
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(30, 30, 30)
                 .addComponent(presetPicker, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1)
-                .addGap(42, 42, 42)
+                .addGap(51, 51, 51)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(loadPresetButton)
                 .addGap(14, 14, 14))
         );
@@ -164,6 +165,13 @@ public class BackupView extends javax.swing.JPanel {
         jLabel2.setText("Backup Presets");
         jLabel2.setVerticalAlignment(javax.swing.SwingConstants.TOP);
 
+        reloadTablesButton.setText("Reload tables from database");
+        reloadTablesButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                reloadTablesButtonMousePressed(evt);
+            }
+        });
+
         javax.swing.GroupLayout tablePanelLayout = new javax.swing.GroupLayout(tablePanel);
         tablePanel.setLayout(tablePanelLayout);
         tablePanelLayout.setHorizontalGroup(
@@ -171,16 +179,19 @@ public class BackupView extends javax.swing.JPanel {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, tablePanelLayout.createSequentialGroup()
                 .addGroup(tablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(tablePanelLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(createBackupButton, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(tablePanelLayout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(tablePanelLayout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, tablePanelLayout.createSequentialGroup()
                         .addGap(14, 14, 14)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 275, Short.MAX_VALUE)
-                        .addGap(87, 87, 87)
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 275, Short.MAX_VALUE)))
+                        .addGroup(tablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(tablePanelLayout.createSequentialGroup()
+                                .addComponent(reloadTablesButton, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(createBackupButton, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(tablePanelLayout.createSequentialGroup()
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 275, Short.MAX_VALUE)
+                                .addGap(87, 87, 87)
+                                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 275, Short.MAX_VALUE)))))
                 .addGap(31, 31, 31))
         );
         tablePanelLayout.setVerticalGroup(
@@ -193,7 +204,9 @@ public class BackupView extends javax.swing.JPanel {
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 343, Short.MAX_VALUE)
                     .addComponent(jScrollPane3))
                 .addGap(18, 18, 18)
-                .addComponent(createBackupButton)
+                .addGroup(tablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(createBackupButton)
+                    .addComponent(reloadTablesButton))
                 .addGap(14, 14, 14))
         );
 
@@ -239,6 +252,10 @@ public class BackupView extends javax.swing.JPanel {
         loadPresetDescription();
     }//GEN-LAST:event_presetPickerPropertyChange
 
+    private void reloadTablesButtonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reloadTablesButtonMousePressed
+        loadData(true);
+    }//GEN-LAST:event_reloadTablesButtonMousePressed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextPane backupPresetDescription;
     private javax.swing.JButton createBackupButton;
@@ -252,6 +269,7 @@ public class BackupView extends javax.swing.JPanel {
     private javax.swing.JButton loadPresetButton;
     private javax.swing.JPanel presetPanel;
     private javax.swing.JComboBox<BackupPreset> presetPicker;
+    private javax.swing.JButton reloadTablesButton;
     private javax.swing.JPanel tablePanel;
     // End of variables declaration//GEN-END:variables
 
@@ -281,9 +299,9 @@ public class BackupView extends javax.swing.JPanel {
     /**
      * Method to load all data from the model, into the view.
      */
-    private void loadData() {
+    private void loadData(boolean hardReload) {
 
-        this.tables = model.getTables(false);
+        this.tables = model.getTables(hardReload);
 
         DefaultListModel exModel = new DefaultListModel();
         DefaultListModel inModel = new DefaultListModel();

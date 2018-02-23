@@ -54,7 +54,7 @@ public class BackupModel extends BaseModel {
                 SunetiBargeTool.log("There was a problem trying to load a backup preset!\n" + ex);
             }
         }
-        
+
         return backupPresets;
     }
 
@@ -64,13 +64,13 @@ public class BackupModel extends BaseModel {
      * the database, else the tables that are already stored in this object are
      * returned.
      *
-     * @param fresh Whether or not to freshly load the tables from the database
+     * @param hardReload Whether or not to freshly load the tables from the database
      * again.
      * @return A String array containing all the tables in the database. If the
      * tables are not loaded, null will be returned.
      */
-    public String[] getTables(boolean fresh) {
-        if (fresh) {
+    public String[] getTables(boolean hardReload) {
+        if (hardReload) {
             this.loadTablesFromDatabase();
         }
         return this.tables;
@@ -82,7 +82,10 @@ public class BackupModel extends BaseModel {
      * is set to null;
      */
     public final void loadTablesFromDatabase() {
-        Query query = new Query("");
+        Query query = new Query(
+                "SELECT table_name\n"
+                + "FROM INFORMATION_SCHEMA.TABLES\n"
+                + "WHERE table_schema = 'public';");
         Object result = Database.getInstance().executeQuery(query);
 
         if (result instanceof ResultSet) {
@@ -99,6 +102,7 @@ public class BackupModel extends BaseModel {
             } finally {
                 int loadedTableCount = tempTables.size();
                 if (loadedTableCount >= 1) {
+                    this.tables = new String[loadedTableCount];
                     tempTables.toArray(this.tables);
                 } else {
                     this.tables = null;
