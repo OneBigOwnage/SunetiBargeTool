@@ -10,7 +10,7 @@ import App.Controller;
 import HelperClasses.ProcedureListModel;
 import Models.ProcedureModel;
 import StandardProcedures.StandardProcedure;
-import UiHelpers.CustomListCellRenderer;
+import UiHelpers.ProcedureListCellRenderer;
 import UiHelpers.ProcedureViewFactory;
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -172,7 +172,7 @@ public class StandardProcedureView extends javax.swing.JPanel {
     private void fixUI() {
         UiLib.styleTextField(searchField);
         procedureListScrollPane.setBorder(BorderFactory.createEmptyBorder());
-        procedureList.setCellRenderer(new CustomListCellRenderer());
+        procedureList.setCellRenderer(new ProcedureListCellRenderer());
         procedureList.setBorder(new LineBorder(Config.Colors.APPLICATION_DEFAULT_GREY.getColor(), 2));
         procedureList.setBackground(Config.Colors.APPLICATION_DEFAULT_BLUE.getColor());
         content_panel.setLayout(new BorderLayout());
