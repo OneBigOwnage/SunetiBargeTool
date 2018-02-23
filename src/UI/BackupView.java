@@ -10,6 +10,7 @@ import Backup.BackupPreset;
 import Backup.BackupPreset.PresetType;
 import Backup.BackupPresets.SimplePreset;
 import Models.BackupModel;
+import UiHelpers.BackupPresetComboBoxRenderer;
 import UiHelpers.DbTableListCellRenderer;
 import UiHelpers.UiLib;
 import java.awt.Graphics;
@@ -17,6 +18,8 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.geom.Line2D;
 import java.util.Arrays;
+import java.util.List;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import sunetibargetool.Config;
 
@@ -24,11 +27,14 @@ public class BackupView extends javax.swing.JPanel {
 
     private final Controller controller;
     private final BackupModel model;
+
     /**
      * Array consisting of all the tables in the database. The tables can be
      * loaded from the model.
      */
     private String[] tables;
+
+    private List<BackupPreset> presets;
 
     public enum SWITCH_TYPE {
         TO_LEFT,
@@ -47,6 +53,7 @@ public class BackupView extends javax.swing.JPanel {
         this.controller = controller;
         this.model = model;
         loadData();
+        loadBackupPresetsIntoView();
     }
 
     /**
@@ -82,8 +89,12 @@ public class BackupView extends javax.swing.JPanel {
             }
         });
 
-        presetPicker.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "-- Choose a Backup Preset --", "Preset 01", "Preset 02" }));
         presetPicker.setBorder(null);
+        presetPicker.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                presetPickerPropertyChange(evt);
+            }
+        });
 
         jScrollPane1.setBorder(null);
 
@@ -224,6 +235,10 @@ public class BackupView extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_includedTablesListMousePressed
 
+    private void presetPickerPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_presetPickerPropertyChange
+        loadPresetDescription();
+    }//GEN-LAST:event_presetPickerPropertyChange
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextPane backupPresetDescription;
     private javax.swing.JButton createBackupButton;
@@ -236,7 +251,7 @@ public class BackupView extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JButton loadPresetButton;
     private javax.swing.JPanel presetPanel;
-    private javax.swing.JComboBox<String> presetPicker;
+    private javax.swing.JComboBox<BackupPreset> presetPicker;
     private javax.swing.JPanel tablePanel;
     // End of variables declaration//GEN-END:variables
 
@@ -251,13 +266,14 @@ public class BackupView extends javax.swing.JPanel {
         backupPresetDescription.setBackground(Config.Colors.APPLICATION_DEFAULT_BLUE.getColor());
 
         // Style the preset picker.
-        // TODO: Actually style the preset picker.
+        // TODO: Actually style the preset picker...
         presetPicker.setBounds(new Rectangle(12, 9, 331, 26));
+        presetPicker.setRenderer(new BackupPresetComboBoxRenderer());
 
         // Style the description pane.
         UiLib.setComponentPadding(backupPresetDescription, 5, 5, 5, 5);
         backupPresetDescription.setFont(UiLib.getDefaultFont());
-        
+
         excludedTablesList.setCellRenderer(new DbTableListCellRenderer());
         includedTablesList.setCellRenderer(new DbTableListCellRenderer());
     }
@@ -282,6 +298,27 @@ public class BackupView extends javax.swing.JPanel {
         this.excludedTablesList.setModel(exModel);
     }
 
+    /**
+     * Method to load all the backup presets into the view, and display them in
+     * the combo box.
+     */
+    private void loadBackupPresetsIntoView() {
+        this.presets = model.getBackupPresets();
+
+        BackupPreset[] presetArray = new BackupPreset[this.presets.size()];
+
+        for (int i = 0; i < this.presets.size(); i++) {
+            presetArray[i] = this.presets.get(i);
+        }
+
+        presetPicker.setModel(new DefaultComboBoxModel(presetArray));
+    }
+
+    /**
+     * Method to load a backup preset into the table lists.
+     *
+     * @param preset The preset that is to be loaded into the lists.
+     */
     private void loadBackupPreset(BackupPreset preset) {
 
         String[] presetTables = preset.getSelectedTables();
@@ -313,6 +350,33 @@ public class BackupView extends javax.swing.JPanel {
 
         this.includedTablesList.setModel(inModel);
         this.excludedTablesList.setModel(exModel);
+    }
+
+    /**
+     * Method to set the preset description field. This is mainly used when the
+     * current preset selection changes.
+     */
+    private void loadPresetDescription() {
+        BackupPreset preset = getSelectedPreset();
+        if (null != preset) {
+            backupPresetDescription.setText(preset.getDescription());
+        }
+    }
+
+    /**
+     * Getter for the current selected preset in the preset picker.
+     *
+     * @return A BackupPreset object, reflecting the currently selected preset.
+     */
+    private BackupPreset getSelectedPreset() {
+        DefaultComboBoxModel<BackupPreset> dataModel = (DefaultComboBoxModel<BackupPreset>) presetPicker.getModel();
+        int selectedIndex = presetPicker.getSelectedIndex();
+
+        if (selectedIndex >= 0) {
+            return dataModel.getElementAt(selectedIndex);
+        } else {
+            return null;
+        }
     }
 
     /**

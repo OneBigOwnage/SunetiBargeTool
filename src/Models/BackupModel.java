@@ -9,6 +9,7 @@ import App.Controller;
 import Backup.BackupPreset;
 import Database.Database;
 import Database.Query;
+import HelperClasses.ClassEnumerator;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -40,7 +41,21 @@ public class BackupModel extends BaseModel {
      */
     public List<BackupPreset> getBackupPresets() {
 
-        return null;
+        ArrayList<BackupPreset> backupPresets = new ArrayList<>();
+
+        List<Class<?>> classList = ClassEnumerator.getClassesForPackage(BackupPreset.class.getPackage());
+
+        for (Class<?> cls : classList) {
+            try {
+                if (BackupPreset.class.isAssignableFrom(cls) && !cls.equals(BackupPreset.class)) {
+                    backupPresets.add((BackupPreset) cls.newInstance());
+                }
+            } catch (IllegalAccessException | InstantiationException ex) {
+                SunetiBargeTool.log("There was a problem trying to load a backup preset!\n" + ex);
+            }
+        }
+        
+        return backupPresets;
     }
 
     /**
