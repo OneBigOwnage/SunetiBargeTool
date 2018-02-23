@@ -134,7 +134,7 @@ public final class UiLib {
      * @return The default font of this application
      */
     public static Font getDefaultFont() {
-        return new Font("Segoe UI", Font.PLAIN, 14);
+        return new Font("Segoe UI Semibold", Font.PLAIN, 14);
     }
 
     /**
@@ -143,7 +143,7 @@ public final class UiLib {
      * @return The default title font of this application.
      */
     public static Font getTitleFont() {
-        return new Font("Segoe UI", Font.BOLD, 16);
+        return new Font("Segoe UI Semibold", Font.BOLD, 16);
     }
 
     /**
