@@ -41,6 +41,7 @@ public class SQLView extends javax.swing.JPanel {
      * Creates new form SQLView
      *
      * @param controller
+     * @param model
      */
     public SQLView(Controller controller, SQLModel model) {
         initComponents();
@@ -325,13 +326,13 @@ public class SQLView extends javax.swing.JPanel {
     }
 
     private void parseResultSetInTable(ResultSet result) {
-        DefaultTableModel model = new DefaultTableModel();
+        DefaultTableModel tableModel = new DefaultTableModel();
         try {
             // Create table header.
             ResultSetMetaData metadata = result.getMetaData();
             int columnCount = metadata.getColumnCount();
             for (int i = 1; i <= columnCount; i++) {
-                model.addColumn(metadata.getColumnLabel(i));
+                tableModel.addColumn(metadata.getColumnLabel(i));
             }
 
             // Funnel ResultSet into tablemodel
@@ -341,14 +342,14 @@ public class SQLView extends javax.swing.JPanel {
                     rowData[i - 1] = result.getObject(i);
                 }
                 // Add the fetched data to the model.
-                model.insertRow(result.getRow() - 1, rowData);
+                tableModel.insertRow(result.getRow() - 1, rowData);
             }
         } catch (SQLException ex) {
             System.out.println(ex);
             lbl_result.setText("Unable to parse data into table: " + ex);
         }
 
-        outputTable.setModel(model);
+        outputTable.setModel(tableModel);
         outputTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         fixTableCellWidth();
     }
