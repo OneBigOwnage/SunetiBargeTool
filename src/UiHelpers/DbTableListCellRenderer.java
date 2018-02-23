@@ -5,14 +5,12 @@
  */
 package UiHelpers;
 
-import StandardProcedures.StandardProcedure;
 import java.awt.Color;
 import java.awt.Component;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JList;
 import javax.swing.border.Border;
-import javax.swing.border.LineBorder;
 import javax.swing.border.MatteBorder;
 import sunetibargetool.Config;
 
