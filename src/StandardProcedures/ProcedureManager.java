@@ -43,7 +43,7 @@ abstract public class ProcedureManager {
                 StandardProcedure procedure = procedureClass.newInstance();
                 procedures.add(procedure);
             } catch (InstantiationException | IllegalAccessException ex) {
-                System.out.println("There was a problem trying to load a standard procedure!\n" + ex);
+                SunetiBargeTool.log("There was a problem trying to load a standard procedure!\n" + ex);
             }
         }
 
