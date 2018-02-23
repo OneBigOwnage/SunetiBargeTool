@@ -8,6 +8,7 @@ package UiHelpers;
 import Backup.BackupPreset;
 import java.awt.Color;
 import java.awt.Component;
+import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
@@ -19,26 +20,19 @@ import sunetibargetool.Config;
  */
 public class BackupPresetComboBoxRenderer extends JLabel implements ListCellRenderer {
 
-    /**
-     *
-     * @param list
-     * @param value
-     * @param index
-     * @param isSelected
-     * @param cellHasFocus
-     * @return
-     */
     @Override
     public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
 
         if (value != null && BackupPreset.class.isAssignableFrom(value.getClass())) {
             setText(((BackupPreset) value).getName());
         } else {
-            setText("I dont get it...");
+            setText("Preset Error!");
         }
 
         Color bgColor = Config.Colors.APPLICATION_DEFAULT_BLUE.getColor();
         Color fontColor = Config.Colors.FONT_COLOR_GREY.getColor();
+
+        setBorder(BorderFactory.createEmptyBorder(1, 5, 1, 5));
 
         // Generic stuff below
         setBackground(bgColor);
