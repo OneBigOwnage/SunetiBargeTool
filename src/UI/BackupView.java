@@ -6,12 +6,15 @@
 package UI;
 
 import App.Controller;
+import Backup.BackupPreset;
+import Backup.BackupPreset.PresetType;
 import Models.BackupModel;
 import UiHelpers.UiLib;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.geom.Line2D;
+import java.util.Arrays;
 import javax.swing.DefaultListModel;
 import sunetibargetool.Config;
 
@@ -19,6 +22,11 @@ public class BackupView extends javax.swing.JPanel {
 
     private final Controller controller;
     private final BackupModel model;
+    /**
+     * Array consisting of all the tables in the database. The tables can be
+     * loaded from the model.
+     */
+    private String[] tables;
 
     public enum SWITCH_TYPE {
         TO_LEFT,
@@ -236,19 +244,50 @@ public class BackupView extends javax.swing.JPanel {
      * Method to load all data from the model, into the view.
      */
     private void loadData() {
+
+        this.tables = model.getTables(false);
+
         DefaultListModel exModel = new DefaultListModel();
         DefaultListModel inModel = new DefaultListModel();
 
-        exModel.addElement("table 01");
-        exModel.addElement("table 02");
-        exModel.addElement("table 03");
-
-        inModel.addElement("table 01");
-        inModel.addElement("table 02");
-        inModel.addElement("table 03");
+        if (null != this.tables) {
+            for (String t : this.tables) {
+                exModel.addElement(t);
+            }
+        }
 
         this.excludedTablesList.setModel(exModel);
         this.includedTablesList.setModel(inModel);
+    }
+
+    private void loadBackupPreset(BackupPreset preset) {
+        
+        if (null == this.tables) {
+            return;
+        }
+        
+        String[] presetTables = preset.getSelectedTables();
+        
+        DefaultListModel<String> inModel = new DefaultListModel<>();
+        DefaultListModel<String> exModel = new DefaultListModel<>();
+        
+        if (preset.getPresetType().equals(PresetType.INCLUDE_SELECTED)) {
+            for (String table : this.tables) {
+                if (Arrays.asList(presetTables).contains(table)) {
+                    inModel.addElement(table);
+                } else {
+                    exModel.addElement(table);
+                }
+            }
+        } else {
+            for (String table : this.tables) {
+                if (Arrays.asList(presetTables).contains(table)) {
+                    exModel.addElement(table);
+                } else {
+                    inModel.addElement(table);
+                }
+            }
+        }
     }
 
     /**
