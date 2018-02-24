@@ -94,7 +94,7 @@ public class SunetiBargeTool {
             @Override
             public void run() {
                 if (!VSConnectionDaemon.isVesselSolutionConnected()) {
-                    System.out.println("Disconnecting from database & shutting down database...");
+                    log("Disconnecting from database & shutting down database...");
                     Database.getInstance().disconnect();
                     Commands.stopDatabase();
                     try {
@@ -102,7 +102,7 @@ public class SunetiBargeTool {
                     } catch (InterruptedException ex) {
                     }
                 } else {
-                    System.out.println("Disconnecting from database...");
+                    log("Disconnecting from database...");
                     Database.getInstance().disconnect();
                 }
             }
