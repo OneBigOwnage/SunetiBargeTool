@@ -33,8 +33,10 @@ public class BargeInfoModel extends BaseModel {
         OWNER_NAME,
         CURRENT_VERSION_KEY,
         CURRENT_VERSION_FOLDER,
+        LAST_BCM_UPDATES,
         HIGHEST_VERSION_FOLDER,
-        VERSION_FOLDER_COUNT
+        VERSION_FOLDER_COUNT,
+        VERSION_IN_BAT;
     };
 
     /**
@@ -55,10 +57,14 @@ public class BargeInfoModel extends BaseModel {
         dataMap.put(bargeData.BROKER_NAME, getBrokerName());
         dataMap.put(bargeData.QUALITY_MANAGER_NAME, getQualityManagerName());
         dataMap.put(bargeData.OWNER_NAME, getOwnerName());
+
         dataMap.put(bargeData.CURRENT_VERSION_KEY, getCurrentVersionKey());
         dataMap.put(bargeData.CURRENT_VERSION_FOLDER, getCurrentVersionFolder());
-        dataMap.put(bargeData.VERSION_FOLDER_COUNT, Integer.toString(getVersionFolderCount()));
+        dataMap.put(bargeData.LAST_BCM_UPDATES, getLastBcmUpdatesVersion());
+
+        dataMap.put(bargeData.VERSION_IN_BAT, "Not found"/*getVersionInBat()*/);
         dataMap.put(bargeData.HIGHEST_VERSION_FOLDER, getHighestVersionFolder());
+        dataMap.put(bargeData.VERSION_FOLDER_COUNT, getVersionFolderCount());
 
         return dataMap;
     }
@@ -66,7 +72,7 @@ public class BargeInfoModel extends BaseModel {
     /**
      * Method to retrieve the barge name from the database.
      *
-     * @return 
+     * @return
      */
     public String getBargeName() {
         Query bargeNameQuery = new Query(
@@ -75,7 +81,13 @@ public class BargeInfoModel extends BaseModel {
                 + "ORDER BY last_backup_datetime DESC "
                 + "LIMIT 1;");
 
-        return (String) DatabaseHelper.getSingleResultFromQuery(bargeNameQuery);
+        Object obj = DatabaseHelper.getSingleResultFromQuery(bargeNameQuery);
+
+        if (obj instanceof String) {
+            return (String) obj;
+        } else {
+            return "Not found";
+        }
     }
 
     public String getBrokerName() {
@@ -85,24 +97,47 @@ public class BargeInfoModel extends BaseModel {
                 + "ORDER BY last_sync_datetime DESC "
                 + "LIMIT 1;");
 
-        return (String) DatabaseHelper.getSingleResultFromQuery(brokerNameQuery);
+        Object obj = DatabaseHelper.getSingleResultFromQuery(brokerNameQuery);
+
+        if (obj instanceof String) {
+            return (String) obj;
+        } else {
+            return "Not found";
+        }
     }
 
     public String getQualityManagerName() {
         Query qualityManagerNameQuery = new Query(
                 "SELECT client_name "
-                + "FROM bcm_sqs_clients sqs JOIN bcm_settings bcm ON sqs.bcm_client_id = bcm.bcm_client_id "
+                + "FROM bcm_sqs_clients sqs "
+                + "JOIN bcm_settings bcm "
+                + "ON sqs.bcm_client_id = bcm.bcm_client_id "
                 + "WHERE bcm.manager_sqs_client_id = sqs_client_id;");
-        return (String) DatabaseHelper.getSingleResultFromQuery(qualityManagerNameQuery);
+
+        Object obj = DatabaseHelper.getSingleResultFromQuery(qualityManagerNameQuery);
+
+        if (obj instanceof String) {
+            return (String) obj;
+        } else {
+            return "Not found";
+        }
     }
 
     public String getOwnerName() {
         Query ownerNameQuery = new Query(
                 "SELECT client_name "
-                + "FROM bcm_sqs_clients sqs JOIN bcm_settings bcm ON sqs.bcm_client_id = bcm.bcm_client_id "
+                + "FROM bcm_sqs_clients sqs "
+                + "JOIN bcm_settings bcm "
+                + "ON sqs.bcm_client_id = bcm.bcm_client_id "
                 + "WHERE bcm.owner_sqs_client_id = sqs_client_id;");
 
-        return (String) DatabaseHelper.getSingleResultFromQuery(ownerNameQuery);
+        Object obj = DatabaseHelper.getSingleResultFromQuery(ownerNameQuery);
+
+        if (obj instanceof String) {
+            return (String) obj;
+        } else {
+            return "Not found";
+        }
     }
 
     public String getCurrentVersionKey() {
@@ -110,17 +145,30 @@ public class BargeInfoModel extends BaseModel {
                 "SELECT current_version_key "
                 + "FROM bcm_settings;");
 
-        return (String) DatabaseHelper.getSingleResultFromQuery(currentVersionKeyQuery);
+        Object obj = DatabaseHelper.getSingleResultFromQuery(currentVersionKeyQuery);
+
+        if (obj instanceof String) {
+            return (String) obj;
+        } else {
+            return "Not found";
+        }
     }
 
     public String getCurrentVersionFolder() {
         Query currentVersionFolderQuery = new Query(
                 "SELECT current_version_folder_name "
                 + "FROM bcm_settings;");
-        return (String) DatabaseHelper.getSingleResultFromQuery(currentVersionFolderQuery);
+
+        Object obj = DatabaseHelper.getSingleResultFromQuery(currentVersionFolderQuery);
+
+        if (obj instanceof String) {
+            return (String) obj;
+        } else {
+            return "Not found";
+        }
     }
 
-    public int getVersionFolderCount() {
+    public String getVersionFolderCount() {
         File installFolder = new File("C:\\vessel solution\\");
 
         // Get the install folder from the database. If there is none found,
@@ -132,7 +180,7 @@ public class BargeInfoModel extends BaseModel {
         String installFolderString = (String) DatabaseHelper.getSingleResultFromQuery(installFolderStringQuery);
 
         // If the return value of the query is not null, the installation folder is taken from the database.
-        if (installFolderString != null) {
+        if (installFolderString != null && new File(installFolderString).exists()) {
             installFolder = new File(installFolderString);
         }
 
@@ -161,7 +209,7 @@ public class BargeInfoModel extends BaseModel {
         List<File> versionFolders = Arrays.asList(installFolder.listFiles(fileFilter));
 
         // The size of the versionFolders list, is the amount of version folders in the install folder.
-        return versionFolders.size();
+        return Integer.toString(versionFolders.size());
     }
 
     public String getHighestVersionFolder() {
@@ -173,6 +221,29 @@ public class BargeInfoModel extends BaseModel {
                 "SELECT eni_number "
                 + "FROM bcm_settings;");
 
-        return (String) DatabaseHelper.getSingleResultFromQuery(eniNumberQuery);
+        Object obj = DatabaseHelper.getSingleResultFromQuery(eniNumberQuery);
+
+        if (obj instanceof String) {
+            return (String) obj;
+        } else {
+            return "Not found";
+        }
     }
+
+    public String getLastBcmUpdatesVersion() {
+        Query lastUpdateQuery = new Query(
+                "SELECT version_key "
+                + "FROM bcm_updates "
+                + "ORDER BY update_sequence DESC "
+                + "LIMIT 1;");
+
+        Object obj = DatabaseHelper.getSingleResultFromQuery(lastUpdateQuery);
+
+        if (obj instanceof String) {
+            return (String) obj;
+        } else {
+            return "Not found";
+        }
+    }
+
 }

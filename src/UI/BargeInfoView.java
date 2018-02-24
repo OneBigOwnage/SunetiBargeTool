@@ -10,6 +10,7 @@ import App.ThreadManager;
 import HelperClasses.Utils;
 import Models.BargeInfoModel;
 import Models.BargeInfoModel.bargeData;
+import UiHelpers.UiLib;
 import java.util.Map;
 import java.util.TreeMap;
 import sunetibargetool.Config;
@@ -60,10 +61,20 @@ public class BargeInfoView extends javax.swing.JPanel {
         jLabel5 = new javax.swing.JLabel();
         lbl_eni_number = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
-        jPanel3 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
-        jPanel4 = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        lbl_current_version_key = new javax.swing.JLabel();
+        lbl_current_version_folder = new javax.swing.JLabel();
+        lbl_last_bcm_updates = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
+        lbl_folder_count = new javax.swing.JLabel();
+        lbl_highest_folder = new javax.swing.JLabel();
+        lbl_bat_version = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(15, 124, 160));
@@ -71,45 +82,45 @@ public class BargeInfoView extends javax.swing.JPanel {
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Solution Info", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI Semibold", 0, 18), new java.awt.Color(255, 255, 255))); // NOI18N
         jPanel1.setOpaque(false);
 
-        jLabel3.setFont(new java.awt.Font("Segoe UI Semibold", 1, 14)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel3.setFont(UiLib.getDefaultFont());
+        jLabel3.setForeground(Config.Colors.APPLICATION_DEFAULT_GREY.getColor());
         jLabel3.setText("Owner:");
 
-        jLabel2.setFont(new java.awt.Font("Segoe UI Semibold", 1, 14)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setFont(UiLib.getDefaultFont());
+        jLabel2.setForeground(Config.Colors.APPLICATION_DEFAULT_GREY.getColor());
         jLabel2.setText("Quality Manager:");
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI Semibold", 1, 14)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setFont(UiLib.getDefaultFont());
+        jLabel1.setForeground(Config.Colors.APPLICATION_DEFAULT_GREY.getColor());
         jLabel1.setText("Broker:");
 
-        jLabel4.setFont(new java.awt.Font("Segoe UI Semibold", 1, 14)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel4.setFont(UiLib.getDefaultFont());
+        jLabel4.setForeground(Config.Colors.APPLICATION_DEFAULT_GREY.getColor());
         jLabel4.setText("Barge Name");
 
-        lbl_bargeName.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        lbl_bargeName.setForeground(new java.awt.Color(255, 255, 255));
-        lbl_bargeName.setText("Not Loaded...");
+        lbl_bargeName.setFont(UiLib.getDefaultFont());
+        lbl_bargeName.setForeground(Config.Colors.APPLICATION_DEFAULT_GREY.getColor());
+        lbl_bargeName.setText("Not loaded...");
 
-        lbl_broker.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        lbl_broker.setForeground(new java.awt.Color(255, 255, 255));
-        lbl_broker.setText("Not Loaded...");
+        lbl_broker.setFont(UiLib.getDefaultFont());
+        lbl_broker.setForeground(Config.Colors.APPLICATION_DEFAULT_GREY.getColor());
+        lbl_broker.setText("Not loaded...");
 
-        lbl_qm.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        lbl_qm.setForeground(new java.awt.Color(255, 255, 255));
-        lbl_qm.setText("Not Loaded...");
+        lbl_qm.setFont(UiLib.getDefaultFont());
+        lbl_qm.setForeground(Config.Colors.APPLICATION_DEFAULT_GREY.getColor());
+        lbl_qm.setText("Not loaded...");
 
-        lbl_fo.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        lbl_fo.setForeground(new java.awt.Color(255, 255, 255));
-        lbl_fo.setText("Not Loaded...");
+        lbl_fo.setFont(UiLib.getDefaultFont());
+        lbl_fo.setForeground(Config.Colors.APPLICATION_DEFAULT_GREY.getColor());
+        lbl_fo.setText("Not loaded...");
 
-        jLabel5.setFont(new java.awt.Font("Segoe UI Semibold", 1, 14)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel5.setFont(UiLib.getDefaultFont());
+        jLabel5.setForeground(Config.Colors.APPLICATION_DEFAULT_GREY.getColor());
         jLabel5.setText("Eni Number:");
 
-        lbl_eni_number.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        lbl_eni_number.setForeground(new java.awt.Color(255, 255, 255));
-        lbl_eni_number.setText("Not Loaded...");
+        lbl_eni_number.setFont(UiLib.getDefaultFont());
+        lbl_eni_number.setForeground(Config.Colors.APPLICATION_DEFAULT_GREY.getColor());
+        lbl_eni_number.setText("Not loaded...");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -120,25 +131,25 @@ public class BargeInfoView extends javax.swing.JPanel {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(12, 12, 12)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lbl_eni_number, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(lbl_bargeName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(lbl_fo, javax.swing.GroupLayout.DEFAULT_SIZE, 228, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(12, 12, 12)
+                        .addGap(29, 29, 29)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lbl_broker, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(lbl_qm, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addContainerGap())
+                            .addComponent(lbl_qm, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lbl_broker, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(29, 29, 29)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(lbl_bargeName, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
+                            .addComponent(lbl_eni_number, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(29, 29, 29)
+                        .addComponent(lbl_fo, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(247, 247, 247))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -168,43 +179,49 @@ public class BargeInfoView extends javax.swing.JPanel {
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Version Info", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI Semibold", 0, 18), new java.awt.Color(255, 255, 255))); // NOI18N
         jPanel2.setOpaque(false);
 
+        jLabel6.setFont(UiLib.getTitleFont());
+        jLabel6.setForeground(Config.Colors.FONT_COLOR_WHITE.getColor());
         jLabel6.setText("Database");
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel6)
-                .addContainerGap(226, Short.MAX_VALUE))
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel6)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
+        jLabel7.setFont(UiLib.getTitleFont());
+        jLabel7.setForeground(Config.Colors.FONT_COLOR_WHITE.getColor());
+        jLabel7.setText("File system");
 
-        jLabel7.setText("Filesystem");
+        jLabel8.setFont(UiLib.getDefaultFont());
+        jLabel8.setText("current_version_key:");
 
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel7)
-                .addContainerGap(166, Short.MAX_VALUE))
-        );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel7)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
+        jLabel9.setFont(UiLib.getDefaultFont());
+        jLabel9.setText("current_version_folder:");
+
+        jLabel10.setFont(UiLib.getDefaultFont());
+        jLabel10.setText("Last in bcm_updates:");
+
+        lbl_current_version_key.setFont(UiLib.getDefaultFont());
+        lbl_current_version_key.setText("Not loaded...");
+
+        lbl_current_version_folder.setFont(UiLib.getDefaultFont());
+        lbl_current_version_folder.setText("Not loaded...");
+
+        lbl_last_bcm_updates.setFont(UiLib.getDefaultFont());
+        lbl_last_bcm_updates.setText("Not loaded...");
+
+        jLabel11.setFont(UiLib.getDefaultFont());
+        jLabel11.setText("Version in vs.bat:");
+
+        jLabel12.setFont(UiLib.getDefaultFont());
+        jLabel12.setText("Highest version folder:");
+
+        jLabel13.setFont(UiLib.getDefaultFont());
+        jLabel13.setText("No. of version folders:");
+
+        lbl_folder_count.setFont(UiLib.getDefaultFont());
+        lbl_folder_count.setText("Not loaded...");
+
+        lbl_highest_folder.setFont(UiLib.getDefaultFont());
+        lbl_highest_folder.setText("Not loaded...");
+
+        lbl_bat_version.setFont(UiLib.getDefaultFont());
+        lbl_bat_version.setText("Not loaded...");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -212,18 +229,67 @@ public class BargeInfoView extends javax.swing.JPanel {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, 145, Short.MAX_VALUE)
+                            .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(lbl_current_version_folder, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lbl_last_bcm_updates, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 81, Short.MAX_VALUE)
+                            .addComponent(lbl_current_version_key, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addGap(40, 40, 40)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jLabel11, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(lbl_highest_folder, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lbl_folder_count, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lbl_bat_version, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel8)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel9)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel10))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(lbl_current_version_key)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lbl_current_version_folder)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lbl_last_bcm_updates))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel11)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel12)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel13))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(lbl_bat_version)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lbl_highest_folder)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lbl_folder_count))))
         );
 
         jButton1.setText("Load Data");
@@ -238,25 +304,24 @@ public class BargeInfoView extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addContainerGap())
+                .addContainerGap(845, Short.MAX_VALUE)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(9, 9, 9))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(19, 19, 19)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 273, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 162, Short.MAX_VALUE)
                 .addComponent(jButton1)
                 .addContainerGap())
         );
@@ -270,42 +335,73 @@ public class BargeInfoView extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
     private javax.swing.JLabel lbl_bargeName;
+    private javax.swing.JLabel lbl_bat_version;
     private javax.swing.JLabel lbl_broker;
+    private javax.swing.JLabel lbl_current_version_folder;
+    private javax.swing.JLabel lbl_current_version_key;
     private javax.swing.JLabel lbl_eni_number;
     private javax.swing.JLabel lbl_fo;
+    private javax.swing.JLabel lbl_folder_count;
+    private javax.swing.JLabel lbl_highest_folder;
+    private javax.swing.JLabel lbl_last_bcm_updates;
     private javax.swing.JLabel lbl_qm;
     // End of variables declaration//GEN-END:variables
 
+    /**
+     * Sets all labels, based on the data gotten from the model.
+     */
     private void fillViewWithModelData() {
-        lbl_eni_number.setText((this.data.get(bargeData.ENI_NUMBER) != null) ? this.data.get(bargeData.ENI_NUMBER) : "Not Found");
-        lbl_bargeName.setText((this.data.get(bargeData.BARGE_NAME) != null) ? this.data.get(bargeData.BARGE_NAME) : "Not Found");
-        lbl_broker.setText((this.data.get(bargeData.BROKER_NAME) != null) ? this.data.get(bargeData.BROKER_NAME) : "Not Found");
-        lbl_qm.setText((this.data.get(bargeData.QUALITY_MANAGER_NAME) != null) ? this.data.get(bargeData.QUALITY_MANAGER_NAME) : "Not Found");
-        lbl_fo.setText((this.data.get(bargeData.OWNER_NAME) != null) ? this.data.get(bargeData.OWNER_NAME) : "Not Found");
+        if (null == this.data || this.data.size() <= 0) {
+            controller.log("Barge data was not filled, whilst trying to parse data into view!");
+            return;
+        }
+
+        // Solution info
+        lbl_eni_number.setText(this.data.get(bargeData.ENI_NUMBER));
+        lbl_bargeName.setText(this.data.get(bargeData.BARGE_NAME));
+        lbl_broker.setText(this.data.get(bargeData.BROKER_NAME));
+        lbl_qm.setText(this.data.get(bargeData.QUALITY_MANAGER_NAME));
+        lbl_fo.setText(this.data.get(bargeData.OWNER_NAME));
+
+        // Version info Database
+        lbl_current_version_key.setText(this.data.get(bargeData.CURRENT_VERSION_KEY));
+        lbl_current_version_folder.setText(this.data.get(bargeData.CURRENT_VERSION_FOLDER));
+        lbl_last_bcm_updates.setText(this.data.get(bargeData.LAST_BCM_UPDATES));
+
+        // Version info File system
+        lbl_bat_version.setText(this.data.get(bargeData.VERSION_IN_BAT));
+        lbl_highest_folder.setText(this.data.get(bargeData.HIGHEST_VERSION_FOLDER));
+        lbl_folder_count.setText(this.data.get(bargeData.VERSION_FOLDER_COUNT));
     }
 
+    /**
+     * Loads the barge data from the model into the view, in a separate thread.
+     */
     private void loadDataThreaded() {
         ThreadManager.runInSeperateThread(Utils.getMethodByName("loadData", this), this);
     }
 
+    /**
+     * Loads the barge data from the model into the view.
+     */
     public void loadData() {
         this.data.putAll(model.fetchData());
         fillViewWithModelData();
-
-        for (Map.Entry<bargeData, String> entry : data.entrySet()) {
-            System.out.println(String.format("Barge Data Map: %s -> %s.", entry.getKey(), entry.getValue()));
-        }
     }
 
 }
