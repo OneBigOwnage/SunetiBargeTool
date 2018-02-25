@@ -7,6 +7,7 @@ package Daemons;
 
 import Database.Database;
 import Database.Query;
+import HelperClasses.VesselSolutionHelper;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.sql.ResultSet;
@@ -30,7 +31,7 @@ public class VSConnectionDaemon extends BaseDaemon {
     }
 
     public static void setIsVesselSolutionConnected() {
-        if (!DatabaseDaemon.isDatabaseRunning()) {
+        if (!new VesselSolutionHelper().isPostgresDatabaseRunning()) {
             isConnected = false;
             return;
         } else if (!Database.getInstance().hasConnection()) {

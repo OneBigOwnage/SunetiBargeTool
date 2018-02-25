@@ -95,7 +95,7 @@ public class Database {
     }
 
     public boolean hasConnection() {
-        if (!DatabaseDaemon.isDatabaseRunning()) {
+        if (!new VesselSolutionHelper().isPostgresDatabaseRunning()) {
             return false;
         }
 

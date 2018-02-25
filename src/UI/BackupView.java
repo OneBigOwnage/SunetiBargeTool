@@ -162,7 +162,7 @@ public class BackupView extends javax.swing.JPanel {
 
         jLabel2.setFont(UiLib.getTitleFont());
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("Backup Presets");
+        jLabel2.setText("Selected Tables");
         jLabel2.setVerticalAlignment(javax.swing.SwingConstants.TOP);
 
         reloadTablesButton.setText("Reload tables from database");

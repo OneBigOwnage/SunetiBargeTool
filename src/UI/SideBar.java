@@ -5,6 +5,7 @@
  */
 package UI;
 
+import App.AppQuit;
 import App.Controller;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -172,7 +173,7 @@ public class SideBar extends javax.swing.JPanel {
     }//GEN-LAST:event_log
 
     private void jLabel4MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MousePressed
-        SunetiBargeTool.exitApp();
+        new AppQuit().quit();
     }//GEN-LAST:event_jLabel4MousePressed
 
     private void standardProcedures(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_standardProcedures

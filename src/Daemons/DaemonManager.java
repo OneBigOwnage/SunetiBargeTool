@@ -70,11 +70,11 @@ public class DaemonManager {
             System.out.println("Method '" + methodName + "' does not exist for '" + obj.getClass().getName() + "'");
         }
     }
-    
+
     public static void defaultLoad() {
         startAllDaemons();
     }
-    
+
     public static void StartDaemon(DaemonType type) {
         // To be implemented
     }

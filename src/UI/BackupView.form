@@ -258,7 +258,7 @@
               <Connection code="UiLib.getTitleFont()" type="code"/>
             </Property>
             <Property name="horizontalAlignment" type="int" value="0"/>
-            <Property name="text" type="java.lang.String" value="Backup Presets"/>
+            <Property name="text" type="java.lang.String" value="Selected Tables"/>
             <Property name="verticalAlignment" type="int" value="1"/>
           </Properties>
         </Component>
