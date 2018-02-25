@@ -22,7 +22,7 @@ public abstract class Utils {
 
     public static boolean FILTER_APPLY_COMMAND = true;
     public static boolean FILTER_APPLY_LIST_ADD = false;
-
+    
     /**
      * Method to quickly RegEx match a pattern on a string, can be given extra
      * flags. Different flags are described here:

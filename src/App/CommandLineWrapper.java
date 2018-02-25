@@ -84,7 +84,7 @@ public class CommandLineWrapper {
             public void onProcessComplete(int exitValue) {
                 if (successMessage != null) {
                     System.out.println(successMessage);
-                    }
+                }
             }
 
             @Override

@@ -8,6 +8,7 @@ package App;
 import HelperClasses.Utils;
 import Database.Database;
 import Daemons.DatabaseDaemon;
+import HelperClasses.VesselSolutionHelper;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.OutputStream;
@@ -40,8 +41,8 @@ public class Commands {
      * the CommandLineWrapper.
      */
     public static void startDatabase() {
-        if (DatabaseDaemon.isDatabaseRunning()) {
-            System.out.println("Database already running...");
+        if (new VesselSolutionHelper().isPostgresDatabaseRunning()) {
+            SunetiBargeTool.log("Database already running...");
             return;
         }
 
