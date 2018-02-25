@@ -21,7 +21,7 @@ import java.util.Arrays;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
-import sunetibargetool.Config;
+import App.Config;
 
 public class BackupView extends javax.swing.JPanel {
 

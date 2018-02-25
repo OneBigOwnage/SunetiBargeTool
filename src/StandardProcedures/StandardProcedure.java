@@ -4,7 +4,7 @@ import HelperClasses.ClassEnumerator;
 import UI.StandardProcedureView;
 import java.util.ArrayList;
 import java.util.List;
-import sunetibargetool.Config;
+import App.Config;
 import sunetibargetool.SunetiBargeTool;
 
 /**

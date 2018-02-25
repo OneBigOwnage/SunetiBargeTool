@@ -24,7 +24,7 @@ import javax.swing.JTextField;
 import javax.swing.ListModel;
 import javax.swing.border.LineBorder;
 import javax.swing.text.JTextComponent;
-import sunetibargetool.Config;
+import App.Config;
 import sunetibargetool.SunetiBargeTool;
 
 /**

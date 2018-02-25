@@ -9,7 +9,7 @@ import HelperClasses.Utils;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
-import sunetibargetool.Config;
+import App.Config;
 
 /**
  *

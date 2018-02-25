@@ -29,8 +29,8 @@ import java.util.TreeMap;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
-import sunetibargetool.Config.Model;
-import sunetibargetool.Config.View;
+import App.Config.Model;
+import App.Config.View;
 
 /**
  *

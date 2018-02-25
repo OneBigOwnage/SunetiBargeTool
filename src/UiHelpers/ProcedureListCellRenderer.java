@@ -13,7 +13,7 @@ import javax.swing.DefaultListCellRenderer;
 import javax.swing.JList;
 import javax.swing.border.Border;
 import javax.swing.border.MatteBorder;
-import sunetibargetool.Config;
+import App.Config;
 
 /**
  *

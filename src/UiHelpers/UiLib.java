@@ -23,7 +23,7 @@ import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 import javax.swing.border.MatteBorder;
 import javax.swing.border.TitledBorder;
-import sunetibargetool.Config;
+import App.Config;
 
 /**
  *

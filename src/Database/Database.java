@@ -6,12 +6,13 @@
 package Database;
 
 import Daemons.DatabaseDaemon;
+import HelperClasses.VesselSolutionHelper;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import sunetibargetool.Config;
+import App.Config;
 import sunetibargetool.SunetiBargeTool;
 
 /**
@@ -52,7 +53,7 @@ public class Database {
      * successfully been created.
      */
     public boolean connect() {
-        if (!DatabaseDaemon.isDatabaseRunning()) {
+        if (!new VesselSolutionHelper().isPostgresDatabaseRunning()) {
             SunetiBargeTool.log("Could not connect to database, database not running!");
             return false;
         }

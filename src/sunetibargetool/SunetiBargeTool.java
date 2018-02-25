@@ -5,6 +5,7 @@
  */
 package sunetibargetool;
 
+import App.Config;
 import App.Commands;
 import App.Controller;
 import App.ThreadManager;

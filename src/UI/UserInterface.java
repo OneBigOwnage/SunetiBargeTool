@@ -15,7 +15,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-import sunetibargetool.Config;
+import App.Config;
 import sunetibargetool.SunetiBargeTool;
 
 /**

@@ -20,7 +20,7 @@ import sunetibargetool.SunetiBargeTool;
 public class VSConnectionDaemon extends BaseDaemon {
 
     private static boolean isConnected = false;
-    
+
     public VSConnectionDaemon(int sleepTime) {
         super(sleepTime);
     }
@@ -28,7 +28,7 @@ public class VSConnectionDaemon extends BaseDaemon {
     public static boolean isVesselSolutionConnected() {
         return isConnected;
     }
-    
+
     public static void setIsVesselSolutionConnected() {
         if (!DatabaseDaemon.isDatabaseRunning()) {
             isConnected = false;
