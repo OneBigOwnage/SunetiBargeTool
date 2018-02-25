@@ -28,7 +28,9 @@ public class AppQuit {
             @Override
             public void run() {
                 if (!vsHelper.isVesselSolutionConnectedToDatabase()) {
-                    Database.getInstance().disconnect();
+                    Database db = Database.getInstance();
+                    db.setAutoReconnect(false);
+                    db.disconnect();
                     Commands.stopDatabase();
                 } else {
                     Database.getInstance().disconnect();
