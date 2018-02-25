@@ -5,7 +5,6 @@
  */
 package Database;
 
-import Daemons.DatabaseDaemon;
 import HelperClasses.VesselSolutionHelper;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -23,13 +22,13 @@ public class Database {
 
     private static Database instance;
     private Connection connection;
-
+    private boolean automaticallyReconnect;
+    
     /**
-     * Constructor of Database class, will also start the connection to the
-     * PostgreSQL database.
+     * Default constructor of this class.
      */
     private Database() {
-        this.connect();
+        this.automaticallyReconnect = Config.getBoolean("auto_reconnect_database");
     }
 
     /**
@@ -100,8 +99,7 @@ public class Database {
         }
 
         try {
-            boolean autoReconnect = Boolean.parseBoolean(Config.get("auto_reconnect_database"));
-            if (autoReconnect && (connection == null || !connection.isValid(0))) {
+            if (automaticallyReconnect && (connection == null || !connection.isValid(0))) {
                 connect();
             }
             if (connection != null) {
@@ -150,4 +148,9 @@ public class Database {
             return ex.getMessage();
         }
     }
+    
+    public void setAutoReconnect(boolean autoReconnect) {
+        this.automaticallyReconnect = autoReconnect;
+    }
+    
 }
