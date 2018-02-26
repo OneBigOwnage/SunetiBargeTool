@@ -68,7 +68,7 @@ public class Database {
             String name = Config.get("db_name");
 
             String uName = Config.get("db_username");
-            String pass = Config.get("db_pass");
+            String pass = Config.get("db_password");
 
             String connectionString = String.format("%s://%s:%s/%s", driver, host, port, name);
 
