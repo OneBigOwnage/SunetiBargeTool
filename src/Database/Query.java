@@ -12,29 +12,13 @@ package Database;
 public class Query {
 
     private String queryString;
-    
+
     public Query(String query) {
         this.queryString = query;
     }
-    
+
     public String getQueryString() {
         return this.queryString;
     }
-    /*
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == null || !(obj instanceof Query)) {
-            return false;
-        }
 
-        String thisQueryString = this.getQueryString();
-        String otherQueryString = ((Query) obj).getQueryString();
-        
-        if (thisQueryString.equals(otherQueryString)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-    */
 }
