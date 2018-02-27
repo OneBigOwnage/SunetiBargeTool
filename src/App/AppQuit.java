@@ -27,13 +27,13 @@ public class AppQuit {
         return new Thread(new Runnable() {
             @Override
             public void run() {
+                Database db = Database.getInstance();
                 if (!vsHelper.isVesselSolutionConnectedToDatabase()) {
-                    Database db = Database.getInstance();
                     db.setAutoReconnect(false);
                     db.disconnect();
                     Commands.stopDatabase();
                 } else {
-                    Database.getInstance().disconnect();
+                    db.disconnect();
                 }
             }
         });

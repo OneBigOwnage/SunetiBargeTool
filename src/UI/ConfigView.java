@@ -7,11 +7,11 @@ package UI;
 
 import App.Controller;
 import App.Commands;
-import Database.Database;
 import App.ThreadManager;
 import HelperClasses.Utils;
 import Daemons.DaemonManager;
 import Daemons.DaemonManager.DaemonType;
+import Database.Database;
 import java.lang.reflect.Method;
 
 /**
@@ -288,7 +288,7 @@ public class ConfigView extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_dbStartMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_dbStartMouseClicked
-        
+
     }//GEN-LAST:event_btn_dbStartMouseClicked
 
     private void btn_hbaConfMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_hbaConfMouseClicked

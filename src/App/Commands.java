@@ -7,7 +7,6 @@ package App;
 
 import HelperClasses.Utils;
 import Database.Database;
-import Daemons.DatabaseDaemon;
 import HelperClasses.VesselSolutionHelper;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -61,7 +60,7 @@ public class Commands {
      */
     public static void stopDatabase() {
         Database.getInstance().disconnect();
-        
+
         String pg_ctl = "\"C:\\vessel solution\\database\\postgres_db\\bin\\pg_ctl.exe\"";
         String dir = "\"C:\\vessel solution\\database\\database\"";
         String log = "\"C:\\vessel solution\\database\\postgres_db\\postgres_log.txt\"";
@@ -136,7 +135,7 @@ public class Commands {
         // Get all processes from the Utils class.
         List<WindowsProcess> javaProcessesList = Utils.getProcesses("javaw.exe", Utils.FILTER_APPLY_COMMAND);
         javaProcessesList.addAll(Utils.getProcesses("java.exe", Utils.FILTER_APPLY_COMMAND));
-        
+
         // Kill all processes that contain the word "java", exluding this very java process.
         for (WindowsProcess wProcess : javaProcessesList) {
             if (wProcess.getProcessPID() != ownPID) {
@@ -157,9 +156,9 @@ public class Commands {
         String log = "\"C:\\vessel solution\\database\\postgres_db\\postgres_log.txt\"";
 
         String command = String.format("%s stop -D %s -m f -l %s", pg_ctl, dir, log);
-        
+
         OutputStream outputStream = new ByteArrayOutputStream();
-        
+
         ExecuteResultHandler handler = new ExecuteResultHandler() {
             @Override
             public void onProcessComplete(int i) {
@@ -171,7 +170,7 @@ public class Commands {
                 SunetiBargeTool.log("Not able to forcefully stop database!");
             }
         };
-        
+
         CommandLineWrapper.executeCommand(command, CommandLineWrapper.DEFAULT_WORKING_DIR, outputStream, handler);
 //        CommandLineWrapper.executeCommand(command, CommandLineWrapper.DEFAULT_WORKING_DIR, "Database Succesfully Stopped!");
     }

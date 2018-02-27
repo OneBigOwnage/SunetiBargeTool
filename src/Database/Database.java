@@ -5,109 +5,161 @@
  */
 package Database;
 
+import App.Config;
 import HelperClasses.VesselSolutionHelper;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import App.Config;
+import java.util.Properties;
+import org.postgresql.Driver;
 import sunetibargetool.SunetiBargeTool;
 
 /**
+ * A Singleton database class, that is used to query the PostGres database.
  *
- * @author Productie 831
+ * @author suneti
  */
 public class Database {
 
     private static Database instance;
     private Connection connection;
     private boolean automaticallyReconnect;
-    
+    private final VesselSolutionHelper vsHelper;
+
+    private final String dbDriver;
+    private final String dbHost;
+    private final String dbPort;
+    private final String dbName;
+    private final String dbUserName;
+    private final String dbPassword;
+
     /**
-     * Default constructor of this class.
+     * Default constructor for this class. Constructor is private because this
+     * is a singleton implementation. If you want to get the single instance,
+     * use {@code DatabaseNew.getInstance()}.
      */
     private Database() {
-        this.automaticallyReconnect = Config.getBoolean("auto_reconnect_database");
+        automaticallyReconnect = Config.getBoolean("auto_reconnect_database");
+
+        this.dbDriver = Config.getString("db_driver");
+        this.dbHost = Config.getString("db_host");
+        this.dbPort = Config.getString("db_port");
+        this.dbName = Config.getString("db_name");
+        this.dbUserName = Config.getString("db_username");
+        this.dbPassword = Config.getString("db_password");
+
+        this.vsHelper = new VesselSolutionHelper();
     }
 
     /**
-     * Method to get the instance of the database class. This is because
-     * Database is a singleton.
+     * A method that prepares a String, with among other things the host and
+     * port of the PostGres database of the Vessel Solution Offline Client.
      *
-     * @return
+     * @return A String, containing the instructions to connect to the PostGres
+     * database.
+     */
+    private String getConnectionString() {
+        return String.format("%s://%s:%s/%s", this.dbDriver, this.dbHost, this.dbPort, this.dbName);
+    }
+
+    /**
+     * Creates and returns a Properties object, filled with the needed
+     * credentials to access the PostGres database of the Vessel Solution
+     * Offline Client.
+     *
+     * @return A Properties object, containing the credentials for the database.
+     */
+    private Properties getCredentials() {
+        Properties properties = new Properties();
+
+        properties.put("user", this.dbUserName);
+        properties.put("password", this.dbPassword);
+
+        return properties;
+    }
+
+    /**
+     * Method to retrieve an instance object of this class. If there is already
+     * an instance declared, it will return that instance. Otherwise it will
+     * return a newly created instance.
+     *
+     * @return An instance of the Database class.
      */
     public static Database getInstance() {
-        if (instance == null) {
-            instance = new Database();
+        if (null != instance) {
+            return instance;
+        } else {
+            return instance = new Database();
         }
-        return instance;
     }
 
     /**
-     * Starts the connection to the PostgreSQL database. The configuration used
-     * to connect is retrieved from the Config class.
+     * Setter for the auto reconnect functionality.
      *
-     * @return boolean Returns true if, and only if, a connection has
-     * successfully been created.
+     * @param autoReconnect True to automatically reestablish the connection,
+     * false to not do this automatically.
      */
-    public boolean connect() {
-        if (!new VesselSolutionHelper().isPostgresDatabaseRunning()) {
-            SunetiBargeTool.log("Could not connect to database, database not running!");
-            return false;
-        }
-        boolean successful = false;
-        try {
-            // Load the postgresql class.
-            Class.forName("org.postgresql.Driver");
-
-            // Get/Set the configurations for the connection.
-            String driver = Config.get("db_driver");
-            String host = Config.get("db_host");
-            String port = Config.get("db_port");
-            String name = Config.get("db_name");
-
-            String uName = Config.get("db_username");
-            String pass = Config.get("db_password");
-
-            String connectionString = String.format("%s://%s:%s/%s", driver, host, port, name);
-
-            // Start the connection
-            connection = DriverManager.getConnection(connectionString, uName, pass);
-
-            successful = true;
-            SunetiBargeTool.log("Connected succesfully");
-        } catch (ClassNotFoundException | SQLException ex) {
-            SunetiBargeTool.log("Error trying to connect to the database: " + ex);
-        }
-        return successful;
+    public void setAutoReconnect(boolean autoReconnect) {
+        this.automaticallyReconnect = autoReconnect;
     }
 
+    /**
+     * Method used to connect to the PostGres database. This method will check
+     * if it is possible to establish a connection before trying to do so.
+     */
+    public void connect() {
+        if (!canConnect()) {
+            return;
+        }
+
+        try {
+            if (!Driver.isRegistered()) {
+                Driver.register();
+            }
+
+            connection = DriverManager.getConnection(getConnectionString(), getCredentials());
+
+        } catch (SQLException ex) {
+            System.out.println("Error registering the PostGreSQL Driver to the DriverManager:\n" + ex);
+        }
+    }
+
+    /**
+     * Method used to disconnect from the PostGres database. This method will
+     * check if it is currently possible to close the connection, before trying
+     * to do so.
+     */
     public void disconnect() {
-        try {
-            if (connection != null) {
+        if (canDisconnect()) {
+            try {
                 connection.close();
+            } catch (SQLException ex) {
+                System.out.println("Something went wrong trying to close the connection:\n" + ex);
             }
-        } catch (SQLException ex) {
-            SunetiBargeTool.log("Error trying to disconnect from database: " + ex);
+        } else {
+            System.out.println("Can not disconnect...?");
         }
     }
 
-    public boolean hasConnection() {
-        if (!new VesselSolutionHelper().isPostgresDatabaseRunning()) {
+    /**
+     * Method to check if the Database class has an active database
+ connection. This method is used mainly before trying to execute a query,
+     * to make sure that there is an active connection with the database.
+     *
+     * @return True if, and only if, there is an active connection with the
+     * PostGres Database. False otherwise.
+     */
+    public boolean isConnected() {
+        if (!vsHelper.isPostgresDatabaseRunning()) {
             return false;
         }
 
         try {
-            if (automaticallyReconnect && (connection == null || !connection.isValid(0))) {
-                connect();
-            }
-            if (connection != null) {
-                return connection.isValid(0);
-            } else {
-                return false;
-            }
+            return (null != connection && this.connection.isValid(0));
         } catch (SQLException ex) {
+            System.out.println("Something went wrong trying to validate the connection:\n" + ex);
             return false;
         }
     }
@@ -116,17 +168,17 @@ public class Database {
      * Method to fire off queries to the database.
      *
      * @param query The query you want to execute.
-     * @return False if no connection or error occurred, ResultSet if it has a
-     * result and an integer indicating affected rows if it is an
-     * UPDATE/DELETE/INSERT.
+     * @return False if it it not currently possible to execute a query, because
+     * there is no active connection or an error occurred. ResultSet if it has a
+     * result and an integer indicating affected rows if given query is an
+     * UPDATE/DELETE/INSERT query.
      */
     public Object executeQuery(Query query) {
-        try {
-            if (!hasConnection()) {
-                SunetiBargeTool.log("Executing Query but there is no active connection...");
-                return false;
-            }
+        if (!canExecuteQuery()) {
+            return false;
+        }
 
+        try {
             // Create new statement.
             Statement statement = connection.createStatement();
 
@@ -147,10 +199,58 @@ public class Database {
             SunetiBargeTool.log("SQLException occurred: " + ex);
             return ex.getMessage();
         }
+
     }
-    
-    public void setAutoReconnect(boolean autoReconnect) {
-        this.automaticallyReconnect = autoReconnect;
+
+    /**
+     * Method to check if the Database class is allowed to connect to the
+ PostGres Database. This method is mainly used before trying to connect,
+     * to make sure it is possible and allowed to connect to the PostGres
+     * database.
+     *
+     * @return True if, and only if, it currently possible to connect to the
+     * database.
+     */
+    public boolean canConnect() {
+        return vsHelper.isPostgresDatabaseRunning();
     }
-    
+
+    /**
+     * Method to make sure it is currently possible to disconnect from the
+     * PostGres database. This method is mainly used before disconnecting from
+     * the PostGres database, to make sure it is safe to disconnect.
+     *
+     * @return True if, and only if, it is currently possible to disconnect from
+     * the PostGres database.
+     */
+    public boolean canDisconnect() {
+        return connection != null;
+    }
+
+    /**
+     * Method that checks if the current connection allows for executing
+     * queries.
+     *
+     * @return True if, and only if, it is currently possible to
+     */
+    public boolean canExecuteQuery() {
+        if (!vsHelper.isPostgresDatabaseRunning()) {
+            return false;
+        }
+
+        if (!isConnected() && !this.automaticallyReconnect) {
+            return false;
+        }
+
+        if (canConnect() && this.automaticallyReconnect && !isConnected()) {
+            connect();
+        }
+
+        try {
+            return connection.isValid(0);
+        } catch (SQLException ex) {
+            return false;
+        }
+    }
+
 }

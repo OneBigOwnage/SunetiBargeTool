@@ -6,7 +6,6 @@
 package UI;
 
 import App.Controller;
-import Database.Database;
 import Database.Query;
 import App.ThreadManager;
 import HelperClasses.Utils;
@@ -25,6 +24,7 @@ import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
 import App.Config;
+import Database.Database;
 
 /**
  *
@@ -380,7 +380,7 @@ public class SQLView extends javax.swing.JPanel {
             }
 
             int daemonSleepTime = Integer.parseInt(Config.get("daemon_sleep_time"));
-            
+
             // Make the thread sleep for 1 second, this is the daemon sleep time.
             try {
                 Thread.sleep(daemonSleepTime);

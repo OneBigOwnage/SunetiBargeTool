@@ -5,7 +5,7 @@
  */
 package Daemons;
 
-import Database.DatabaseNew;
+import Database.Database;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -16,12 +16,12 @@ import java.lang.reflect.Method;
 public class ConnectionDaemon extends BaseDaemon implements Runnable {
 
     protected static boolean isConnected;
-    private static DatabaseNew db;
+    private static Database db;
 
     public ConnectionDaemon(int sleepTime) {
         super(sleepTime);
         isConnected = false;
-        db = DatabaseNew.getInstance();
+        db = Database.getInstance();
     }
 
     private static void setIsConnected() {

@@ -34,7 +34,7 @@ public class VSConnectionDaemon extends BaseDaemon {
         if (!new VesselSolutionHelper().isPostgresDatabaseRunning()) {
             isConnected = false;
             return;
-        } else if (!Database.getInstance().hasConnection()) {
+        } else if (!Database.getInstance().isConnected()) {
             isConnected = false;
             return;
         }

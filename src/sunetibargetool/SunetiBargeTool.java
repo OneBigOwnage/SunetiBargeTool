@@ -10,10 +10,10 @@ import App.Commands;
 import App.Controller;
 import App.ThreadManager;
 import HelperClasses.Utils;
-import Database.Database;
 import Daemons.DaemonManager;
 import Daemons.DatabaseDaemon;
 import Daemons.VSConnectionDaemon;
+import Database.Database;
 import java.lang.reflect.Method;
 
 /**
