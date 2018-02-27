@@ -135,6 +135,7 @@ public class Config {
     /**
      * Method to retrieve a property from the properties variable.
      *
+     * @deprecated
      * @param key The key that will be searched for in the properties.
      * @return
      */
@@ -156,8 +157,8 @@ public class Config {
 
     /**
      * All the different and default colors used in this application, neatly
-     * sorted inside an enum. Use the getColor() method to retrieve a usable
-     * Color.
+     * sorted inside an enumeration. Use the {@code getColor()} method to
+     * retrieve a usable Color.
      */
     public enum Colors {
         APPLICATION_DEFAULT_BLUE(new Color(15, 124, 160)),
