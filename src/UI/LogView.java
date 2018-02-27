@@ -98,7 +98,12 @@ public class LogView extends javax.swing.JPanel {
 
     public void appendToLog(String text) {
         String currentTime = this.TIME_FORMAT.format(new Date());
-        String logLine = String.format("[ %s ] - %s\n", currentTime, text);
+        String newLine = "\r\n";
+        if (text.endsWith("\n") || text.endsWith("\r\n")) {
+            newLine = "";
+        }
+
+        String logLine = String.format("[ %s ] - %s%S", currentTime, text, newLine);
 
         logField.append(logLine);
         // Also System.out.print if flag logToConsole is true.

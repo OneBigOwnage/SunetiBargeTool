@@ -23,7 +23,7 @@ public class LegacyDatabase {
     private static LegacyDatabase instance;
     private Connection connection;
     private boolean automaticallyReconnect;
-    
+
     /**
      * Default constructor of this class.
      */
@@ -33,7 +33,7 @@ public class LegacyDatabase {
 
     /**
      * Method to get the instance of the database class. This is because
- LegacyDatabase is a singleton.
+     * LegacyDatabase is a singleton.
      *
      * @return
      */
@@ -148,9 +148,9 @@ public class LegacyDatabase {
             return ex.getMessage();
         }
     }
-    
+
     public void setAutoReconnect(boolean autoReconnect) {
         this.automaticallyReconnect = autoReconnect;
     }
-    
+
 }

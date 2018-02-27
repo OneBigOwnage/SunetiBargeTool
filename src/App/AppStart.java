@@ -8,6 +8,7 @@ package App;
 import Daemons.DaemonManager;
 import Database.Database;
 import HelperClasses.VesselSolutionHelper;
+import UI.LogView;
 
 /**
  *
@@ -41,6 +42,9 @@ public class AppStart {
         // Initializes the app configuration.
         Config.load();
 
+        // Load the properties of the Logger class, from the Config class.
+        Logger.loadProperties();
+
         // Adds the shutdown hook to the application.
         Runtime.getRuntime().addShutdownHook(new AppQuit().getShutDownHook());
 
@@ -53,6 +57,8 @@ public class AppStart {
 
         appController = new Controller();
 
+        Logger.setupLogView((LogView) appController.getView(Config.View.LOG_VIEW));
+
         // *** IMPORTANT ***
         // In production, uncomment first line and delete second line!
         // Second line is used to skip the Login part of the application.
@@ -64,7 +70,7 @@ public class AppStart {
         DaemonManager.defaultLoad();
     }
 
-    public Controller getController() {
+    public static Controller getController() {
         return appController;
     }
 

@@ -111,6 +111,16 @@ public class Config {
     }
 
     /**
+     * Method to check if the internal properties of this class are loaded from
+     * the .properties file.
+     *
+     * @return True if, and only if, the .properties file is loaded.
+     */
+    public static boolean isPropertiesLoaded() {
+        return (null != properties && !properties.isEmpty());
+    }
+
+    /**
      * Method to retrieve a property from the internal properties object. That
      * object is created from the attached 'bargetoolconfig.properties' file.
      *

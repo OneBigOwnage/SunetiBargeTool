@@ -379,7 +379,7 @@ public class SQLView extends javax.swing.JPanel {
                 lbl_conn.setText("The database is not running");
             }
 
-            int daemonSleepTime = Integer.parseInt(Config.get("daemon_sleep_time"));
+            int daemonSleepTime = Config.getInteger("daemon_sleep_time");
 
             // Make the thread sleep for 1 second, this is the daemon sleep time.
             try {

@@ -47,7 +47,7 @@ public class DaemonManager {
      */
     private static void createDaemons() {
         // Get the sleeptime from the .properties file.
-        int daemonSleepTime = Integer.parseInt(Config.get("daemon_sleep_time"));
+        int daemonSleepTime = Config.getInteger("daemon_sleep_time");
 
         // Initialize all the daemons, and add them to the list.
         daemonList.put(DaemonType.BARGETOOL_CONNECTION, new ConnectionDaemon(daemonSleepTime));

@@ -17,7 +17,7 @@ public class Security {
     private final static String HASH_ALGORITHM = "SHA-256";
 
     public static boolean checkPass(String pass) {
-        String validHash = Config.get("app_password_hash");
+        String validHash = Config.getString("app_password_hash");
         String currentHash = getHashFromString(pass);
 
         return currentHash != null && validHash.equals(currentHash);
