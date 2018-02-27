@@ -5,7 +5,7 @@
  */
 package Daemons;
 
-import Database.Database;
+import Database.DatabaseNew;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -16,27 +16,29 @@ import java.lang.reflect.Method;
 public class ConnectionDaemon extends BaseDaemon implements Runnable {
 
     protected static boolean isConnected;
+    private static DatabaseNew db;
 
     public ConnectionDaemon(int sleepTime) {
         super(sleepTime);
         isConnected = false;
+        db = DatabaseNew.getInstance();
     }
 
     private static void setIsConnected() {
-        isConnected = Database.getInstance().hasConnection();
+        isConnected = db.isConnected();
     }
 
     public static boolean isConnected() {
         return isConnected;
     }
-    
+
     /**
      *
      */
     @Override
     public void dispatchSubscriptions() {
         setIsConnected();
-        
+
         try {
             for (DeamonSubscription sub : this.subscribtionList) {
                 Method method = sub.getMethod();
