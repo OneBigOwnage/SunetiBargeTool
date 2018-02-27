@@ -17,15 +17,14 @@ import Database.Database;
 import java.lang.reflect.Method;
 
 /**
- *
- * @author niekv
+ * @deprecated @author niekv
  */
 public class SunetiBargeTool {
 
     private static Controller controller;
 
     /**
-     * @param args the command line arguments
+     * @deprecated @param args the command line arguments
      */
     public static void main(String[] args) {
         // Load the configuration file from the JAR.
@@ -54,6 +53,7 @@ public class SunetiBargeTool {
      * Forwards given string to the controller to log. If the controller is not
      * initialized yet, System.out.println() will be used.
      *
+     * @deprecated
      * @param text The text that is to be logged.
      */
     public static void log(String text) {
@@ -64,9 +64,12 @@ public class SunetiBargeTool {
         }
     }
 
+    /**
+     * @deprecated
+     */
     public static void appStart() {
-        boolean autoStart = Boolean.parseBoolean(Config.get("appstart_start_db"));
-        boolean autoConnect = Boolean.parseBoolean(Config.get("appstart_connect_db"));
+        boolean autoStart = Config.getBoolean("appstart_start_db");
+        boolean autoConnect = Config.getBoolean("appstart_connect_db");
         int appStartWaitTime = Config.getInteger("appstart_wait_time");
 
         if (autoStart && !DatabaseDaemon.isDatabaseRunning()) {
@@ -85,10 +88,16 @@ public class SunetiBargeTool {
         }
     }
 
+    /**
+     * @deprecated
+     */
     public static void exitApp() {
         System.exit(0);
     }
 
+    /**
+     * @deprecated
+     */
     private static void AddShutDownHook() {
         // Add shutdownHook to disconnect from database, so it is not left running when Barge Tool is shut down.
         Runtime.getRuntime().addShutdownHook(new Thread() {
@@ -113,6 +122,7 @@ public class SunetiBargeTool {
     /**
      * Getter for the main Controller in this application.
      *
+     * @deprecated
      * @return
      */
     public static Controller getController() {
