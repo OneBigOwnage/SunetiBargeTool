@@ -9,7 +9,10 @@ import App.CommandLineWrapper;
 import App.WindowsProcess;
 import com.sun.jna.platform.win32.Kernel32;
 import java.lang.reflect.Method;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -22,7 +25,7 @@ public abstract class Utils {
 
     public static boolean FILTER_APPLY_COMMAND = true;
     public static boolean FILTER_APPLY_LIST_ADD = false;
-    
+
     /**
      * Method to quickly RegEx match a pattern on a string, can be given extra
      * flags. Different flags are described here:
@@ -190,5 +193,18 @@ public abstract class Utils {
             returnList.add(process);
         }
         return returnList;
+    }
+
+    /**
+     * Gets the current date-time, in given format, as a String object.
+     *
+     * @param format Format that is put over the current time, using the java
+     * date-time standard.
+     * @return String representation of the current time, in given format.
+     */
+    public static String getCurrentTimeFormatted(String format) {
+        DateFormat dateFormat = new SimpleDateFormat(format);
+        Calendar calendar = Calendar.getInstance();
+        return dateFormat.format(calendar.getTime());
     }
 }
