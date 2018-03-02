@@ -5,6 +5,7 @@
  */
 package App;
 
+import App.Logger.Level;
 import Daemons.DaemonManager;
 import Database.Database;
 import HelperClasses.VesselSolutionHelper;
@@ -64,6 +65,7 @@ public class AppStart {
         // Second line is used to skip the Login part of the application.
 //        appController.showLoginView();
         appController.afterLogin();
+        Logger.warning("Skipping the login, this is for development only!");
         // *** IMPORTANT ***
 
         // Bootstrap all the daemons, via the DaemonManager.
