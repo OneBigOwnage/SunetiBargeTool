@@ -5,7 +5,6 @@
  */
 package App;
 
-import com.sun.javafx.fxml.PropertyNotFoundException;
 import java.awt.Color;
 import java.io.File;
 import java.io.FileInputStream;
@@ -15,6 +14,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 import java.util.Properties;
+import javax.xml.bind.PropertyException;
 
 /**
  *
@@ -134,9 +134,9 @@ public class Config {
             if (value != null) {
                 return value;
             } else {
-                throw new PropertyNotFoundException(String.format("Property '%s' was not found!", key));
+                throw new PropertyException(String.format("Property '%s' was not found!", key));
             }
-        } catch (PropertyNotFoundException e) {
+        } catch (PropertyException e) {
 
             return null;
         }

@@ -5,10 +5,12 @@
  */
 package StandardProcedures;
 
+import App.AppStart;
 import UI.StandardProcedureView;
 import java.util.ArrayList;
 import java.util.List;
 import App.Config;
+import App.Logger;
 import sunetibargetool.SunetiBargeTool;
 
 /**
@@ -43,7 +45,7 @@ abstract public class ProcedureManager {
                 StandardProcedure procedure = procedureClass.newInstance();
                 procedures.add(procedure);
             } catch (InstantiationException | IllegalAccessException ex) {
-                SunetiBargeTool.log("There was a problem trying to load a standard procedure!\n" + ex);
+                Logger.error("There was a problem trying to load a standard procedure!\n", ex.getMessage());
             }
         }
 
@@ -80,7 +82,7 @@ abstract public class ProcedureManager {
      * thread.
      */
     public static void execute(final StandardProcedure procedure, boolean runThreaded) {
-        final StandardProcedureView procedureView = (StandardProcedureView) SunetiBargeTool.getController().getView(Config.View.STANDARD_PROCEDURE_VIEW);
+        final StandardProcedureView procedureView = (StandardProcedureView) AppStart.getController().getView(Config.View.STANDARD_PROCEDURE_VIEW);
         procedureView.notifyUIOnProcedureStart(procedure);
 
         if (runThreaded) {
@@ -92,7 +94,7 @@ abstract public class ProcedureManager {
                         procedure.performProcedure();
                         success = true;
                     } catch (Exception ex) {
-                        SunetiBargeTool.log("Exception was thrown whilst performing a standard procedure:\n" + ex);
+                        Logger.error("Exception was thrown whilst performing a standard procedure:\n{0}", ex.getMessage());
                     } finally {
                         procedureView.notifyUIOnProcedureEnd(success);
                     }
@@ -104,7 +106,7 @@ abstract public class ProcedureManager {
                 procedure.performProcedure();
                 success = true;
             } catch (Exception ex) {
-                SunetiBargeTool.log("Exception was thrown whilst performing a standard procedure:\n" + ex);
+                Logger.error("Exception was thrown whilst performing a standard procedure:\n{0}", ex.getMessage());
             } finally {
                 procedureView.notifyUIOnProcedureEnd(success);
             }
