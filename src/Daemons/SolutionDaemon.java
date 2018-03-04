@@ -16,8 +16,10 @@ import java.util.List;
  */
 public class SolutionDaemon extends BaseDaemon {
 
-    public enum solutionState { NOT_RUNNING, STARTING, RUNNING}
-    
+    public enum solutionState {
+        NOT_RUNNING, STARTING, RUNNING
+    }
+
     public SolutionDaemon(int sleepTime) {
         super(sleepTime);
     }
@@ -26,25 +28,13 @@ public class SolutionDaemon extends BaseDaemon {
         List<WindowsProcess> processList = new ArrayList<>();
         processList.addAll(Utils.getProcesses("javaw.exe", Utils.FILTER_APPLY_COMMAND));
         processList.addAll(Utils.getProcesses("java.exe", Utils.FILTER_APPLY_COMMAND));
-        
-                
-        
-        
-        
-        
-        
-        
-        
-        
-        
+
         return solutionState.NOT_RUNNING;
     }
-    
-    
-    
+
     @Override
     public void dispatchSubscriptions() {
-        
+
     }
-    
+
 }
