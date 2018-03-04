@@ -22,11 +22,19 @@ import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import App.Config;
+import Backup.PostGresBackup;
+import HelperClasses.Utils;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 public class BackupView extends javax.swing.JPanel {
 
     private final Controller controller;
     private final BackupModel model;
+    private List<String> includedTables;
+    private List<String> excludedTables;
 
     /**
      * Array consisting of all the tables in the database. The tables can be
@@ -72,13 +80,20 @@ public class BackupView extends javax.swing.JPanel {
         backupPresetDescription = new javax.swing.JTextPane();
         jLabel1 = new javax.swing.JLabel();
         tablePanel = new javax.swing.JPanel();
-        createBackupButton = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         excludedTablesList = new javax.swing.JList<>();
         jScrollPane3 = new javax.swing.JScrollPane();
         includedTablesList = new javax.swing.JList<>();
         jLabel2 = new javax.swing.JLabel();
-        reloadTablesButton = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
+        jProgressBar1 = new javax.swing.JProgressBar();
+        btn_createBackup = new javax.swing.JButton();
+        btn_includeAll = new javax.swing.JButton();
+        btn_excludeAll = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
+        searchField = new javax.swing.JTextField();
 
         setBackground(new java.awt.Color(15, 124, 160));
         setPreferredSize(new java.awt.Dimension(967, 479));
@@ -132,12 +147,10 @@ public class BackupView extends javax.swing.JPanel {
                 .addComponent(presetPicker, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(51, 51, 51)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
                 .addComponent(loadPresetButton)
                 .addGap(14, 14, 14))
         );
-
-        createBackupButton.setText("Create Backup");
 
         jScrollPane2.setBorder(UiLib.createDefaultLineBorder());
         jScrollPane2.setOpaque(false);
@@ -165,10 +178,76 @@ public class BackupView extends javax.swing.JPanel {
         jLabel2.setText("Selected Tables");
         jLabel2.setVerticalAlignment(javax.swing.SwingConstants.TOP);
 
-        reloadTablesButton.setText("Reload tables from database");
-        reloadTablesButton.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                reloadTablesButtonMousePressed(evt);
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel3.setText("Included tables");
+
+        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel4.setText("Excluded tables");
+
+        jPanel1.setOpaque(false);
+
+        btn_createBackup.setText("Create backup");
+        btn_createBackup.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_createBackupActionPerformed(evt);
+            }
+        });
+
+        btn_includeAll.setText("Include all");
+        btn_includeAll.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_includeAllActionPerformed(evt);
+            }
+        });
+
+        btn_excludeAll.setText("Exclude all");
+        btn_excludeAll.setMaximumSize(new java.awt.Dimension(95, 32));
+        btn_excludeAll.setMinimumSize(new java.awt.Dimension(95, 32));
+        btn_excludeAll.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_excludeAllActionPerformed(evt);
+            }
+        });
+
+        jButton1.setText("Reload tables from database");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btn_excludeAll, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btn_includeAll, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btn_createBackup, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(jProgressBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btn_createBackup)
+                    .addComponent(btn_includeAll)
+                    .addComponent(btn_excludeAll, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+
+        searchField.setText("Search...");
+        searchField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                searchFieldKeyReleased(evt);
             }
         });
 
@@ -179,19 +258,21 @@ public class BackupView extends javax.swing.JPanel {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, tablePanelLayout.createSequentialGroup()
                 .addGroup(tablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(tablePanelLayout.createSequentialGroup()
-                        .addContainerGap()
+                        .addGap(168, 168, 168)
                         .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, tablePanelLayout.createSequentialGroup()
                         .addGap(14, 14, 14)
                         .addGroup(tablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(searchField, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(tablePanelLayout.createSequentialGroup()
-                                .addComponent(reloadTablesButton, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(createBackupButton, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(tablePanelLayout.createSequentialGroup()
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 275, Short.MAX_VALUE)
+                                .addGroup(tablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 275, Short.MAX_VALUE))
                                 .addGap(87, 87, 87)
-                                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 275, Short.MAX_VALUE)))))
+                                .addGroup(tablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jScrollPane3)
+                                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE))))))
                 .addGap(31, 31, 31))
         );
         tablePanelLayout.setVerticalGroup(
@@ -199,15 +280,19 @@ public class BackupView extends javax.swing.JPanel {
             .addGroup(tablePanelLayout.createSequentialGroup()
                 .addGap(14, 14, 14)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(30, 30, 30)
-                .addGroup(tablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 343, Short.MAX_VALUE)
-                    .addComponent(jScrollPane3))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(tablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(createBackupButton)
-                    .addComponent(reloadTablesButton))
-                .addGap(14, 14, 14))
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel4))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(tablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2)
+                    .addComponent(jScrollPane3))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(12, 12, 12))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -252,24 +337,87 @@ public class BackupView extends javax.swing.JPanel {
         loadPresetDescription();
     }//GEN-LAST:event_presetPickerPropertyChange
 
-    private void reloadTablesButtonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reloadTablesButtonMousePressed
+    private void btn_includeAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_includeAllActionPerformed
+        if (this.tables.length <= 0) {
+            loadData(true);
+        }
+
+        DefaultListModel exModel = new DefaultListModel();
+        DefaultListModel inModel = new DefaultListModel();
+
+        includedTables = new ArrayList<>();
+        excludedTables = new ArrayList<>();
+
+        if (null != this.tables) {
+            for (String table : this.tables) {
+                inModel.addElement(table);
+                includedTables.add(table);
+            }
+        }
+
+        this.includedTablesList.setModel(inModel);
+        this.excludedTablesList.setModel(exModel);
+    }//GEN-LAST:event_btn_includeAllActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         loadData(true);
-    }//GEN-LAST:event_reloadTablesButtonMousePressed
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void searchFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchFieldKeyReleased
+        filterLists(searchField.getText());
+    }//GEN-LAST:event_searchFieldKeyReleased
+
+    private void btn_excludeAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_excludeAllActionPerformed
+        if (this.tables.length <= 0) {
+            loadData(true);
+        }
+
+        DefaultListModel exModel = new DefaultListModel();
+        DefaultListModel inModel = new DefaultListModel();
+
+        includedTables = new ArrayList<>();
+        excludedTables = new ArrayList<>();
+
+        if (null != this.tables) {
+            for (String table : this.tables) {
+                exModel.addElement(table);
+                excludedTables.add(table);
+            }
+        }
+
+        this.includedTablesList.setModel(inModel);
+        this.excludedTablesList.setModel(exModel);
+    }//GEN-LAST:event_btn_excludeAllActionPerformed
+
+    private void btn_createBackupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_createBackupActionPerformed
+        String[] backupTables = new String[includedTables.size()];
+        for (int i = 0; i < includedTables.size(); i++) {
+            backupTables[i] = includedTables.get(i);
+        }
+        new PostGresBackup(backupTables).make();
+    }//GEN-LAST:event_btn_createBackupActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextPane backupPresetDescription;
-    private javax.swing.JButton createBackupButton;
+    private javax.swing.JButton btn_createBackup;
+    private javax.swing.JButton btn_excludeAll;
+    private javax.swing.JButton btn_includeAll;
     private javax.swing.JList<String> excludedTablesList;
     private javax.swing.JList<String> includedTablesList;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JButton loadPresetButton;
     private javax.swing.JPanel presetPanel;
     private javax.swing.JComboBox<BackupPreset> presetPicker;
-    private javax.swing.JButton reloadTablesButton;
+    private javax.swing.JTextField searchField;
     private javax.swing.JPanel tablePanel;
     // End of variables declaration//GEN-END:variables
 
@@ -294,6 +442,26 @@ public class BackupView extends javax.swing.JPanel {
 
         excludedTablesList.setCellRenderer(new DbTableListCellRenderer());
         includedTablesList.setCellRenderer(new DbTableListCellRenderer());
+
+        UiLib.styleTextField(searchField);
+        searchField.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                if (searchField.getText().equals("Search...")) {
+                    searchField.setText("");
+                    searchField.setForeground(Config.Colors.FONT_COLOR_WHITE.getColor());
+                }
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (searchField.getText().isEmpty()) {
+                    searchField.setForeground(Config.Colors.FONT_COLOR_DISABLED.getColor());
+                    searchField.setText("Search...");
+                }
+            }
+        });
+
     }
 
     /**
@@ -306,9 +474,13 @@ public class BackupView extends javax.swing.JPanel {
         DefaultListModel exModel = new DefaultListModel();
         DefaultListModel inModel = new DefaultListModel();
 
+        includedTables = new ArrayList<>();
+        excludedTables = new ArrayList<>();
+
         if (null != this.tables) {
-            for (String t : this.tables) {
-                exModel.addElement(t);
+            for (String table : this.tables) {
+                exModel.addElement(table);
+                excludedTables.add(table);
             }
         }
 
@@ -348,20 +520,27 @@ public class BackupView extends javax.swing.JPanel {
         DefaultListModel<String> inModel = new DefaultListModel<>();
         DefaultListModel<String> exModel = new DefaultListModel<>();
 
+        includedTables = new ArrayList<>();
+        excludedTables = new ArrayList<>();
+
         if (preset.getPresetType().equals(PresetType.INCLUDE_SELECTED)) {
             for (String table : this.tables) {
                 if (Arrays.asList(presetTables).contains(table)) {
                     inModel.addElement(table);
+                    includedTables.add(table);
                 } else {
                     exModel.addElement(table);
+                    excludedTables.add(table);
                 }
             }
         } else if (preset.getPresetType().equals(PresetType.EXCLUDE_SELECTED)) {
             for (String table : this.tables) {
                 if (Arrays.asList(presetTables).contains(table)) {
                     exModel.addElement(table);
+                    excludedTables.add(table);
                 } else {
                     inModel.addElement(table);
+                    includedTables.add(table);
                 }
             }
         }
@@ -398,6 +577,37 @@ public class BackupView extends javax.swing.JPanel {
     }
 
     /**
+     * Method to filter the included and excluded table lists, in the view.
+     * After filtering, only the tables that match the filter are shown in the
+     * lists. Filtering is implemented with RegEx, and dots/stars are
+     * automatically appended.
+     *
+     * @param filterString The string that is to be filtered on.
+     */
+    private void filterLists(String filterString) {
+
+        DefaultListModel<String> inModel = new DefaultListModel<>();
+        DefaultListModel<String> exModel = new DefaultListModel<>();
+
+        String filter = ".*" + filterString + ".*";
+
+        for (String table : excludedTables) {
+            if (Utils.regExMatch(filter, table, Pattern.CASE_INSENSITIVE)) {
+                exModel.add(exModel.getSize(), table);
+            }
+        }
+
+        for (String table : includedTables) {
+            if (Utils.regExMatch(filter, table, Pattern.CASE_INSENSITIVE)) {
+                inModel.add(inModel.getSize(), table);
+            }
+        }
+
+        includedTablesList.setModel(inModel);
+        excludedTablesList.setModel(exModel);
+    }
+
+    /**
      * Method to draw a separation line between the two main panels in this
      * view.
      *
@@ -430,6 +640,9 @@ public class BackupView extends javax.swing.JPanel {
             rightModel.add(0, tableName);
             leftModel.removeElement(tableName);
 
+            includedTables.add(0, tableName);
+            excludedTables.remove(tableName);
+
             includedTablesList.setModel(rightModel);
             excludedTablesList.setModel(leftModel);
 
@@ -438,6 +651,9 @@ public class BackupView extends javax.swing.JPanel {
 
             leftModel.add(0, tableName);
             rightModel.removeElement(tableName);
+
+            excludedTables.add(0, tableName);
+            includedTables.remove(tableName);
 
             includedTablesList.setModel(rightModel);
             excludedTablesList.setModel(leftModel);
