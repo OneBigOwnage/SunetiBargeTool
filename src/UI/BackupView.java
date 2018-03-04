@@ -22,12 +22,14 @@ import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import App.Config;
+import App.Logger;
 import Backup.PostGresBackup;
 import HelperClasses.Utils;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
+import javax.swing.JProgressBar;
 
 public class BackupView extends javax.swing.JPanel {
 
@@ -390,10 +392,29 @@ public class BackupView extends javax.swing.JPanel {
     }//GEN-LAST:event_btn_excludeAllActionPerformed
 
     private void btn_createBackupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_createBackupActionPerformed
-        String[] backupTables = new String[includedTables.size()];
+        final String[] backupTables = new String[includedTables.size()];
+
         for (int i = 0; i < includedTables.size(); i++) {
             backupTables[i] = includedTables.get(i);
         }
+
+        final double msPerPercent = (Config.getDouble("backup_ms_per_table") * includedTables.size()) / 100;
+        final JProgressBar bar = jProgressBar1;
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 1; i <= 100; i++) {
+                    bar.setValue(i);
+                    try {
+                        Thread.sleep((long) msPerPercent);
+                    } catch (InterruptedException ex) {
+                        Logger.warning("Progress-bar thread was interrupted:\n{0}", ex.getMessage());
+                    }
+                }
+            }
+        }).start();
+
         new PostGresBackup(backupTables).make();
     }//GEN-LAST:event_btn_createBackupActionPerformed
 
@@ -462,6 +483,9 @@ public class BackupView extends javax.swing.JPanel {
             }
         });
 
+        jProgressBar1.setStringPainted(true);
+        jProgressBar1.setBorderPainted(false);
+        jProgressBar1.setFont(UiLib.getTitleFont());
     }
 
     /**
