@@ -5,11 +5,11 @@
  */
 package App;
 
-import App.Logger.Level;
 import Daemons.DaemonManager;
 import Database.Database;
 import HelperClasses.VesselSolutionHelper;
 import UI.LogView;
+import UI.LoginView;
 
 /**
  *
@@ -67,7 +67,8 @@ public class AppStart {
         appController.afterLogin();
         Logger.warning("Skipping the login, this is for development only!");
         // *** IMPORTANT ***
-
+        ((LoginView) appController.getView(Config.View.LOGIN_VIEW)).PasswordFieldRequestFocus();
+        
         // Bootstrap all the daemons, via the DaemonManager.
         DaemonManager.defaultLoad();
     }

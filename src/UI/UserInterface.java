@@ -115,7 +115,7 @@ public class UserInterface extends javax.swing.JFrame {
 
     private void initExtra() {
         // Set the icon in top left corner & taskbar.
-        URL iconURL = getClass().getClassLoader().getResource("main_icon.png");
+        URL iconURL = getClass().getClassLoader().getResource("icon.png");
         ImageIcon icon = new ImageIcon(iconURL);
         setIconImage(icon.getImage());
 
