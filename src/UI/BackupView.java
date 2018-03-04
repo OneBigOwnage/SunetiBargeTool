@@ -8,7 +8,6 @@ package UI;
 import App.Controller;
 import Backup.BackupPreset;
 import Backup.BackupPreset.PresetType;
-import Backup.BackupPresets.SimplePreset;
 import Models.BackupModel;
 import UiHelpers.BackupPresetComboBoxRenderer;
 import UiHelpers.DbTableListCellRenderer;
@@ -108,9 +107,9 @@ public class BackupView extends javax.swing.JPanel {
         });
 
         presetPicker.setBorder(null);
-        presetPicker.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
-            public void propertyChange(java.beans.PropertyChangeEvent evt) {
-                presetPickerPropertyChange(evt);
+        presetPicker.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                presetPickerActionPerformed(evt);
             }
         });
 
@@ -145,13 +144,13 @@ public class BackupView extends javax.swing.JPanel {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, presetPanelLayout.createSequentialGroup()
                 .addGap(14, 14, 14)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(30, 30, 30)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(presetPicker, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(51, 51, 51)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
+                .addGap(30, 30, 30)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 287, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(loadPresetButton)
-                .addGap(14, 14, 14))
+                .addContainerGap(44, Short.MAX_VALUE))
         );
 
         jScrollPane2.setBorder(UiLib.createDefaultLineBorder());
@@ -314,7 +313,7 @@ public class BackupView extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void onLoadPresetButtonClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_onLoadPresetButtonClicked
-        loadBackupPreset(new SimplePreset());
+        loadBackupPreset(getSelectedPreset());
     }//GEN-LAST:event_onLoadPresetButtonClicked
 
     private void excludedTablesListMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_excludedTablesListMousePressed
@@ -334,10 +333,6 @@ public class BackupView extends javax.swing.JPanel {
             includedTablesList.clearSelection();
         }
     }//GEN-LAST:event_includedTablesListMousePressed
-
-    private void presetPickerPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_presetPickerPropertyChange
-        loadPresetDescription();
-    }//GEN-LAST:event_presetPickerPropertyChange
 
     private void btn_includeAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_includeAllActionPerformed
         if (this.tables.length <= 0) {
@@ -415,8 +410,18 @@ public class BackupView extends javax.swing.JPanel {
             }
         }).start();
 
-        new PostGresBackup(backupTables).make();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                new PostGresBackup(backupTables).make();
+            }
+        }).start();
     }//GEN-LAST:event_btn_createBackupActionPerformed
+
+    private void presetPickerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_presetPickerActionPerformed
+        System.out.println("Changed!");
+        loadPresetDescription();
+    }//GEN-LAST:event_presetPickerActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextPane backupPresetDescription;
