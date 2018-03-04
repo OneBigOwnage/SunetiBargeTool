@@ -11,10 +11,16 @@ import Database.DatabaseHelper;
 import Database.Query;
 import java.io.File;
 import java.io.FileFilter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -62,7 +68,7 @@ public class BargeInfoModel extends BaseModel {
         dataMap.put(bargeData.CURRENT_VERSION_FOLDER, getCurrentVersionFolder());
         dataMap.put(bargeData.LAST_BCM_UPDATES, getLastBcmUpdatesVersion());
 
-        dataMap.put(bargeData.VERSION_IN_BAT, "Not found"/*getVersionInBat()*/);
+        dataMap.put(bargeData.VERSION_IN_BAT, getVersionInBat());
         dataMap.put(bargeData.HIGHEST_VERSION_FOLDER, getHighestVersionFolder());
         dataMap.put(bargeData.VERSION_FOLDER_COUNT, getVersionFolderCount());
 
@@ -244,6 +250,22 @@ public class BargeInfoModel extends BaseModel {
         } else {
             return "Not found";
         }
+    }
+
+    public String getVersionInBat() {
+        File vsBat = new File("C:\\vessel solution\\Vessel Solution.bat");
+
+        try {
+            List<String> lines;
+            lines = Files.readAllLines(Paths.get(vsBat.getAbsolutePath()));
+
+            if (null != lines) {
+                return lines.get(1).substring(3);
+            }
+        } catch (IOException ex) {
+            App.Logger.error("Could not retrieve version from 'Vessel solution.bat':\n{0}", ex.getMessage());
+        }
+        return null;
     }
 
 }
