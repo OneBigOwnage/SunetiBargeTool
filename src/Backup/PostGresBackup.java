@@ -52,9 +52,9 @@ public class PostGresBackup {
 
         cli.addArgument("--file");
         cli.addArgument("${file_name}");
-        argVals.put("file_name", "C:\\vessel solution\\etc\\Suneti Barge Tool\\Backups\\file.backup"
-        /*+ Utils.getCurrentTimeFormatted("yyyy-MM-dd HH:mm")
-        + ".backup"*/);
+        argVals.put("file_name", "C:\\vessel solution\\etc\\Suneti Barge Tool\\Backups\\"
+                + Utils.getCurrentTimeFormatted("yyyy-MM-dd HH:mm")
+                + ".backup");
 
         for (String table : includedTables) {
             cli.addArgument("--table");
