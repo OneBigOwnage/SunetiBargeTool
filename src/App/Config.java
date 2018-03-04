@@ -165,6 +165,10 @@ public class Config {
         return Boolean.parseBoolean((String) getProperty(key));
     }
 
+    public static double getDouble(String key) {
+        return Double.parseDouble((String) getProperty(key));
+    }
+    
     /**
      * All the different and default colors used in this application, neatly
      * sorted inside an enumeration. Use the {@code getColor()} method to
