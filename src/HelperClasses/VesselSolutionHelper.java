@@ -93,6 +93,10 @@ public class VesselSolutionHelper {
             System.out.println("This should be investigated... " + ex);
             outputStream.toString();
             System.out.println("Breakpoint on this line...");
+            try {
+                Thread.sleep(200);
+            } catch (InterruptedException e) {
+            }
         }
 
         // Return true if the outputted line contains "server is running", false otherwise.
