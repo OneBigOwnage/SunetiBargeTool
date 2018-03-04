@@ -12,14 +12,13 @@ import java.lang.reflect.Method;
  * @author niekv
  */
 public class DeamonSubscription {
- 
+
     private final Object object;
     private final Method method;
-    
-    
+
     /**
+     * Default constructor for this class.
      *
-     * @param name
      * @param object
      * @param method
      */
@@ -31,7 +30,7 @@ public class DeamonSubscription {
     public Object getObject() {
         return this.object;
     }
-    
+
     public Method getMethod() {
         return this.method;
     }
