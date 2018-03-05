@@ -23,3 +23,6 @@ hs_err_pid*
 /dist/
 /nbproject/private/
 /build/
+
+# Files that are only used in production, containing confidential things.
+*.production
