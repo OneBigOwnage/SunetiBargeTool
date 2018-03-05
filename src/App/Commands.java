@@ -41,7 +41,7 @@ public class Commands {
      */
     public static void startDatabase() {
         if (new VesselSolutionHelper().isPostgresDatabaseRunning()) {
-            SunetiBargeTool.log("Database already running...");
+            Logger.warning("Database already running...");
             return;
         }
 

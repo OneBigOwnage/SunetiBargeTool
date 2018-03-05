@@ -49,26 +49,31 @@ public class AppStart {
         // Adds the shutdown hook to the application.
         Runtime.getRuntime().addShutdownHook(new AppQuit().getShutDownHook());
 
-        // Start the database if it is not already running.
-        if (!vsHelper.isPostgresDatabaseRunning()) {
+        // Start the database if it is not already running, and it should be started on AppStart.
+        boolean shouldStartAutomatically = Config.getBoolean("appstart_start_db");
+        if (!vsHelper.isPostgresDatabaseRunning() && shouldStartAutomatically) {
             Commands.startDatabase();
         }
 
-        Database.getInstance().connect();
+        // Connect to the database if needed.
+        if (Config.getBoolean("appstart_connect_db")) {
+            Database.getInstance().connect();
+        }
 
         appController = new Controller();
 
         Logger.setupLogView((LogView) appController.getView(Config.View.LOG_VIEW));
 
         // *** IMPORTANT ***
-        // In production, uncomment first line and delete second line!
+        // In production, uncomment first line and comment/delete second line!
         // Second line is used to skip the Login part of the application.
-//        appController.showLoginView();
-        appController.afterLogin();
-        Logger.warning("Skipping the login, this is for development only!");
+        appController.showLoginView();
+        //appController.afterLogin();
+        //Logger.warning("Skipping the login, this is for development only!");
         // *** IMPORTANT ***
+
         ((LoginView) appController.getView(Config.View.LOGIN_VIEW)).PasswordFieldRequestFocus();
-        
+
         // Bootstrap all the daemons, via the DaemonManager.
         DaemonManager.defaultLoad();
     }
