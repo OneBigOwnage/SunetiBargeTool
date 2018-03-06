@@ -28,7 +28,8 @@ public class AppQuit {
             @Override
             public void run() {
                 Database db = Database.getInstance();
-                if (!vsHelper.isVesselSolutionConnectedToDatabase()) {
+                boolean shouldCloseOnExit = Config.getBoolean("stop_database_on_exit_app");
+                if (!vsHelper.isVesselSolutionConnectedToDatabase() && shouldCloseOnExit) {
                     db.setAutoReconnect(false);
                     db.disconnect();
                     Commands.stopDatabase();
