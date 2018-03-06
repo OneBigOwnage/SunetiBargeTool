@@ -7,13 +7,12 @@ package Models;
 
 import App.Commands;
 import App.Controller;
+import App.Logger;
 import Database.DatabaseHelper;
 import Database.Query;
+import HelperClasses.Utils;
 import java.io.File;
 import java.io.FileFilter;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -252,17 +251,14 @@ public class BargeInfoModel extends BaseModel {
     public String getVersionInBat() {
         File vsBat = new File("C:\\vessel solution\\Vessel Solution.bat");
 
+        String[] lines = Utils.fileReadLines(vsBat);
+
         try {
-            List<String> lines;
-            lines = Files.readAllLines(Paths.get(vsBat.getAbsolutePath()));
-
-            if (null != lines) {
-                return lines.get(1).substring(3);
-            }
-        } catch (IOException ex) {
-            App.Logger.error("Could not retrieve version from 'Vessel solution.bat':\n{0}", ex.getMessage());
+            String version = lines[1].substring(3);
+            return version;
+        } catch (Exception ex) {
+            Logger.error("Error whilst reading 'Vessel Solution.bat':\n{0}", ex.getMessage());
+            return null;
         }
-        return null;
     }
-
 }

@@ -6,8 +6,13 @@
 package HelperClasses;
 
 import App.CommandLineWrapper;
+import App.Logger;
 import App.WindowsProcess;
 import com.sun.jna.platform.win32.Kernel32;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -206,5 +211,36 @@ public abstract class Utils {
         DateFormat dateFormat = new SimpleDateFormat(format);
         Calendar calendar = Calendar.getInstance();
         return dateFormat.format(calendar.getTime());
+    }
+
+    /**
+     * Method to read a file, and return the contents of the file as a String[].
+     * The lines are in consecutive order.
+     *
+     * @param file The file that is to be read.
+     * @return A string[], where each element is a line of text from the file.
+     */
+    public static String[] fileReadLines(File file) {
+        if (!file.exists()) {
+            return null;
+        }
+
+        List<String> linesList = new ArrayList<>();
+
+        try {
+
+            BufferedReader reader = new BufferedReader(new FileReader(file));
+            String readLine = "";
+            while (null != (readLine = reader.readLine())) {
+                linesList.add(readLine);
+            }
+            String[] linesArray = new String[linesList.size()];
+            linesList.toArray(linesArray);
+            return linesArray;
+        } catch (IOException ex) {
+            Logger.error("Error whilst reading file '{0}':\n{1}", file.getName(), ex.getMessage());
+            return null;
+        }
+
     }
 }
