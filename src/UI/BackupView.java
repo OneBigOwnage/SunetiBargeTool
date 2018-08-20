@@ -148,9 +148,9 @@ public class BackupView extends javax.swing.JPanel {
                 .addComponent(presetPicker, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(30, 30, 30)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 287, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(loadPresetButton)
-                .addContainerGap(44, Short.MAX_VALUE))
+                .addGap(44, 44, 44))
         );
 
         jScrollPane2.setBorder(UiLib.createDefaultLineBorder());

@@ -284,14 +284,17 @@ public class StandardProcedureView extends javax.swing.JPanel {
      * @param text The line of text that is to be added.
      */
     public void appendExecutionText(String text) {
-        String prefix = "abc ";
-        String suffix = " def";
+        String prefix = "- ";
+        String suffix = "\n";
 
         String completeLine = String.format("%s%s%s", prefix, text, suffix);
 
         JTextComponent executionOutputField = (JTextComponent) UiLib.getComponentByName(content_panel, ProcedureViewFactory.CONSTANTS.EXECUTION_STATUS_FIELD.name());
         if (executionOutputField != null) {
-            executionOutputField.setText(completeLine);
+            String currentText = executionOutputField.getText();
+            String fullText = currentText.concat(completeLine);
+            
+            executionOutputField.setText(fullText);
         } else {
             SunetiBargeTool.log("Unable to find 'executionOutputField' in procedure execution view!");
         }

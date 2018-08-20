@@ -145,7 +145,7 @@ public class Database {
 
     /**
      * Method to check if the Database class has an active database
- connection. This method is used mainly before trying to execute a query,
+     * connection. This method is used mainly before trying to execute a query,
      * to make sure that there is an active connection with the database.
      *
      * @return True if, and only if, there is an active connection with the

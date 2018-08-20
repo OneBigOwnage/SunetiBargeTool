@@ -52,7 +52,7 @@ public class ProcedureViewFactory {
     }
 
     private static JButton getExecuteButton() {
-        JButton button = new JButton("⚠ Execute Procedure ⚠");
+        JButton button = new JButton("Execute Procedure");
         UiLib.UIButtonHelper(button);
         button.setPreferredSize(new Dimension(190, button.getMinimumSize().height));
         button.setMinimumSize(new Dimension(190, button.getMinimumSize().height));
@@ -91,8 +91,13 @@ public class ProcedureViewFactory {
         JTextPane pane = new JTextPane();
 
         String warningText = "";
-        for (String warn : procedure.getWarningMessages()) {
-            warningText += String.format("• %s\n", warn);
+        String[] warnings = procedure.getWarningMessages();
+        if (warnings != null && warnings.length > 0) {
+            for (String warn : procedure.getWarningMessages()) {
+                warningText += String.format("• %s\n", warn);
+            }
+        } else {
+            warningText = "There are no warnings for this procedure.";
         }
 
         pane.setText(warningText);
@@ -104,7 +109,7 @@ public class ProcedureViewFactory {
     }
 
     private static Component getExecutionStatusComponent() {
-        String startingText = "Hello World!";
+        String startingText = "";
 
         JTextPane textPane = new JTextPane();
         textPane.setName(CONSTANTS.EXECUTION_STATUS_FIELD.name());

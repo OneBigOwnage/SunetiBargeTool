@@ -1,5 +1,6 @@
 package StandardProcedures;
 
+import App.AppStart;
 import HelperClasses.ClassEnumerator;
 import UI.StandardProcedureView;
 import java.util.ArrayList;
@@ -69,10 +70,16 @@ public abstract class StandardProcedure {
      * for this procedure to complete, start to end.
      */
     public StandardProcedure(String name, String description, String[] warningMessages, double averageExecutionTime) {
+        if (warningMessages == null) {
+            warningMessages = new String[]{};
+        }
+        
         this.name = name;
         this.description = description;
         this.warningMessages = warningMessages;
         this.averageExecutionTime = averageExecutionTime;
+        
+        
     }
 
     /**
@@ -153,7 +160,7 @@ public abstract class StandardProcedure {
     }
     
     protected void sendFeedback(String text) {
-        StandardProcedureView view = (StandardProcedureView) SunetiBargeTool.getController().getView(Config.View.STANDARD_PROCEDURE_VIEW);
+        StandardProcedureView view = (StandardProcedureView) AppStart.getController().getView(Config.View.STANDARD_PROCEDURE_VIEW);
         view.appendExecutionText(text);
     }
 }
