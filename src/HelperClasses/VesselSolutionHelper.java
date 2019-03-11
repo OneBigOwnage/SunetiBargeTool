@@ -8,6 +8,9 @@ package HelperClasses;
 import App.CommandLineWrapper;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.regex.Pattern;
 import org.apache.commons.exec.DefaultExecuteResultHandler;
@@ -101,6 +104,19 @@ public class VesselSolutionHelper {
 
         // Return true if the outputted line contains "server is running", false otherwise.
         return Utils.regExMatch("(.*server is running.*)", outputStream.toString(), Pattern.DOTALL);
+    }
+    
+    /**
+     * Determine if the default Vessel Solution directory
+     * is present on the operating system.
+     * The directory is hard coded 'C:\vessel solution\'
+     * 
+     * @return True if the directory exists, false if not.
+     */
+    public boolean hasVesselSolutionDirectory() {
+        return Files.exists(
+            Paths.get("C:\\vessel solution\\")
+        );
     }
 
 }

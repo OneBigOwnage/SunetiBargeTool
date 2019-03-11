@@ -28,7 +28,9 @@ public class AppStart {
     }
 
     /**
-     *
+     * This method is executed the application boots.
+     * It will create a new instance of the app and bootstrap it.
+     * 
      * @param args the command line arguments
      */
     public static void main(String[] args) {
@@ -46,11 +48,15 @@ public class AppStart {
         // Load the properties of the Logger class, from the Config class.
         Logger.loadProperties();
 
-        // Adds the shutdown hook to the application.
+        // Registers the shutdown hook into the application.
         Runtime.getRuntime().addShutdownHook(new AppQuit().getShutDownHook());
-
+        
+        // Validate the environment, logging any misconfigurations.
+        validateEnvironment();
+        
         // Start the database if it is not already running, and it should be started on AppStart.
         boolean shouldStartAutomatically = Config.getBoolean("appstart_start_db");
+
         if (!vsHelper.isPostgresDatabaseRunning() && shouldStartAutomatically) {
             Commands.startDatabase();
         }
@@ -67,8 +73,8 @@ public class AppStart {
         // *** IMPORTANT ***
         // In production, uncomment first line and comment/delete second line!
         // Second line is used to skip the Login part of the application.
-        appController.showLoginView();
-        //appController.afterLogin();
+//        appController.showLoginView();
+        appController.afterLogin();
         //Logger.warning("Skipping the login, this is for development only!");
         // *** IMPORTANT ***
 
@@ -82,4 +88,15 @@ public class AppStart {
         return appController;
     }
 
+    /**
+     * Validates the runtime environment.
+     * If anything is out of the ordinary, logging will be generated.
+     */
+    protected void validateEnvironment() {
+        if (!vsHelper.hasVesselSolutionDirectory()) {
+            Logger.critical("Cannot find or access 'C:\\vessel solution\\'!");
+        }
+        
+        
+    }
 }
