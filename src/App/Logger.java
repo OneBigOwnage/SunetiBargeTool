@@ -49,7 +49,7 @@ public class Logger {
             logView.appendToLog(str);
             // 02. Log via System.out.println().
         } else {
-            System.out.print(String.format("- %s - : %s", level, str));
+            System.out.print(String.format("[%s] %s", level, str));
         }
 
         // 03. Append to the log file of this application. (to be implemented)

@@ -5,24 +5,33 @@ db_host=localhost
 db_port=15000
 db_name=bcm
 db_username=DBA
-db_pass=B8t2464948s6s8a
+db_password=B8t2464948s6s8a
 
 
 # App configuration
-# app_password_plain=jcTkr8rv7Xnq6MAt9
-app_password_hash=d93ca241f5fc1e4f6aec7b78f1a86b33174fc7b5f2f39b9f3b453e15dceb369e
+app_password_hash=
 appstart_autoload_data=false
 appstart_connect_db=false
 appstart_start_db=false
-auto_reconnect_database=false
+auto_reconnect_database=true
 appstart_wait_time=1500
 log_to_console=true
 
 
 # Daemon configuration
 daemon_sleep_time=1000
-daemon_startup_wait_time=2200
+daemon_startup_wait_time=1000
 
 
 # Standard Procedure configuration
 run_standard_procedure_threaded=true
+
+
+# Logger configuration
+log_with_msgbox=true
+log_threshold=info
+msg_box_threshold=error
+
+
+# Backup configuration
+backup_ms_per_table=10
