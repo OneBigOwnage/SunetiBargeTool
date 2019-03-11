@@ -139,7 +139,7 @@ public class Database {
                 System.out.println("Something went wrong trying to close the connection:\n" + ex);
             }
         } else {
-            System.out.println("Can not disconnect...?");
+            System.out.println("Cannot disconnect...?");
         }
     }
 

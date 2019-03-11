@@ -73,8 +73,8 @@ public class AppStart {
         // *** IMPORTANT ***
         // In production, uncomment first line and comment/delete second line!
         // Second line is used to skip the Login part of the application.
-//        appController.showLoginView();
-        appController.afterLogin();
+        appController.showLoginView();
+//        appController.afterLogin();
         //Logger.warning("Skipping the login, this is for development only!");
         // *** IMPORTANT ***
 
